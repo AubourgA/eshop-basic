@@ -10,7 +10,7 @@ use App\Entity\User;
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer extends User
 {
-  
+   
 
     #[ORM\Column(length: 100)]
     private ?string $firstname = null;
@@ -29,9 +29,14 @@ class Customer extends User
 
     public function __construct()
     {
+       
+        $this->setRoles(['ROLE_CUSTOMER']);
         $this->createdAt = new \DateTimeImmutable();
         $this->lastVisitedAt = new \DateTimeImmutable();
+       
     }
+
+
 
     public function getFirstname(): ?string
     {

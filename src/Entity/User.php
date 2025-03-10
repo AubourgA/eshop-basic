@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\InheritanceType('JOINED')] // 3 tables distinct
 #[ORM\DiscriminatorColumn(name: 'user_type', type: 'string')]
 #[ORM\DiscriminatorMap(['manager' => 'App\Entity\Manager', 'customer' => 'App\Entity\Customer'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

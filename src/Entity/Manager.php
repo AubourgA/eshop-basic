@@ -11,6 +11,7 @@ class Manager extends User
 {
 
 
+
     #[ORM\Column(length: 255)]
     private ?string $matricule = null;
 
@@ -24,6 +25,8 @@ class Manager extends User
     {
         $this->createdAt = new \DateTimeImmutable();
     }
+
+ 
 
     public function getMatricule(): ?string
     {
