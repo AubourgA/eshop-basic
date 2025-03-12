@@ -15,6 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/product', name: 'app_product')]
 final class ProductController extends AbstractController
 {
+
+    #[Route('/{id}', name: '_show')]
+    public function show(Product $product, ProductRepository $productRepo): Response
+    {
+
+        return $this->render('product/show.html.twig', [
+            'product' => $productRepo->find($product->getId()),
+        ]);
+    }
+
     #[Route('/list', name: '_list')]
     public function index(ProductRepository $productRepo): Response
     {

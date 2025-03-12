@@ -21,7 +21,7 @@
                         <h3 class="text-xl font-semibold text-pink-800 mt-4">{{ product.designation }}</h3>
                         <p class="text-gray-600 mt-2">{{ product.description }}</p>
                         <span class="text-pink-700 font-bold text-lg mt-2 block">{{ product.price }} €</span>
-                        <button class="mt-4 bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</button>
+                        <a href="{{ path('app_product_show', {'id' : product.id })}}" class="mt-4 bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</a>
                     </div>
                 {% endfor %}
             </div>
