@@ -51,4 +51,10 @@ final class CartService
         }
         return $cartWithData;
     }
+
+    public function deleteCart(): void
+    {
+       
+        $this->session->getSession()->set('cart', []);
+    }
 }

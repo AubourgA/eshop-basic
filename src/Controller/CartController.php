@@ -41,10 +41,21 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('app_catalog');
     }
 
-    #[Route('/cart/remove/{id}', name: 'app_cart_remove', methods: ['GET','POST'])]
+    #[Route('/cart/remove/{id}', name: 'app_cart_remove', methods: ['POST'])]
+    #[IsCsrfTokenValid('remove_cart', tokenKey: 'token')]
     public function remove(int $id): Response
     {
         $this->cartService->removeToCart($id);
         return $this->redirectToRoute('app_cart');
     }
+
+    #[Route('/cart/clear', name: 'app_cart_clear', methods: ['POST'])]
+    #[IsCsrfTokenValid('clear_cart', tokenKey: 'token')]
+    public function clear(): Response
+    {
+        $this->cartService->deleteCart();
+        return $this->redirectToRoute('app_cart');
+    }
+
+
 }
