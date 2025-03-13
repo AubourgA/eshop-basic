@@ -26,3 +26,4 @@ services:
     App\Services\FileUploaderService:
         arguments:
             $uploadDir: '%upload_dir%'
+

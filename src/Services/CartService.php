@@ -21,7 +21,7 @@ final class CartService
             $cart[$productID] += $quantity;
            
         } else {
-            $cart[$productID] = 1;
+            $cart[$productID] = $quantity;
         }
 
 
