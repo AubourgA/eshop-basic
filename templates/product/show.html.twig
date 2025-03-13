@@ -37,17 +37,20 @@
 
                     <!-- Sélection de la quantité -->
                     {% if product.stock > 0 %}
+                    <form action=" {{ path('app_cart_add', {id: product.id} ) }}" method="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('add_cart') }}">
                         <div class="mt-6">
                             <label for="quantity" class="block text-gray-700 font-semibold">Quantité :</label>
-                            <input type="number" id="quantity" min="1" max="{{ product.stock }}" value="1"
+                            <input type="number" id="quantity" min="1" max="{{ product.stock }}" name="quantity" value="1"
                                    class="mt-2 p-2 border border-pink-400 rounded-lg w-20 focus:ring-2 focus:ring-pink-500">
                         </div>
 
                         <!-- Bouton Ajouter au Panier -->
-                        <button id="add-to-cart" 
+                        <button type="submit" id="add-to-cart" 
                                 class="mt-6 bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600 transition">
                             Ajouter au panier
                         </button>
+                    </form>
                     {% endif %}
                 </div>
             </div>

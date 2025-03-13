@@ -1,0 +1,78 @@
+
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre panier{% endblock %}
+
+{% block body %}
+<div class="min-h-full">
+
+         <!-- Navbar -->
+         {% include 'partials/_navbar.html.twig' %}
+
+         <div class="max-w-6xl mx-auto   p-6 bg-gray-100 rounded-lg">
+            <h1 class="text-2xl font-semibold mb-4 text-pink-600">Votre panier</h1>
+            
+            {% if cart is empty %}
+               <p class="text-gray-700">Votre panier est vide.</p>
+            {% else %}
+            <div class="grid grid-cols-3 gap-4">
+               <!-- Section Panier -->
+               <div class="col-span-2 bg-white p-4 rounded-lg shadow">
+                     <table class="w-full border-collapse">
+                        <tbody>
+                           {% for item in cart %}
+                                 <tr class="border-b   ">
+                                    <td class="p-2 "><img src="{{ asset('uploads/' ~ item.product.imageFileName) }}" alt="{{ item.product.designation }}" class="w-16 h-16 rounded"></td>
+                                    <td class="p-2 ">
+                                       <p class="font-semibold">{{ item.product.designation }}</p>
+                                       <p class="text-green-600 text-sm">In Stock</p>
+                                       <p class="text-sm text-gray-600">{{ item.product.price }}€</p>
+                                    </td>
+                                    <td class=" ">
+                                       <button class="px-2 py-1 border rounded">-</button>
+                                       <span class="px-4">{{ item.quantity }}</span>
+                                       <button class="px-2 py-1 border rounded">+</button>
+                                    </td>
+                                    <td class="p-2 font-semibold align-middle">{{ item.product.price * item.quantity }}€</td>
+                                    <td>
+                                      <a href="{{ path('app_cart_remove', {id: item.product.id}) }}" class="text-red-600">❌</a>
+                                    </td>
+                                 </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+               </div>
+
+               <!-- Section Récapitulatif -->
+               <div class="bg-white p-4 rounded-lg shadow">
+                     <h2 class="text-lg font-semibold mb-4">Résumé</h2>
+                     <div class="flex justify-between border-b py-2">
+                        <span>Sous-total</span>
+                        <span>{{ cart|reduce((total, item) => total + (item.product.price * item.quantity), 0) }}€</span>
+                     </div>
+                     <div class="flex justify-between border-b py-2">
+                        <span>Réduction </span>
+                        <span class="text-green-600">0 €</span>
+                     </div>
+                     <div class="flex justify-between border-b py-2">
+                        <span>Livraison</span>
+                        <span>0.00€</span>
+                     </div>
+                     <div class="flex justify-between border-b py-2">
+                        <span>Taxe</span>
+                        <span>0.00€</span>
+                     </div>
+                     <div class="flex justify-between font-semibold text-lg mt-4">
+                        <span>Total</span>
+                        <span class="text-pink-600">{{ cart|reduce((total, item) => total + (item.product.price * item.quantity), 0) }}€</span>
+                     </div>
+                     <button class="w-full bg-pink-600 text-white py-2 mt-4 rounded">Passer la commande</button>
+                     <a href="{{ path('app_catalog') }}" class="block text-center text-pink-600 mt-2">Continuer les achats</a>
+               </div>
+            </div>
+            {% endif %}
+         </div>
+</div>
+{% endblock %}
