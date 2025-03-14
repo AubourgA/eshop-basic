@@ -49,7 +49,7 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
 
         $redirectRoutes = [
              'ROLE_ADMIN'    => 'app_admin',
-             'ROLE_CUSTOMER' => 'app_dashboard',
+             'ROLE_CUSTOMER' => 'app_customer_dashboard',
             ];
 
         foreach ($redirectRoutes as $role => $route) {

@@ -15,20 +15,21 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    #[Assert\NotBlank(message: "Le nom du produit est obligatoire.")]
+    // #[Assert\NotBlank(message: "La designation du produit est obligatoire.")]
     private ?string $designation = null;
 
     #[ORM\Column(length: 255)]
+    // #[Assert\NotBlank(message: "La description du produit est obligatoire.")]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le prix est obligatoire.")]
-    #[Assert\Positive(message: "Le prix doit être positif.")]
+    // #[Assert\NotBlank(message: "Le prix est obligatoire.")]
+    // #[Assert\Positive(message: "Le prix doit être positif.")]
     private ?float $price = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "La quantité est obligatoire.")]
-    #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
+    // #[Assert\NotBlank(message: "La quantité est obligatoire.")]
+    // #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
     private ?int $stock = null;
 
     #[ORM\Column(length: 255, nullable: true)]

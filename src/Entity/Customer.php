@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\CustomerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
@@ -13,12 +16,19 @@ class Customer extends User
    
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le prenom est obligatoire.")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank(message: "Le téléphone est obligatoire.")]
+    #[Assert\Regex(
+        pattern: "/^0[1-9]\d{8}$/",
+        message: "Le numéro de téléphone doit contenir 10 chiffres et commencer par un 0."
+    )]
     private ?string $phone = null;
 
     #[ORM\Column]
@@ -27,12 +37,19 @@ class Customer extends User
     #[ORM\Column]
     private ?\DateTimeImmutable $lastVisitedAt = null;
 
+    /**
+     * @var Collection<int, Address>
+     */
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'customer', orphanRemoval: true)]
+    private Collection $addresses;
+
     public function __construct()
     {
        
         $this->setRoles(['ROLE_CUSTOMER']);
         $this->createdAt = new \DateTimeImmutable();
         $this->lastVisitedAt = new \DateTimeImmutable();
+        $this->addresses = new ArrayCollection();
        
     }
 
@@ -96,6 +113,55 @@ class Customer extends User
         $this->lastVisitedAt = $lastVisitedAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getCustomer() === $this) {
+                $address->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setPrimaryAddress(Address $newPrimaryAddress): void
+    {
+        foreach ($this->addresses as $address) {
+            // Désactive l'ancienne adresse principale
+            $address->setIsPrimary(false); 
+        }
+        $newPrimaryAddress->setIsPrimary(true);
+    }
+
+    public function getPrimaryAddress(): ?Address
+    {
+        foreach ($this->addresses as $address) {
+            if ($address->isPrimary()) {
+                return $address;
+            }
+        }
+        return null;
     }
 
    

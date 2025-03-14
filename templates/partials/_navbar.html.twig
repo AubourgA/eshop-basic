@@ -6,7 +6,25 @@
                     <li><a href="{{ path('app_catalog')}}" class="text-primary100 hover:text-pink-600">Produits</a></li>
                     <li><a href="#" class="text-primary100 hover:text-pink-600">À propos</a></li>
                     <li><a href="#" class="text-primary100 hover:text-pink-600">Contact</a></li>
-               
+               </ul>
+                <ul class="flex space-x-6">
+                    {% if is_granted('ROLE_CUSTOMER') %}
+                    <li>
+                      <a href="{{ path('app_customer_dashboard') }}" class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D81b60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round">
+                            <circle cx="12" cy="8" r="5"/>
+                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                        </svg>
+                        <!-- Check icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle absolute top-0 right-0 z-10">
+                            <path d="M9 11l3 3L22 4"/>
+                        
+                        </svg>
+                        </a>
+                    </li>
+                    {% endif %}
+
+
                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                      <li>
                         <a href="{{ path('app_logout') }}" class="text-pink-600">
@@ -23,6 +41,8 @@
                         </a>
                     </li>
                     {% endif %}
+
+
                 
                     <li class="relative">
                         <a href="{{ path('app_cart') }}" class="relative">

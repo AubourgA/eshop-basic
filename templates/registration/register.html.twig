@@ -23,7 +23,9 @@
                         </span>
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'pl-8 w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
                     </div>
-                    {{ form_errors(registrationForm.email) }}
+                    <div class="text-red-600 text-sm mt-1">
+                      {{ form_errors(registrationForm.email) }}
+                    </div>
                 </div>
 
                     <div class="mb-4">
@@ -34,25 +36,33 @@
                         </span>
                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'pl-8 w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
                     </div>
-                    {{ form_errors(registrationForm.plainPassword) }}
+                    <div class="text-red-600 text-sm mt-1">
+                      {{ form_errors(registrationForm.plainPassword) }}
+                    </div>
                 </div>
                 
                 <div class="mb-4">
                     {{ form_label(registrationForm.firstname, 'Prénom', {'label_attr': {'class': 'block text-gray-700'}}) }}
                     {{ form_widget(registrationForm.firstname, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
-                    {{ form_errors(registrationForm.firstname) }}
+                    <div class="text-red-600 text-sm mt-1">
+                        {{ form_errors(registrationForm.firstname) }}
+                    </div>
                 </div>
                 
                 <div class="mb-4">
                     {{ form_label(registrationForm.lastname, 'Nom', {'label_attr': {'class': 'block text-gray-700'}}) }}
                     {{ form_widget(registrationForm.lastname, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
-                    {{ form_errors(registrationForm.lastname) }}
+                    <div class="text-red-600 text-sm mt-1">
+                        {{ form_errors(registrationForm.lastname, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+                    </div>
                 </div>
                 
                 <div class="mb-4">
                     {{ form_label(registrationForm.phone, 'Téléphone', {'label_attr': {'class': 'block text-gray-700'}}) }}
                     {{ form_widget(registrationForm.phone, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
-                    {{ form_errors(registrationForm.phone) }}
+                    <div class="text-red-600 text-sm mt-1">
+                             {{ form_errors(registrationForm.phone) }}
+                    </div>
                 </div>
                 
       
