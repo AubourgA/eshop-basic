@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,9 +40,16 @@ class Product
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    /**
+     * @var Collection<int, ItemOrder>
+     */
+    #[ORM\OneToMany(targetEntity: ItemOrder::class, mappedBy: 'product')]
+    private Collection $itemOrders;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->itemOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +125,36 @@ class Product
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemOrder>
+     */
+    public function getItemOrders(): Collection
+    {
+        return $this->itemOrders;
+    }
+
+    public function addItemOrder(ItemOrder $itemOrder): static
+    {
+        if (!$this->itemOrders->contains($itemOrder)) {
+            $this->itemOrders->add($itemOrder);
+            $itemOrder->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemOrder(ItemOrder $itemOrder): static
+    {
+        if ($this->itemOrders->removeElement($itemOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($itemOrder->getProduct() === $this) {
+                $itemOrder->setProduct(null);
+            }
+        }
 
         return $this;
     }

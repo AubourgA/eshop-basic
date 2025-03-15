@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductController extends AbstractController
 {
 
-    #[Route('/list', name: '_list')]
+    #[Route('/list', name: '_list', methods: ['GET'], priority:1)]
     public function index(ProductRepository $productRepo): Response
     {
      
@@ -25,9 +25,17 @@ class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: '_detail', methods: ['GET'], priority:-1)]
+    public function detail(Product $product, ProductRepository $productRepo): Response
+    {
+
+        return $this->render('product/detail.html.twig', [
+            'product' => $productRepo->find($product->getId()),
+        ]);
+    }
   
 
-    #[Route('/create', name: '_create')]
+    #[Route('/create', name: '_create', methods:['GET'], priority:2)]
     public function create(Request $request,
                            FileUploaderService $fileUploader,
                            EntityManagerInterface $entityManager): Response
@@ -55,14 +63,7 @@ class ProductController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: '_show', methods: ['GET'])]
-    public function show(Product $product, ProductRepository $productRepo): Response
-    {
-
-        return $this->render('product/show.html.twig', [
-            'product' => $productRepo->find($product->getId()),
-        ]);
-    }
+ 
   
 
 }
