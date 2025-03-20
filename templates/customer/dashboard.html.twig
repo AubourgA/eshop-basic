@@ -12,45 +12,47 @@
         <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 mb-8">
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <span class="text-blue-500 text-4xl">🛒</span>
-                <h2 class="text-lg font-semibold mt-2">Commandes en cours : 1</h2>
+                <h2 class="text-lg font-semibold mt-2">Commandes en cours : {{ orders|filter(order => order.status == 'en cours')|length }}</h2>
             </div>
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <span class="text-green-500 text-4xl">💳</span>
-                <h2 class="text-lg font-semibold mt-2">Paiement en attente : 0 </h2>
+                <h2 class="text-lg font-semibold mt-2">Paiement en attente : {{ orders|filter(order => order.paymentStatus == 'en attente')|length }} </h2>
             </div>
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <span class="text-gray-500 text-4xl">📍</span>
-                <h2 class="text-lg font-semibold mt-2">Adresse de Livraison : Plourivo</h2>
+                <h2 class="text-lg font-semibold mt-2">Adresse de Livraison : {{ address.city }}</h2>
             </div>
         </section>
         
         <!-- Aperçu des commandes -->
         <section class="bg-white p-6 shadow-md rounded-lg">
             <h2 class="text-xl font-semibold mb-4">Historique des commandes</h2>
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="border-b">
-                        <th class="p-2">#</th>
-                        <th class="p-2">Date</th>
-                        <th class="p-2">Montant</th>
-                        <th class="p-2">Statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b">
-                        <td class="p-2">1234</td>
-                        <td class="p-2">12/03/2025</td>
-                        <td class="p-2">49,99€</td>
-                        <td class="p-2 text-blue-500">En cours</td>
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">1233</td>
-                        <td class="p-2">10/03/2025</td>
-                        <td class="p-2">19,99€</td>
-                        <td class="p-2 text-green-500">Livré</td>
-                    </tr>
-                </tbody>
-            </table>
+       <table class="w-full text-left border-collapse">
+    <thead>
+        <tr class="border-b">
+            <th class="p-2">#</th>
+            <th class="p-2">Date</th>
+               <th class="p-2">Référence</th>
+            <th class="p-2">Montant</th>
+            <th class="p-2">Statut</th>
+            <th class="p-2">Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr class="border-b">
+                <td class="p-2">{{ order.id }}</td>
+                <td class="p-2">{{ order.createdAt|date('d/m/Y') }}</td>
+                <td class="p-2">{{ order.reference }}</td>
+                <td class="p-2">{{ order.totalAmount|number_format(2, ',', ' ') }}€</td>
+                <td class="p-2 {% if order.status == 'Livré' %}text-green-500{% else %}text-blue-500{% endif %}">
+                    {{ order.status }}
+                </td>
+                <td class="p-2">{{ order.paymentStatus }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
         </section>
     
         </div>

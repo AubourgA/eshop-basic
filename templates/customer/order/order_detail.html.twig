@@ -1,0 +1,53 @@
+{% extends 'layout/customer_layout.html.twig' %}
+
+{% block title %}Détail de la commande{% endblock %}
+
+{% block main %}
+
+<div class="max-w-6xl mx-auto my-4 p-6 bg-gray-100 rounded-lg">
+    <h1 class="text-2xl font-semibold mb-4 text-pink-600">Détail de la commande</h1>
+
+    <div class="grid grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-2">Adresse de Livraison</h3>
+                <p>{{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}, {{ order.shippingAddress.postalCode }}, {{ order.shippingAddress.country }}</p>
+                
+        </div>
+           <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-2">Adresse de Facturation</h3>
+                <p>{{ order.billingAddress.street }}, {{ order.billingAddress.city }}, {{ order.billingAddress.postalCode }}, {{ order.billingAddress.country }}</p>
+                
+        </div>
+        {# <div  class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mt-4 mb-2">Adresse de Livraison</h3>
+            <p>{{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}, {{ order.shippingAddress.postalCode }}, {{ order.shippingAddress.country }}</p>
+        </div> #}
+
+        <!-- Section Articles à droite -->
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mt-4">Articles :</h3>
+            <ul class="list-disc pl-6 mt-2">
+                {% for item in order.itemOrders %}
+                    <li class="mb-2">
+                        <p class="font-semibold">{{ item.product.designation }} - 
+                        {{ item.quantity }} x {{ item.unitPrice }}€</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Section Total à gauche -->
+        <div class="bg-white p-4 rounded-lg shadow">
+            <p class="text-lg font-semibold">Total : {{ order.totalAmount }}€</p>
+            <p class="text-sm text-gray-600">Statut : {{ order.status }}</p>
+            
+            <a href="#" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Payer maintenant 
+            </a>
+        </div>
+       
+
+    </div>
+</div>
+
+{% endblock %}

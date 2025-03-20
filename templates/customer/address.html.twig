@@ -29,7 +29,7 @@
                 </div>
                 <p class="text-gray-700">{{ address.city }}, {{ address.postalCode }}</p>
                 <p class="text-gray-500 text-sm">{{ address.country }}</p>
-                <p class="text-gray-500 text-sm">Type: {{ address.type }}</p>
+             
                 <div class="mt-4">
                     <input type="checkbox" id="default-{{ address.id }}" {% if address.isPrimary %}checked{% endif %} class="mr-2">
                     <label for="default-{{ address.id }}" class="text-gray-600 text-sm">Définir comme adresse principale</label>

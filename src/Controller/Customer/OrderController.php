@@ -3,7 +3,6 @@
 namespace App\Controller\Customer;
 
 use App\Entity\Order;
-use App\Entity\Customer;
 use App\Entity\ItemOrder;
 use App\Repository\AddressRepository;
 use App\Services\CartService;
@@ -70,10 +69,16 @@ final class OrderController extends AbstractController
         $em->flush();
 
  
-        return $this->redirectToRoute('app_details', ['id' => $order->getId()]); 
+        return $this->redirectToRoute('app_order_details', ['id' => $order->getId()]); 
 
     }
 
 
+    #[Route('/{id}', name: '_details', methods: ['GET','POST'])]  
+    public function orderDetails(Order $order): Response  
+    {
+                 return $this->render('customer/order/order_detail.html.twig', [      
+        'order' => $order,        ]);  
+    }
     
 }

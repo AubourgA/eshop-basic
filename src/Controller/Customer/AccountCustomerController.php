@@ -3,7 +3,9 @@
 namespace App\Controller\Customer;
 
 use App\Repository\AddressRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,10 +16,16 @@ use Symfony\Component\HttpFoundation\Request;
 final class AccountCustomerController extends AbstractController
 {
     #[Route('/dashboard', name: '_dashboard')]
-    public function index(): Response
+    public function index(ManagerRegistry $manger): Response
     {
+        $em = $manger->getManager();
+
+        $orders = $em->getRepository('App\Entity\Order')->findBy(['customer' => $this->getUser()],[ 'createdAt' => 'DESC']);
+        $address = $em->getRepository('App\Entity\Address')->findOneBy(['customer' => $this->getUser(),'type' => 'livraison', 'isPrimary' => true]);
         return $this->render('customer/dashboard.html.twig', [
-            'controller_name' => 'AccountCustomerController',
+           
+            'orders' => $orders,
+            'address' => $address
         ]);
     }
 
