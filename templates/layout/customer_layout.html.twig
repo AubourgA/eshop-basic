@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="h-screen ">
+
+       {% include 'partials/_navbar.html.twig' %}
+
+        <div class="container mx-auto px-6 py-4">
+        
+                <!-- Menu horizontal -->
+                <div class="bg-primary20 shadow-md w-full text-white">
+                            <div class="container mx-auto px-4 py-3">
+                                <div class="flex flex-col text-center md:flex-row md:justify-between md:items-center">
+                                    <p class="text-gray-700 md:text-left mb-2 md:mb-0">
+                                        Bonjour {{ app.user.firstname }}
+                                    </p>
+                                    <ul class="flex flex-col md:flex-row justify-center md:space-x-6">
+                                        <li><a href="#" class="text-gray-700 hover:text-blue-600 py-2 block">Mes Commandes</a></li>
+                                        <li><a href="{{ path('app_customer_address')}}" class="text-gray-700 hover:text-blue-600 py-2 block">Mes Adresses</a></li>
+                                        <li><a href="#" class="text-gray-700 hover:text-blue-600 py-2 block">Bon Réduction</a></li>
+                                        <li><a href="#" class="text-gray-700 hover:text-blue-600 py-2 block">Mon Profil</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                </div>
+    
+            <!-- Contenu principal -->
+            {% block main %}
+
+            {% endblock %}
+       
+
+
+        </div>
+
+    {% include 'partials/_footer.html.twig' %}
+
+</div>
+{% endblock %}

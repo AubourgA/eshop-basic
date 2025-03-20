@@ -35,11 +35,11 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stipePaymentID = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(inversedBy: 'billingOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $billingAddress = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(inversedBy: 'shippingOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $shippingAddress = null;
 
@@ -166,6 +166,10 @@ class Order
     public function useSameAddressForBillingAndShipping(): void
     {
         $this->shippingAddress = $this->billingAddress;
+    
+        if ($this->billingAddress !== null) {
+            $this->billingAddress->addShippingOrder($this);
+        }
     }
 
     public function getReference(): ?string

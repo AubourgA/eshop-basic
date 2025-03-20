@@ -1,17 +1,58 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/customer_layout.html.twig' %}
 
-{% block title %}Hello AccountCustomerController!{% endblock %}
+{% block title %}my dashboard{% endblock %}
 
-{% block body %}
-<div class="h-screen">
+{% block main %}
 
-    {% include 'partials/_navbar.html.twig' %}
+    
+    <!-- Contenu principal -->
+    <div class=" mx-auto py-6">
+        
+        <!-- Grille d'icônes -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 mb-8">
+            <div class="bg-white p-6 shadow-md rounded-lg text-center">
+                <span class="text-blue-500 text-4xl">🛒</span>
+                <h2 class="text-lg font-semibold mt-2">Commandes en cours : 1</h2>
+            </div>
+            <div class="bg-white p-6 shadow-md rounded-lg text-center">
+                <span class="text-green-500 text-4xl">💳</span>
+                <h2 class="text-lg font-semibold mt-2">Paiement en attente : 0 </h2>
+            </div>
+            <div class="bg-white p-6 shadow-md rounded-lg text-center">
+                <span class="text-gray-500 text-4xl">📍</span>
+                <h2 class="text-lg font-semibold mt-2">Adresse de Livraison : Plourivo</h2>
+            </div>
+        </section>
+        
+        <!-- Aperçu des commandes -->
+        <section class="bg-white p-6 shadow-md rounded-lg">
+            <h2 class="text-xl font-semibold mb-4">Historique des commandes</h2>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b">
+                        <th class="p-2">#</th>
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Montant</th>
+                        <th class="p-2">Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td class="p-2">1234</td>
+                        <td class="p-2">12/03/2025</td>
+                        <td class="p-2">49,99€</td>
+                        <td class="p-2 text-blue-500">En cours</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="p-2">1233</td>
+                        <td class="p-2">10/03/2025</td>
+                        <td class="p-2">19,99€</td>
+                        <td class="p-2 text-green-500">Livré</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    
+        </div>
 
-   
-
-
-
-    {% include 'partials/_footer.html.twig' %}
-
-</div>
 {% endblock %}

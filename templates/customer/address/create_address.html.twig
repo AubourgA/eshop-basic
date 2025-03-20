@@ -1,0 +1,53 @@
+{% extends 'layout/customer_layout.html.twig' %}
+
+{% block title %}New Address{% endblock %}
+
+{% block main %}
+
+<div class="container mx-auto px-6 py-4">
+    <h1 class="text-2xl font-semibold text-gray-900 mb-6"> Créer une adresse</h1>
+    
+    <div class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+        {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+        <div>
+            <label class="block text-gray-700 font-medium">Rue</label>
+            {{ form_widget(form.street, {'attr': {'class': 'w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-pink-500'}}) }}
+        </div>
+        
+        <div>
+            <label class="block text-gray-700 font-medium">Ville</label>
+            {{ form_widget(form.city, {'attr': {'class': 'w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-pink-500'}}) }}
+        </div>
+        
+        <div>
+            <label class="block text-gray-700 font-medium">Code Postal</label>
+            {{ form_widget(form.postalCode, {'attr': {'class': 'w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-pink-500'}}) }}
+        </div>
+        
+        <div>
+            <label class="block text-gray-700 font-medium">Pays</label>
+            {{ form_widget(form.country, {'attr': {'class': 'w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-pink-500'}}) }}
+        </div>
+        
+        <div>
+            <label class="block text-gray-700 font-medium">Type d'adresse</label>
+           
+            {{ form_widget(form.type, {'attr': {'class': 'w-full flex px-4 py-2 gap-4 '}}) }}
+        </div>
+        
+        <div class="flex items-center space-x-2">
+            {{ form_widget(form.isPrimary, {'attr': {'class': 'rounded text-pink-600 focus:ring-pink-500'}}) }}
+            <label class="text-gray-700">Définir comme adresse principale</label>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button type="submit" class="px-6 py-3 bg-pink-600 text-white rounded-md hover:bg-pink-700">{{ address is defined ? 'Mettre à jour' : 'Ajouter' }}</button>
+        </div>
+        
+        {{ form_end(form) }}
+    </div>
+</div>
+
+
+{% endblock %}

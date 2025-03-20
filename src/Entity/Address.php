@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-#[UniqueEntity(fields: ['user', 'isPrimary'], 
+#[UniqueEntity(fields: ['customer', 'isPrimary','type'], 
                 message: 'Un utilisateur ne peut avoir qu\'une seule adresse principale.')]
 class Address
 {
@@ -59,11 +59,19 @@ class Address
      * @var Collection<int, Order>
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'billingAddress')]
-    private Collection $orders;
+    private Collection $billingOrders;
+
+     /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'shippingAddress')]
+    private Collection $shippingOrders;
+
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->billingOrders = new ArrayCollection();
+        $this->shippingOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,33 +163,63 @@ class Address
         return $this;
     }
 
-    /**
-     * @return Collection<int, Order>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
+ /**
+ * @return Collection<int, Order>
+ */
+public function getBillingOrders(): Collection
+{
+    return $this->billingOrders;
+}
+
+/**
+ * @return Collection<int, Order>
+ */
+public function getShippingOrders(): Collection
+{
+    return $this->shippingOrders;
+}
+
+public function addBillingOrder(Order $order): static
+{
+    if (!$this->billingOrders->contains($order)) {
+        $this->billingOrders->add($order);
+        $order->setBillingAddress($this);
     }
 
-    public function addOrder(Order $order): static
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setBillingAddress($this);
+    return $this;
+}
+
+public function removeBillingOrder(Order $order): static
+{
+    if ($this->billingOrders->removeElement($order)) {
+        // set the owning side to null (unless already changed)
+        if ($order->getBillingAddress() === $this) {
+            $order->setBillingAddress(null);
         }
-
-        return $this;
     }
 
-    public function removeOrder(Order $order): static
-    {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getBillingAddress() === $this) {
-                $order->setBillingAddress(null);
-            }
+    return $this;
+}
+
+public function addShippingOrder(Order $order): static
+{
+    if (!$this->shippingOrders->contains($order)) {
+        $this->shippingOrders->add($order);
+        $order->setShippingAddress($this);
+    }
+
+    return $this;
+}
+
+public function removeShippingOrder(Order $order): static
+{
+    if ($this->shippingOrders->removeElement($order)) {
+        // set the owning side to null (unless already changed)
+        if ($order->getShippingAddress() === $this) {
+            $order->setShippingAddress(null);
         }
-
-        return $this;
     }
+
+    return $this;
+}
 }

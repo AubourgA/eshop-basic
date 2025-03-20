@@ -79,7 +79,10 @@
                         <span>Total</span>
                         <span class="text-pink-600">{{ cart|reduce((total, item) => total + (item.product.price * item.quantity), 0) }}€</span>
                      </div>
-                     <button class="w-full bg-pink-600 text-white py-2 mt-4 rounded">Passer la commande</button>
+                     <form action="{{ path('app_validate_cart')}}" method ="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('validate_cart') }}"> 
+                        <button type="submit" class="w-full bg-pink-600 text-white py-2 mt-4 rounded">Passer la commande</button>
+                     </form>
                      <a href="{{ path('app_catalog') }}" class="block text-center text-pink-600 mt-2">Continuer les achats</a>
                </div>
             </div>
