@@ -57,4 +57,15 @@ final class CartService
        
         $this->session->getSession()->set('cart', []);
     }
+
+    public function getTotal(): float
+    {
+        $total = 0;
+        $cart = $this->getCart();
+        foreach ($cart as $item) {
+            $total += $item['product']->getPrice() * $item['quantity'];
+        }
+
+        return $total;
+    }
 }

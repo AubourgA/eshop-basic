@@ -6,6 +6,7 @@ use App\Entity\Address;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,7 +27,9 @@ class AddressType extends AbstractType
                 'expanded' => true,  // Affiche sous forme de boutons radio
                 'multiple' => false, // Un seul choix possible
             ])
-            ->add('isPrimary')
+            ->add('isPrimary', CheckboxType::class, [
+                'required' => false,
+            ])
           
         ;
     }

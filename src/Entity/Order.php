@@ -52,7 +52,9 @@ class Order
     /**
      * @var Collection<int, ItemOrder>
      */
-    #[ORM\OneToMany(targetEntity: ItemOrder::class, mappedBy: 'orderNum')]
+    #[ORM\OneToMany(targetEntity: ItemOrder::class, 
+                    mappedBy: 'orderNum', 
+                    cascade: ['persist'])]
     private Collection $itemOrders;
 
     public function __construct()
