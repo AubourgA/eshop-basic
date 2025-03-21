@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     upload_dir: '%kernel.project_dir%/public/uploads'
+    stripe_secret_key: '%env(STRIPE_SECRET_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -26,4 +27,8 @@ services:
     App\Services\FileUploaderService:
         arguments:
             $uploadDir: '%upload_dir%'
+
+    App\Services\StripeService:
+        arguments:
+            $stripeSecretKey: '%stripe_secret_key%'
 

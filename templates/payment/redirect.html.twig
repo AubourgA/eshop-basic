@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redirection vers une session STRIPE{% endblock %}
+
+{% block body %}
+    <p>Vous allez etre rediriger vers la page de paiment...</p>
+    <script>
+        window.location.href = "{{ checkoutUrl }}";
+    </script>
+{% endblock %}
