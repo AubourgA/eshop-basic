@@ -4,12 +4,21 @@
 
 {% block main %}
 
+
+
 <div class="container mx-auto px-6 py-4">
     <h1 class="text-2xl font-semibold text-gray-900 mb-6"> Créer une adresse</h1>
     
     <div class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
         {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
+            {% for label, messages in app.flashes(['success', 'warning', 'error']) %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
         <div>
             <label class="block text-gray-700 font-medium">Rue</label>
             {{ form_widget(form.street, {'attr': {'class': 'w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-pink-500'}}) }}
@@ -36,9 +45,14 @@
             {{ form_widget(form.type, {'attr': {'class': 'w-full flex px-4 py-2 gap-4 '}}) }}
         </div>
         
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 border-t-2 pt-2">
             {{ form_widget(form.isPrimary, {'attr': {'class': 'rounded text-pink-600 focus:ring-pink-500'}}) }}
             <label class="text-gray-700">Définir comme adresse principale</label>
+        </div>
+
+          <div class="flex items-center space-x-2">
+            {{ form_widget(form.useAsBilling, {'attr': {'class': 'rounded text-pink-600 focus:ring-pink-500'}}) }}
+            <label class="text-gray-700">Utiliser aussi comme adresse de facturation</label>
         </div>
         
         <div class="text-center mt-4">

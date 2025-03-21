@@ -27,6 +27,21 @@ final class AddressController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $address->setCustomer($this->getUser());
             $em->persist($address);
+
+            // Si l'utilisateur veut la même adresse pour la facturation
+            if ($form->get('useAsBilling')->getData() && $address->getType() === 'livraison') {
+                $billingAddress = new Address();
+                $billingAddress->setStreet($address->getStreet());
+                $billingAddress->setCity($address->getCity());
+                $billingAddress->setPostalCode($address->getPostalCode());
+                $billingAddress->setCountry($address->getCountry());
+                $billingAddress->setCustomer($this->getUser());
+                $billingAddress->setType('facturation'); 
+                $billingAddress->setIsPrimary($address->isPrimary()); 
+
+                $em->persist($billingAddress);
+            }
+
             $em->flush();
 
             return $this->redirectToRoute('app_customer_address');

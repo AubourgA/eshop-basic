@@ -4,6 +4,14 @@
 
 {% block main %}
 
+    <!-- Flash messages -->
+        {% for label, messages in app.flashes(['success', 'warning', 'error']) %}
+            {% for message in messages %}
+                <div class="flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
     
     <!-- Contenu principal -->
     <div class=" mx-auto py-6">
@@ -20,7 +28,7 @@
             </div>
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <span class="text-gray-500 text-4xl">📍</span>
-                <h2 class="text-lg font-semibold mt-2">Adresse de Livraison : {{ address.city }}</h2>
+                <h2 class="text-lg font-semibold mt-2">Adresse de Livraison : {{ address.city|default('⚠️ A Renseigner') }}</h2>
             </div>
         </section>
         
@@ -39,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for order in orders %}
+        {% for order in orders|slice(0,5) %}
             <tr class="border-b">
                 <td class="p-2">{{ order.id }}</td>
                 <td class="p-2">{{ order.createdAt|date('d/m/Y') }}</td>

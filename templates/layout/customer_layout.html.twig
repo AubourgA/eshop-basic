@@ -9,6 +9,7 @@
 
         <div class="container mx-auto px-6 py-4">
         
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <!-- Menu horizontal -->
                 <div class="bg-primary20 shadow-md w-full text-white">
                             <div class="container mx-auto px-4 py-3">
@@ -25,6 +26,7 @@
                                 </div>
                             </div>
                 </div>
+            {% endif %}
     
             <!-- Contenu principal -->
             {% block main %}

@@ -30,6 +30,11 @@ class AddressType extends AbstractType
             ->add('isPrimary', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('useAsBilling', CheckboxType::class, [  
+                'mapped' => false,  
+                'required' => false,
+                'label' => "Utiliser aussi comme adresse de facturation"
+            ])
           
         ;
     }
