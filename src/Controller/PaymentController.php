@@ -42,7 +42,8 @@ final class PaymentController extends AbstractController
         ]);
     }
 
-    #[Route('/success', name: '_success')]
+    #[Route('/success', name: '_success', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function success(Request $request): Response
     {
      
@@ -53,15 +54,27 @@ final class PaymentController extends AbstractController
             throw $this->createNotFoundException('Session ID manquant.');
         }
     
-        $session = Session::retrieve($sessionId);
+        try {
+            $session = Session::retrieve($sessionId);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Impossible de vérifier la session Stripe.');
+            return $this->redirectToRoute('app_customer_dashboard');
+        }
     
         if ($session->payment_status !== 'paid') {
             throw $this->createNotFoundException('Le paiement n’a pas été validé.');
         }
     
+        $this->cartService->deleteCart();
+
         // Logique post-paiement (enregistrement de commande, etc.)
         return $this->render('payment/success.html.twig');
 
+    }
 
+    #[Route('/cancel', name: '_cancel', methods: ['GET'])]
+    public function cancel(): Response
+    {
+        return $this->render('payment/cancel.html.twig');
     }
 }
