@@ -5,6 +5,7 @@ namespace App\Factory;
 use App\Entity\Order;
 use App\Entity\ItemOrder;
 use App\Entity\User;
+use App\Enum\PaymentStatus;
 use App\Exception\MissingShippingAddressException;
 use App\Repository\AddressRepository;
 use App\Services\CartService;
@@ -50,7 +51,7 @@ class OrderFactory
         $order->setShippingAddress($shippingAddress);
         $order->setBillingAddress($billingAddress);
         $order->setReference(uniqid());
-        $order->setPaymentStatus('en attente');
+        $order->setPaymentStatus(PaymentStatus::PENDING->value);
 
         // Ajouter les produits
         foreach ($cartSession as $item) {

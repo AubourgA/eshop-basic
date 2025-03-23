@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 class Order
@@ -46,7 +47,7 @@ class Order
     #[ORM\Column(length: 50)]
     private ?string $reference = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(type: 'string', length: 20)]
     private ?string $paymentStatus = null;
 
     /**
@@ -98,11 +99,18 @@ class Order
         return $this->updatedAt;
     }
 
+    
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt =new \DateTimeImmutable('now');
     }
 
     public function getStatus(): ?string
@@ -191,10 +199,9 @@ class Order
         return $this->paymentStatus;
     }
 
-    public function setPaymentStatus(string $paymentStatus): static
+    public function setPaymentStatus(?string $paymentStatus): static
     {
         $this->paymentStatus = $paymentStatus;
-
         return $this;
     }
 

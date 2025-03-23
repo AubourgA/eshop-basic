@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\PaymentStatus;
 use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,12 +47,13 @@ class StripeWebhookController extends AbstractController
             $session = $event->data->object;
          
             $orderId = $session->metadata->order_id ?? null; // Récupérer l'ID de la commande
-            
+            $stripePaymentId = $session->payment_intent;
+
             if ($orderId) {
                 $order = $orderRepository->find($orderId);
                 if ($order) {
-                    
-                    $order->setPaymentStatus('payé'); // Met à jour le statut
+                    $order->setStipePaymentID($stripePaymentId); //permet de recuperer l'id du payment pour un refund
+                    $order->setPaymentStatus(PaymentStatus::PAYED->value); // Met à jour le statut
                     $entityManager->persist($order);
                     $entityManager->flush();
                 }
