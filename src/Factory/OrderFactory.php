@@ -50,7 +50,7 @@ class OrderFactory
         $order->setTotalAmount($this->cartService->getTotal());
         $order->setShippingAddress($shippingAddress);
         $order->setBillingAddress($billingAddress);
-        $order->setReference(uniqid());
+        $order->setReference('PEND-'.uniqid());
         $order->setPaymentStatus(PaymentStatus::PENDING->value);
 
         // Ajouter les produits

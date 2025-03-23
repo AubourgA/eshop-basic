@@ -54,6 +54,7 @@ class StripeWebhookController extends AbstractController
                 if ($order) {
                     $order->setStipePaymentID($stripePaymentId); //permet de recuperer l'id du payment pour un refund
                     $order->setPaymentStatus(PaymentStatus::PAYED->value); // Met à jour le statut
+                    $order->setReference(sprintf('ORD-%s-%s',date('Ymd-His'),strtoupper(bin2hex(random_bytes(3))) ));
                     $entityManager->persist($order);
                     $entityManager->flush();
                 }

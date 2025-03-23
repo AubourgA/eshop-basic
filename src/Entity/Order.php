@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -45,6 +47,7 @@ class Order
     private ?Address $shippingAddress = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Unique]
     private ?string $reference = null;
 
     #[ORM\Column(type: 'string', length: 20)]
