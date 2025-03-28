@@ -9,30 +9,81 @@
         {{ include('partials/_navbar.html.twig') }}
 
         <!-- Header -->
-        <header class="bg-pink-300 text-white text-center py-20 bg-[url('/images/headerPage.png')]">
-            <h1 class="text-4xl font-bold text-gray-900">Équipez votre cuisine avec style</h1>
+        <header class="container mx-auto bg-pink-300 text-white text-center py-20 bg-[url('/images/headerPage.png')]">
+            {# <h1 class="text-4xl font-bold text-gray-900">Équipez votre cuisine avec style</h1>
             <p class="mt-4 text-lg">Des ustensiles de qualité pour toutes vos préparations</p>
-            <a href="{{ path('app_catalog')}}" class="mt-6 inline-block bg-white text-primary100 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-pink-100">Découvrir la collection</a>
+            <a href="{{ path('app_catalog')}}" class="mt-6 inline-block bg-white text-primary100 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-pink-100">Découvrir la collection</a> #}
+             <h1 class="text-4xl font-bold">Découvrez notre sélection d'ustensiles de cuisine</h1>
+            <p class="mt-4 text-lg">Bienvenue dans notre e-shop, votre destination incontournable pour tous vos besoins culinaires.</p>
+            <div class="mt-6">
+                <a href="#" class="bg-white text-pink-500 px-6 py-2 rounded-lg font-semibold">Explorer</a>
+                <a href="#" class="bg-pink-700 text-white px-6 py-2 rounded-lg font-semibold ml-4">S'inscrire</a>
+            </div>
+       
         </header>
 
         <!-- Main Section -->
-        <main class="container mx-auto px-6 py-12">
-            <h2 class="text-3xl font-semibold text-primary100 text-center">Nos Nouveautés</h2>
-            <div class="grid md:grid-cols-3 gap-8 mt-8">
-                <!-- Produit 1 -->
-                {% for product in lastProducts %}
-                <article class="bg-white p-6 shadow-lg rounded-lg text-center">
-                    <img src="{{ asset('uploads/' ~ product.imageFileName) }}" alt="{{ product.imageFilename}}" class="w-full h-48 object-cover rounded-lg">
-                    <h3 class="text-xl font-semibold text-pink-800 mt-4">{{ product.designation}}</h3>
-                    <p class="text-gray-600 mt-2">{{ product.description}}</p>
-                    <button class="mt-4 bg-primary80 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</button>
-                </article>
-                {% endfor %}
-      
+        <main class="container mx-auto py-12">
+
+            <section class="px-4 py-10 md:px-0">
+   
+                 <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                        <!-- Texte principal -->
+                        <div class="md:flex-[0.4]">
+                            <p class="text-sm font-bold text-gray-700">Nos Nouveautés</p>
+                            <h2 class="text-3xl md:text-4xl font-semibold text-primary100">
+                                Découvrez notre sélection d'ustensiles de cuisine
+                            </h2>
+                        </div>
+                        <!-- Paragraphe -->
+                        <p class="md:flex-[0.6] px-4 md:px-10 text-gray-700 text-sm md:text-base">
+                            Notre boutique en ligne vous propose une vaste gamme d'ustensiles de cuisine de haute qualité. 
+                            Que vous soyez un chef amateur ou un professionnel, vous trouverez tout ce dont vous avez besoin pour 
+                            préparer vos plats préférés. Explorez nos catégories et transformez votre expérience culinaire.
+                        </p>
+                    </div>
+                <!-- Grid des produits -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+                    {% for product in lastProducts %}
+                    <article class="bg-white p-6 shadow-lg rounded-lg text-center">
+                        <!-- Image -->
+                        <img src="{{ asset('uploads/' ~ product.imageFileName) }}" 
+                            alt="{{ product.imageFilename }}" 
+                            class="w-full h-auto max-h-48 object-cover rounded-lg aspect-[4/3]">
+                        
+                        <!-- Titre -->
+                        <h3 class="text-lg md:text-xl font-semibold text-pink-800 mt-4">
+                            {{ product.designation }}
+                        </h3>
+                        
+                        <!-- Description -->
+                        <p class="text-gray-600 mt-2 text-sm md:text-base">
+                            {{ product.description }}
+                        </p>
+                        
+                        <!-- Bouton -->
+                        <button class="mt-4 bg-primary80 text-white px-4 py-2 rounded-full hover:bg-pink-600 transition-all">
+                            Acheter
+                        </button>
+                    </article>
+                    {% endfor %}
+                </div>
+        </section>
+
+        <section  class="my-10 bg-primary20 py-16 text-center text-primary100">
+            <h2 class="text-3xl font-bold">Rejoignez notre communauté gourmande</h2>
+            <p class="mt-4">Abonnez-vous à notre newsletter pour des recettes exclusives et des promotions spéciales.</p>
+            <div class="mt-6">
+                <a href="#" class="bg-white text-pink-500 px-6 py-2 rounded-lg font-semibold">S'inscrire</a>
+                <a href="#" class="bg-pink-700 text-white px-6 py-2 rounded-lg font-semibold ml-4">Découvrir</a>
             </div>
-        </main>
+        </section class="container mx-auto py-16 px-6">
+
+      
+
+    </main>
 
       
         {{ include('partials/_footer.html.twig') }}
-    </div>
+ </div>
 {% endblock %}
