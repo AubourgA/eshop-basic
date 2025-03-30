@@ -9,3 +9,9 @@
 .flash-success {
   @apply bg-green-200 text-green-700 p-2 my-2;
 }
+
+.flash-warning {
+  @apply bg-yellow-200 text-yellow-700 p-2 my-2;
+}
+
+

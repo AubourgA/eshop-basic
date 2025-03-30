@@ -4,9 +4,9 @@ namespace App\Enum;
 
 enum PaymentStatus: string
 {
-    case PAYED = 'payé';
-    case PENDING = 'en attente';
-    case FAILED = 'échec';
+    case PENDING = 'En attente';
+    case PAYED = 'Payé';
+    case FAILED = 'Echec';
 
    
 }

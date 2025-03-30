@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\ShippingMethod;
 use App\Repository\OrderRepository;
+use App\Repository\ShippingMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,15 +29,17 @@ final class PaymentController extends AbstractController
 
     #[Route('/checkout', name: '_checkout')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function index(OrderRepository $orderRepo): Response
+    public function index(OrderRepository $orderRepo, ShippingMethodRepository $shippingMethod): Response
     {
        
         $cart = $this->cartService->getCart();
-
-        $orderID = $orderRepo->findOneBy([], ['id' => 'desc']);
+        $order = $orderRepo->findOneBy([], ['id' => 'desc']);
+        $shipping = $shippingMethod->findOneBy(['id'=> $order->getShippingMethod()]);
 
         $checkoutSession = $this->stripeService
-                                ->createCheckoutSession($orderID->getId(), $cart,$this->getUser()->getEmail());
+                                ->createCheckoutSession($order->getId(), 
+                                                        $cart,$this->getUser()->getEmail(),
+                                                        $shipping);
 
         return $this->render('payment/redirect.html.twig', [
             'checkoutUrl' => $checkoutSession->url,
@@ -67,14 +71,13 @@ final class PaymentController extends AbstractController
     
         $this->cartService->deleteCart();
 
-        // Logique post-paiement (enregistrement de commande, etc.)
         return $this->render('payment/success.html.twig');
-
     }
 
     #[Route('/cancel', name: '_cancel', methods: ['GET'])]
     public function cancel(): Response
     {
+        $this->cartService->deleteCart();
         return $this->render('payment/cancel.html.twig');
     }
 }

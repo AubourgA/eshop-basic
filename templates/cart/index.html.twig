@@ -67,8 +67,8 @@
                         <span class="text-green-600">0 €</span>
                      </div>
                      <div class="flex justify-between border-b py-2">
-                        <span>Livraison</span>
-                        <span>0.00€</span>
+                        <span>Livraison (Colissimo par défaut)</span>
+                        <span>{{ shippingMethod.price}} €</span>
                      </div>
                      <div class="flex justify-between border-b py-2">
                         <span>Taxe</span>
@@ -76,7 +76,7 @@
                      </div>
                      <div class="flex justify-between font-semibold text-lg mt-4">
                         <span>Total</span>
-                        <span class="text-pink-600">{{ cart|reduce((total, item) => total + (item.product.price * item.quantity), 0) }}€</span>
+                        <span class="text-pink-600">{{ cart|reduce((total, item) => total + (item.product.price * item.quantity), 0) + shippingMethod.price }}€</span>
                      </div>
 
                      {# item action #}

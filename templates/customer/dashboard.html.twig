@@ -38,18 +38,17 @@
        <table class="w-full text-left border-collapse">
     <thead>
         <tr class="border-b">
-            <th class="p-2">#</th>
             <th class="p-2">Date</th>
                <th class="p-2">Référence</th>
             <th class="p-2">Montant</th>
             <th class="p-2">Statut</th>
             <th class="p-2">Payment</th>
+            <th class="p-2">Action</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders|slice(0,5) %}
             <tr class="border-b">
-                <td class="p-2">{{ order.id }}</td>
                 <td class="p-2">{{ order.createdAt|date('d/m/Y') }}</td>
                 <td class="p-2">{{ order.reference }}</td>
                 <td class="p-2">{{ order.totalAmount|number_format(2, ',', ' ') }}€</td>
@@ -57,6 +56,11 @@
                     {{ order.status }}
                 </td>
                 <td class="p-2">{{ order.paymentStatus }}</td>
+                 <td class="p-2">
+                    {# {% if order.paymentStatus is same as('En attente')%}
+                    <a href="{{ path('app_order_details', {'id' : order.id })}}">ANNULER</a>
+                    {% endif %} #}
+                 </td>
             </tr>
         {% endfor %}
     </tbody>

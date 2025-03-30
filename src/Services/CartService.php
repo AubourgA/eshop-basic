@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Entity\ShippingMethod;
 use App\Repository\ProductRepository;
+use App\Repository\ShippingMethodRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CartService
@@ -10,7 +12,8 @@ final class CartService
     
 
     public function __construct(private RequestStack $session,
-                                private ProductRepository $productRepository)
+                                private ProductRepository $productRepository,
+                                private ShippingMethodRepository $shippingMethodRespo)
     {
     }
 
@@ -49,6 +52,8 @@ final class CartService
                 'quantity' => $quantity
             ];
         }
+
+
         return $cartWithData;
     }
 
@@ -68,4 +73,10 @@ final class CartService
 
         return $total;
     }
+
+    public function getDefaultShippingMethod(): ?ShippingMethod
+    {
+        return $this->shippingMethodRespo->findOneBy(['name'=> 'Colissimo']); 
+    }
+
 }

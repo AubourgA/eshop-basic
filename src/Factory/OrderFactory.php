@@ -5,9 +5,11 @@ namespace App\Factory;
 use App\Entity\Order;
 use App\Entity\ItemOrder;
 use App\Entity\User;
+use App\Enum\OrderStatus;
 use App\Enum\PaymentStatus;
 use App\Exception\MissingShippingAddressException;
 use App\Repository\AddressRepository;
+use App\Repository\ShippingMethodRepository;
 use App\Services\CartService;
 
 
@@ -15,6 +17,7 @@ class OrderFactory
 {
     public function __construct(
         private AddressRepository $addressRepo,
+        private ShippingMethodRepository $shippingMethodRepository,
         private CartService $cartService
     ) {}
 
@@ -43,13 +46,17 @@ class OrderFactory
           throw new MissingShippingAddressException("Vous devez renseigner une adresse de livraison"); 
         }
 
+        //Recuperer la methode de livraion
+        $shippingMethod = $this->shippingMethodRepository->findOneBy(['name'=>'Colissimo']);
+
         // Création de la commande
         $order = new Order();
         $order->setCustomer($user);
-        $order->setStatus('en cours');
+        $order->setStatus(OrderStatus::IN_PROGRESS->value);
         $order->setTotalAmount($this->cartService->getTotal());
         $order->setShippingAddress($shippingAddress);
         $order->setBillingAddress($billingAddress);
+        $order->setShippingMethod($shippingMethod);
         $order->setReference('PEND-'.uniqid());
         $order->setPaymentStatus(PaymentStatus::PENDING->value);
 

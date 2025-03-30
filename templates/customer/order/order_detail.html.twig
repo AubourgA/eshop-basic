@@ -8,6 +8,11 @@
     <h1 class="text-2xl font-semibold mb-4 text-pink-600">Détail de la commande</h1>
 
     <div class="grid grid-cols-2 gap-6">
+
+        <!-- ADRESSES-->
+        <div class="col-span-2">
+            <p>Adresses</p>
+        </div>
         <div class="bg-white p-4 rounded-lg shadow">
                 <h3 class="text-xl font-semibold mb-2">Adresse de Livraison</h3>
                 <p>{{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}, {{ order.shippingAddress.postalCode }}, {{ order.shippingAddress.country }}</p>
@@ -18,13 +23,13 @@
                 <p>{{ order.billingAddress.street }}, {{ order.billingAddress.city }}, {{ order.billingAddress.postalCode }}, {{ order.billingAddress.country }}</p>
                 
         </div>
-        {# <div  class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-xl font-semibold mt-4 mb-2">Adresse de Livraison</h3>
-            <p>{{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}, {{ order.shippingAddress.postalCode }}, {{ order.shippingAddress.country }}</p>
-        </div> #}
+    
 
-        <!-- Section Articles à droite -->
-        <div class="bg-white p-4 rounded-lg shadow">
+       <!-- ARTILCES-->
+        <div>
+            <p class="col-span-2">Ma Liste d'artile(s)</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow col-span-2">
             <h3 class="text-xl font-semibold mt-4">Articles :</h3>
             <ul class="list-disc pl-6 mt-2">
                 {% for item in order.itemOrders %}
@@ -36,12 +41,70 @@
             </ul>
         </div>
 
-        <!-- Section Total à gauche -->
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-lg font-semibold">Total : {{ order.totalAmount }}€</p>
-            <p class="text-sm text-gray-600">Statut : {{ order.status }}</p>
+
+
+        <!-- LIVRAISON -->
+        <div class="col-span-2">
+            <p >Livraison :</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow " data-controller="shipping" data-order-id="{{ order.id }}">
+            <h3 class="text-xl font-semibold mt-4 mb-2">Choix de Livraison :</h3>
+
+          
+
+
+
+              <form id="shipping-form" >
+                <div class="space-y-3" >
+                    {% for method in shippingMethods %}
+                            <input type="radio" name="shippingMethod" value="{{ method.id }}" 
+                                class=" hidden"
+                                 data-action="change->shipping#update"
+                                 id="shipping-{{ method.id}}"
+                                 />
+                               
+                        <label  for="shipping-{{ method.id}}"
+                                class="flex justify-between items-center  space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-100 transition
+                        ">
+                               
+
+                            <!-- Icône selon la méthode de livraison -->
+                            <div class="text-blue-600">
+                                {% if method.name == 'Colissimo' %}
+                                    <img class="w-[72px]" src="{{ asset('images/Colissimo.png')}}" alt="colissimo">
+                                {% elseif method.name == 'UPS' %}
+                                <img class="w-[72px]"  src="{{ asset('images/UPS.png')}}" alt="ups">
+                                {% else %}
+                                     <img class="w-[72px]"  src="{{ asset('images/mrlogo.png')}}" alt="mondialrelay">
+                                {% endif %}
+                            </div>
+
+                            <!-- Texte et prix -->
+                            <div class="text-xs text-gray-700 font-medium">
+                                <span> Delais : {{ method.deliveryTime}} Heures</span>
+                                <span>  Tarif : {{ method.price }}€</span>
+                            </div>
+                             
+                            
+                        </label>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+
+
+        <!-- TOTAL -->
+        <div class="bg-white p-4 rounded-lg shadow ">
+            <h2 class="text-lg font-bold md:text-2xl">Résumé de la commande</h2>
+            <p class="text-xs mt-4">Référence PRE-COMMANDE  : </p>
             
-            <a href="{{ path('app_payment_checkout') }}" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <p class="text-xs my-1">{{ order.reference}}</p>
+            
+            <p class="text-xl my-2 font-semibold">Total :  <span id="order-total">{{ order.totalAmount }}€</span></p>
+              
+           
+            
+            <a href="{{ path('app_payment_checkout') }}" class="text-sm mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 Payer maintenant 
             </a>
         </div>

@@ -61,6 +61,10 @@ class Order
                     cascade: ['persist'])]
     private Collection $itemOrders;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ShippingMethod $shippingMethod = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -237,4 +241,31 @@ class Order
 
         return $this;
     }
+
+    public function getShippingMethod(): ?ShippingMethod
+    {
+        return $this->shippingMethod;
+    }
+
+    public function setShippingMethod(?ShippingMethod $shippingMethod): static
+    {
+        $this->shippingMethod = $shippingMethod;
+
+        return $this;
+    }
+
+    public function calculateTotal(): float
+{
+    $total = 0;
+    
+    foreach ($this->getItemOrders() as $item) {
+        $total += $item->getQuantity() * $item->getUnitPrice();
+    }
+
+    if ($this->getShippingMethod()) {
+        $total += $this->getShippingMethod()->getPrice();
+    }
+
+    return $total;
+}
 }

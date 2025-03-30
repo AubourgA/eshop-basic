@@ -15,7 +15,7 @@ class StripeService
        
     }
 
-    public function createCheckoutSession($id, $cartItems, $customerEmail)
+    public function createCheckoutSession($id, $cartItems, $customerEmail, $shipping)
     {
 
        
@@ -34,7 +34,17 @@ class StripeService
             ];
         }
       
-        
+        $lineItems[] = [
+            'price_data' => [
+                'currency' => 'eur',
+                'product_data' => [
+                    'name' => $shipping->getName(),  
+                ],
+                'unit_amount' => $shipping->getPrice() * 100,  
+            ],
+            'quantity' => 1,  
+        ];
+
         // Créer la session Stripe Checkout
         $session = Session::create([
             'mode' => 'payment',
@@ -43,12 +53,12 @@ class StripeService
             'line_items' => $lineItems,
             'automatic_tax' => ['enabled' => true],
             'success_url' => 'https://localhost:8000/payment/success?session_id={CHECKOUT_SESSION_ID}',  // URL de succès
-            'cancel_url' => 'https://localhost:8000/payment/cancel',  // URL d'annulation
+            'cancel_url' => 'https://localhost:8000/payment/cancel',  
             'metadata' => ['order_id' => $id]
         ]);
         
 
-   
+       
         return $session;
     }
 

@@ -19,8 +19,10 @@ final class CartController extends AbstractController
     public function index(): Response
     {
 
+      
         return $this->render('cart/index.html.twig', [
             'cart' => $this->cartService->getCart(),
+            'shippingMethod' => $this->cartService->getDefaultShippingMethod(),
         ]);
     }
 
