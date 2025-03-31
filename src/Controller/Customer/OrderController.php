@@ -4,6 +4,7 @@ namespace App\Controller\Customer;
 
 use App\Entity\Order;
 use App\Entity\ShippingMethod;
+use App\Security\Voter\OrderVoter;
 use App\Enum\PaymentStatus;
 use App\Exception\MissingShippingAddressException;
 use App\Factory\OrderFactory;
@@ -24,6 +25,8 @@ final class OrderController extends AbstractController
 {
     public function __construct(private CartService $cartService)
     {   }
+
+    
 
     #[Route('/{id}/shipping', name: '_shipping', methods: ['POST'], priority:2)]
     public function updateShipping(Order $order, 
@@ -82,6 +85,7 @@ final class OrderController extends AbstractController
 
 
     #[Route('/{id}', name: '_details', methods: ['GET','POST'], priority:-1)]  
+    #[IsGranted(OrderVoter::VIEW, subject: 'order')]
     public function orderDetails(Order $order, ShippingMethodRepository $shippingMethodRepository): Response  
     {
         if ($order->getPaymentStatus() !== PaymentStatus::PENDING->value) {
