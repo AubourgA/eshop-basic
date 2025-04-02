@@ -1,0 +1,55 @@
+{% extends 'layout/customer_layout.html.twig' %}
+
+{% block title %}Liste des commandes{% endblock %}
+
+{% block main %}
+
+<div class="container mx-auto px-6 py-4">
+    <h1 class="text-2xl font-semibold text-gray-900 mb-6">Mes Commandes</h1>
+
+    {% if orders is empty %}
+        <p class="text-gray-600">Vous n'avez encore passé aucune commande.</p>
+    {% else %}
+        <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+            <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                       
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Référence</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Montant</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Statut</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Payment</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in orders %}
+                        <tr class="hover:bg-gray-50">
+                         
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.createdAt|date('d/m/Y') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.reference }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.totalAmount|number_format(2, ',', ' ') }} €</td>
+                      
+                            <td class="px-6 py-4 text-sm">
+                                <span class="px-3 py-1 text-xs font-semibold {{ order.status.getBadgeClass() }} rounded-full">
+                                    {{ order.status.getLabel() }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.paymentStatus }}</td>
+                            <td class="px-6 py-4 text-sm">
+                                {# <a href="{{ path('app_order_show', {id: order.id}) }}" class="text-blue-600 hover:underline">Détails</a> #}
+                                <a href="{{ path('app_order_info', {ref: order.reference}) }}" class="text-blue-600 hover:underline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

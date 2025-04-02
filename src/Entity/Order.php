@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\OrderStatus;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,8 +30,12 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $status = null;
+    // #[ORM\Column(length: 20)]
+    // private ?string $status = null;
+
+    #[ORM\Column(type: 'string', enumType: OrderStatus::class)]
+    private OrderStatus $status;
+
 
     #[ORM\Column]
     private ?float $totalAmount = null;
@@ -58,7 +63,7 @@ class Order
      */
     #[ORM\OneToMany(targetEntity: ItemOrder::class, 
                     mappedBy: 'orderNum', 
-                    cascade: ['persist'])]
+                    cascade: ['persist','remove'])]
     private Collection $itemOrders;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
@@ -120,17 +125,28 @@ class Order
         $this->updatedAt =new \DateTimeImmutable('now');
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
+    // public function getStatus(): ?string
+    // {
+    //     return $this->status;
+    // }
 
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
+    // public function setStatus(string $status): static
+    // {
+    //     $this->status = $status;
 
-        return $this;
-    }
+    //     return $this;
+    // }
+
+    public function getStatus(): OrderStatus
+{
+    return $this->status;
+}
+
+public function setStatus(OrderStatus $status): static
+{
+    $this->status = $status;
+    return $this;
+}
 
     public function getTotalAmount(): ?float
     {

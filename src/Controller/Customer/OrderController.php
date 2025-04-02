@@ -8,6 +8,7 @@ use App\Security\Voter\OrderVoter;
 use App\Enum\PaymentStatus;
 use App\Exception\MissingShippingAddressException;
 use App\Factory\OrderFactory;
+use App\Repository\OrderRepository;
 use App\Repository\ShippingMethodRepository;
 use App\Services\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,20 +21,27 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
+
 #[Route('/order', name: 'app_order')]
 final class OrderController extends AbstractController
 {
     public function __construct(private CartService $cartService)
     {   }
 
-    
+    #[Route('/list', name: '_list', methods: ['GET'], priority:1)]
+    public function list(OrderRepository $orderRepository):Response
+    {
+        return $this->render('customer/order/list_orders.html.twig',[
+            'orders' => $orderRepository->findBy(['customer'=>$this->getUser()])
+        ]);
+    }
+
 
     #[Route('/{id}/shipping', name: '_shipping', methods: ['POST'], priority:2)]
     public function updateShipping(Order $order, 
                                     Request $request, 
                                     EntityManagerInterface $entityManager): JsonResponse
     {
-
         $shippingMethodId = $request->request->get('shippingMethod');
      
         // Trouver la méthode de livraison sélectionnée
@@ -56,13 +64,13 @@ final class OrderController extends AbstractController
                             ]);
     }
 
-    #[Route('/create', name: '_create', methods: ['POST'], priority:1)]
+
+    #[Route('/create', name: '_create', methods: ['POST'], priority:3)]
     #[IsCsrfTokenValid('validate_cart', tokenKey: 'token')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create( EntityManagerInterface $em,
                             OrderFactory $orderFactory): Response
     {
-
         try {
             $order = $orderFactory->createOrder($this->getUser());
         } catch(MissingShippingAddressException $e) {
@@ -82,6 +90,24 @@ final class OrderController extends AbstractController
 
   
 
+    #[Route('/info/{ref}', name: '_info', methods: ['GET'], priority:4)] 
+    public function orderInfo(string $ref, OrderRepository $orderRepository):Response
+    {
+        
+        $order = $orderRepository->findOneBy(['reference' => $ref]);
+        
+        if (!$order) {
+            throw $this->createNotFoundException('Commande non trouvée.');
+        }
+
+        if ($order->getCustomer() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        
+        return $this->render('customer/order/order_info.html.twig', [
+            'order'=>$order
+        ]);
+    }
 
 
     #[Route('/{id}', name: '_details', methods: ['GET','POST'], priority:-1)]  
@@ -93,13 +119,10 @@ final class OrderController extends AbstractController
             return $this->redirectToRoute('app_customer_dashboard');
         }
 
-
-
          return $this->render('customer/order/order_detail.html.twig', [      
             'order' => $order, 
             'shippingMethods' => $shippingMethodRepository->findAll()  
              ]);  
     }
 
-    
 }

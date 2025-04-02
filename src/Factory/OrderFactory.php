@@ -52,7 +52,7 @@ class OrderFactory
         // Création de la commande
         $order = new Order();
         $order->setCustomer($user);
-        $order->setStatus(OrderStatus::IN_PROGRESS->value);
+        $order->setStatus(OrderStatus::IN_PROGRESS);
         $order->setTotalAmount($this->cartService->getTotal());
         $order->setShippingAddress($shippingAddress);
         $order->setBillingAddress($billingAddress);

@@ -1,0 +1,117 @@
+{% extends 'layout/customer_layout.html.twig' %}
+
+{% block title %}Détail de la commande{% endblock %}
+
+{% block main %}
+
+<div class="max-w-6xl mx-auto my-4 p-6 bg-gray-100 rounded-lg">
+    <h1 class="text-2xl font-semibold mb-4 text-pink-600">Détail de la commande passée</h1>
+
+    <div class="grid grid-cols-2 gap-6">
+
+        <!-- ADRESSES-->
+        <div class="col-span-2">
+            <p>Adresses</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-2">Adresse de Livraison</h3>
+                <ul>
+                    <li>{{ order.shippingAddress.street }}</li>
+                    <li>{{ order.shippingAddress.city }}</li>
+                    <li>{{ order.shippingAddress.postalCode }}</li>
+                    <li>{{ order.shippingAddress.country }}</li>
+                </ul>
+               
+                
+        </div>
+           <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-2">Adresse de Facturation</h3>
+                <ul>
+                    <li>{{ order.billingAddress.street }}</li>
+                    <li>{{ order.billingAddress.postalCode }}</li>
+                    <li>{{ order.billingAddress.city }}</li>
+                    <li>{{ order.billingAddress.country }}</li>
+                </ul>
+             
+                
+        </div>
+    
+
+       <!-- ARTILCES-->
+        <div>
+            <p class="col-span-2">Ma Liste d'artile(s)</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow col-span-2">
+            <h3 class="text-xl font-semibold mt-4">Articles :</h3>
+            <ul class=" pl-6 mt-2">
+                {% for item in order.itemOrders %}
+                    <li class="flex items-center gap-3 mb-2">
+                         <img src="{{ asset('uploads/' ~ item.product.imageFileName) }}" alt="{{ item.product.designation }}" class="w-16 h-16 rounded">
+                        <div>
+                            <p class="font-semibold">{{ item.product.designation }}</p>
+                            <p class="text-xs">   Qtité: {{ item.quantity }} - Unité : {{ item.unitPrice }}€</p>
+                        </div>
+                    
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+
+        <!-- LIVRAISON -->
+        <div class="col-span-2">
+            <p >Livraison :</p>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow " data-controller="shipping" data-order-id="{{ order.id }}">
+            <h3 class="text-xl font-semibold mt-4 mb-2">Livraison par :</h3>
+
+        
+              
+                <div class="space-y-3" >
+                      
+                    <div class="flex justify-between items-center  space-x-3 p-3 border rounded-lg ">
+                                
+
+                                <!-- Icône selon la méthode de livraison -->
+                                <div class="text-blue-600">
+                                    {% if order.shippingMethod.name == 'Colissimo' %}
+                                        <img class="w-[72px]" src="{{ asset('images/Colissimo.png')}}" alt="colissimo">
+                                    {% elseif order.shippingMethod.name == 'UPS' %}
+                                    <img class="w-[72px]"  src="{{ asset('images/UPS.png')}}" alt="ups">
+                                    {% else %}
+                                        <img class="w-[72px]"  src="{{ asset('images/mrlogo.png')}}" alt="mondialrelay">
+                                    {% endif %}
+                                </div>                      
+                                
+                            
+            
+                     </div>
+
+                </div>
+            </div>
+        <!-- TOTAL -->
+        <div class="bg-white p-4 rounded-lg shadow ">
+            <h2 class="text-lg font-bold md:text-2xl">Résumé de la commande</h2>
+            <div class="flex justify-between items-center text-xs">
+                <div>
+                    <p class=" mt-4">Référence   : </p>
+                    <p class=" my-1">{{ order.reference}}</p>
+                </div>
+                <div>
+                    <p>Passé le : <span>{{order.createdAt|date('d-m-Y à H:m:s')}}</span></p>
+                </div>
+            </div>
+            <p class="text-xl my-2 font-semibold">Total :  <span id="order-total">{{ order.totalAmount }}€</span></p>
+              
+           
+            
+          
+        </div>
+       
+
+    </div>
+</div>
+
+{% endblock %}
