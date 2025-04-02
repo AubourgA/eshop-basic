@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Enum\OrderStatus;
+use App\Enum\PaymentStatus;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,11 +31,8 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    // #[ORM\Column(length: 20)]
-    // private ?string $status = null;
-
     #[ORM\Column(type: 'string', enumType: OrderStatus::class)]
-    private OrderStatus $status;
+    private ?OrderStatus $status;
 
 
     #[ORM\Column]
@@ -55,15 +53,16 @@ class Order
     #[Assert\Unique]
     private ?string $reference = null;
 
-    #[ORM\Column(type: 'string', length: 20)]
-    private ?string $paymentStatus = null;
+    #[ORM\Column(type: 'string', enumType: PaymentStatus::class)]
+    private ?PaymentStatus $paymentStatus = null;
 
     /**
      * @var Collection<int, ItemOrder>
      */
     #[ORM\OneToMany(targetEntity: ItemOrder::class, 
                     mappedBy: 'orderNum', 
-                    cascade: ['persist','remove'])]
+                    cascade: ['persist','remove'],
+                    fetch: 'EAGER')]
     private Collection $itemOrders;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
@@ -125,28 +124,29 @@ class Order
         $this->updatedAt =new \DateTimeImmutable('now');
     }
 
-    // public function getStatus(): ?string
-    // {
-    //     return $this->status;
-    // }
-
-    // public function setStatus(string $status): static
-    // {
-    //     $this->status = $status;
-
-    //     return $this;
-    // }
 
     public function getStatus(): OrderStatus
-{
-    return $this->status;
-}
+    {
+        return $this->status;
+    }
 
-public function setStatus(OrderStatus $status): static
-{
-    $this->status = $status;
-    return $this;
-}
+    public function setStatus(OrderStatus $status): static
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function getPaymentStatus(): PaymentStatus
+    {
+        return $this->paymentStatus;
+    }
+
+    public function setPaymentStatus(PaymentStatus $paymentStatus): static
+    {
+        $this->paymentStatus = $paymentStatus;
+        return $this;
+    }
+
 
     public function getTotalAmount(): ?float
     {
@@ -217,16 +217,7 @@ public function setStatus(OrderStatus $status): static
         return $this;
     }
 
-    public function getPaymentStatus(): ?string
-    {
-        return $this->paymentStatus;
-    }
 
-    public function setPaymentStatus(?string $paymentStatus): static
-    {
-        $this->paymentStatus = $paymentStatus;
-        return $this;
-    }
 
     /**
      * @return Collection<int, ItemOrder>

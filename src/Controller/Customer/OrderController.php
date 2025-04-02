@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
@@ -112,12 +113,30 @@ final class OrderController extends AbstractController
 
     #[Route('/{id}', name: '_details', methods: ['GET','POST'], priority:-1)]  
     #[IsGranted(OrderVoter::VIEW, subject: 'order')]
-    public function orderDetails(Order $order, ShippingMethodRepository $shippingMethodRepository): Response  
+    public function orderDetails(Order $order, 
+                                ShippingMethodRepository $shippingMethodRepository,
+                                RequestStack $session,
+                                CartService $cartService): Response  
     {
-        if ($order->getPaymentStatus() !== PaymentStatus::PENDING->value) {
+        if ($order->getPaymentStatus() !== PaymentStatus::PENDING) {
             $this->addFlash('warning', 'Cette commande a déjà été payé et ne peut pas être repassée.');
             return $this->redirectToRoute('app_customer_dashboard');
         }
+
+        $cart = $session->getSession()->get('cart',[]);
+
+        if(empty($cart)) {
+            foreach ($order->getItemOrders() as $item) {
+                $productId = $item->getProduct()->getId();
+                $quantity = $item->getQuantity();
+        
+                if (!isset($cart[$productId])) {
+                    $cartService->addToCart($productId, $quantity);
+                }
+            }
+        }
+
+      
 
          return $this->render('customer/order/order_detail.html.twig', [      
             'order' => $order, 

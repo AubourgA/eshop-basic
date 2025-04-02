@@ -58,11 +58,16 @@
                         {{ order.status.getLabel() }}
                     </span>
                 </td>
-                <td class="p-2">{{ order.paymentStatus }}</td>
+                <td class="py-4 text-sm">
+                    <span class="px-3 py-1 text-xs font-semibold {{ order.paymentStatus.getBadgeClass() }} rounded-full">
+                        {{ order.paymentStatus.getLabel() }}
+                    </span>
+                </td>
+
                  <td class="p-2">
-                    {# {% if order.paymentStatus is same as('En attente')%}
-                    <a href="{{ path('app_order_details', {'id' : order.id })}}">ANNULER</a>
-                    {% endif %} #}
+                    {% if order.paymentStatus.getLabel is same as('En attente')%}
+                       <a href="{{ path('app_order_details', {'id' : order.id })}}">PAYER</a>
+                    {% endif %}
                  </td>
             </tr>
         {% endfor %}

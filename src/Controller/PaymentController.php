@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\ShippingMethod;
+
 use App\Repository\OrderRepository;
 use App\Repository\ShippingMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

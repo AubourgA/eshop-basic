@@ -26,7 +26,7 @@ class OrderFactory
         $cartSession = $this->cartService->getCart();
         
         if (count($cartSession) === 0 || is_null($cartSession)) {
-            return null; // Le contrôleur pourra gérer cette situation
+            return null; 
         }
 
         // Récupérer les adresses
@@ -46,7 +46,7 @@ class OrderFactory
           throw new MissingShippingAddressException("Vous devez renseigner une adresse de livraison"); 
         }
 
-        //Recuperer la methode de livraion
+        //Recuperer la methode de livraion par default
         $shippingMethod = $this->shippingMethodRepository->findOneBy(['name'=>'Colissimo']);
 
         // Création de la commande
@@ -58,7 +58,7 @@ class OrderFactory
         $order->setBillingAddress($billingAddress);
         $order->setShippingMethod($shippingMethod);
         $order->setReference('PEND-'.uniqid());
-        $order->setPaymentStatus(PaymentStatus::PENDING->value);
+        $order->setPaymentStatus(PaymentStatus::PENDING);
 
         // Ajouter les produits
         foreach ($cartSession as $item) {
