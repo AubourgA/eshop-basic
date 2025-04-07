@@ -201,5 +201,15 @@ class Customer extends User
         return $this;
     }
 
+    public function getPrimaryShippingAddress(): ?Address
+{
+    foreach ($this->addresses as $address) {
+        if ($address->isPrimary() && $address->getType() === 'livraison') {
+            return $address;
+        }
+    }
+    return null;
+}
+
    
 }

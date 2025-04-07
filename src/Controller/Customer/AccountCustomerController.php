@@ -38,4 +38,15 @@ final class AccountCustomerController extends AbstractController
             'addresses' => $addressRepo->findBy(['customer' => $this->getUser()]),
         ]);
     }
+
+    #[Route('/profil', name: '_profil')]
+    public function profil(): Response
+    {
+
+
+        return $this->render('customer/profil.html.twig', [
+           
+        ]);
+    }
+
 }
