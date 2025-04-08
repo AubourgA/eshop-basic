@@ -3,7 +3,12 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ["radio"];
 
-  
+    connect(){
+        const checkedInput = this.element.querySelector('#shipping-1');
+        if (checkedInput) {
+            this.update({ target: checkedInput });
+        }
+    }
 
     update(event) {
         const formData = new FormData();
@@ -23,7 +28,7 @@ export default class extends Controller {
                 document.getElementById("order-total").textContent = `${data.total}€`;
                 
                 let labels = document.querySelectorAll("#shipping-form label")
-                console.log(labels);
+               
                 labels.forEach( item => {
                     item.classList.remove('border-green-500');
                 })
