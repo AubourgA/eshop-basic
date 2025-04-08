@@ -59,7 +59,7 @@ class StripeWebhookController extends AbstractController
         $stripePaymentId = $session->payment_intent ?? null;
 
         if ($orderId) {
-            $order = $this->orderRepository->findOneBy($orderId);
+            $order = $this->orderRepository->findOneBy(['id' => $orderId]);
             if ($order) {
                 $order->setStipePaymentID($stripePaymentId);
                 $order->setPaymentStatus(PaymentStatus::PAYED);

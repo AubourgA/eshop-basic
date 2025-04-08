@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Order;
 use App\Repository\OrderRepository;
 use App\Repository\ShippingMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,13 +27,16 @@ final class PaymentController extends AbstractController
     }
 
 
-    #[Route('/checkout', name: '_checkout')]
+    #[Route('/checkout/{id}', name: '_checkout')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function index(OrderRepository $orderRepo, ShippingMethodRepository $shippingMethod): Response
+    public function index(Order $order, 
+                         OrderRepository $orderRepo, 
+                         ShippingMethodRepository $shippingMethod): Response
     {
        
         $cart = $this->cartService->getCart();
-        $order = $orderRepo->findOneBy([], ['id' => 'desc']);
+        // $order = $orderRepo->findOneBy([], ['id' => 'desc']);
+       
         $shipping = $shippingMethod->findOneBy(['id'=> $order->getShippingMethod()]);
 
         $checkoutSession = $this->stripeService

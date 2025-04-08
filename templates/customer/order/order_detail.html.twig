@@ -104,7 +104,10 @@
               
            
             
-            <a href="{{ path('app_payment_checkout') }}" class="text-sm mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            {# <a href="{{ path('app_payment_checkout') }}" class="text-sm mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Payer maintenant 
+            </a> #}
+            <a href="{{ path('app_payment_checkout', {'id': order.id }) }}" class="text-sm mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 Payer maintenant 
             </a>
         </div>
