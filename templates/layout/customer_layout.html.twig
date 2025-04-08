@@ -3,36 +3,83 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-<div class="h-screen ">
+<div class=" bg-pink-50">
 
        {% include 'partials/_navbar.html.twig' %}
 
+        {% set currentRoute = app.request.attributes.get('_route') %}
+    
         <div class="container mx-auto px-6 py-4">
         
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <!-- Menu horizontal -->
-                <div class="bg-primary20 shadow-md w-full text-white">
-                            <div class="container mx-auto px-4 py-3">
-                                <div class="flex flex-col text-center md:flex-row md:justify-between md:items-center">
-                                    <p class="text-gray-700 md:text-left mb-2 md:mb-0">
-                                        Bonjour {{ app.user.firstname }}
-                                    </p>
-                                    <ul class="flex flex-col md:flex-row justify-center md:space-x-6">
-                                        <li><a href="{{ path('app_order_list')}}" class="text-gray-700 hover:text-blue-600 py-2 block">Mes Commandes</a></li>
-                                        <li><a href="{{ path('app_customer_address')}}" class="text-gray-700 hover:text-blue-600 py-2 block">Mes Adresses</a></li>
-                                        <li><a href="#" class="text-gray-700 hover:text-blue-600 py-2 block">Bon Réduction</a></li>
-                                        <li><a href="{{ path('app_customer_profil') }}" class="text-gray-700 hover:text-blue-600 py-2 block">Mon Profil</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+
+                <div class="flex justify-between  p-4">
+
+                    <p class="text-gray-700 md:text-left mb-2 md:mb-0">
+                        Bonjour  <span class="font-bold">{{ app.user.firstname }}</span>
+                    </p>
+                    <p class="font-bold">Inscrit depuis le : <span class="font-normal">{{ app.user.createdAt|date("d-m-Y à H:m:s") }}</span>
+                    </p>
                 </div>
+
+            <!-- Menu horizontal -->
+             <div class="bg-pink-100 pt-4 shadow-inner overflow-x-auto whitespace-nowrap rounded-t-xl">
+                <div class="  inline-flex   gap-4 px-4">
+            
+                    <!-- Onglet -->
+                    <a href="{{ path('app_order_list') }}"
+                        class="flex flex-col items-center justify-center w-36 p-4  rounded-t-xl  hover:bg-blue-100 transition
+                         {{ currentRoute == 'app_order_list'  ? 'bg-white text-gray-800' 
+                                                             : 'bg-pink-500 text-white hover:bg-blue-100 hover:text-gray-800' }} ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-900 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v4H3V3zm0 6h18v4H3V9zm0 6h18v4H3v-4z" />
+                        </svg>
+                        <span class=" text-sm font-medium">Mes Commandes</span>
+                    </a>
+
+                    <a href="{{ path('app_customer_address') }}" 
+                        class="flex flex-col items-center justify-center w-36 p-4  rounded-t-xl  hover:bg-blue-100 transition
+                        {{ currentRoute == 'app_customer_address' ? 'bg-white text-gray-800' 
+                                                                    : 'bg-pink-500 text-white hover:bg-blue-100 hover:text-gray-800' }} ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-900 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 12 17.657 7.343a8 8 0 10-11.314 11.314L13.414 12z" />
+                        </svg>
+                        <span class=" text-sm font-medium">Mes Adresses</span>
+                    </a>
+
+                    <a href="#" 
+                        class="flex flex-col items-center justify-center w-36 p-4  rounded-t-xl  hover:bg-blue-100 transition
+                        {{ currentRoute == 'route_name_bon_reduc'  ? 'bg-white text-gray-800' 
+                                                                    : 'bg-pink-500 text-white hover:bg-blue-100 hover:text-gray-800' }} ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-900 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.104 0-2 .896-2 2v4h4v-4c0-1.104-.896-2-2-2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 20h12v-2H6v2z" />
+                        </svg>
+                        <span class=" text-sm font-medium">Bon Réduction</span>
+                    </a>
+
+                    <a href="{{ path('app_customer_profil') }}" 
+                        class="flex flex-col items-center justify-center w-36 p-4  rounded-t-xl  hover:bg-blue-100 transition
+                            {{ currentRoute == 'app_customer_profil' ? 'bg-white text-gray-800' 
+                                                                    : 'bg-pink-500 text-white hover:bg-blue-100 hover:text-gray-800' }} ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-900 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.343 17.657A8 8 0 0112 16a8 8 0 015.657 1.657" />
+                        </svg>
+                        <span class="text-sm font-medium">Mon Profil</span>
+                    </a>
+
+                </div>
+            </div>
+
             {% endif %}
     
             <!-- Contenu principal -->
-            
-            {% block main %}
+            <main class="bg-white">
+                {% block main %}
 
-            {% endblock %}
+                {% endblock %}
+            </main>
        
 
 

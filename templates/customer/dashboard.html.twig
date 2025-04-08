@@ -14,10 +14,10 @@
         {% endfor %}
     
     <!-- Contenu principal -->
-    <div class=" mx-auto py-6">
+    <div class=" mx-auto pt-6 ">
         
         <!-- Grille d'icônes -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 mb-8">
+        <section class="grid grid-cols-1 p-4 sm:grid-cols-2 md:grid-cols-3  gap-6 mb-8">
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <span class="text-blue-500 text-4xl">🛒</span>
                 <h2 class="text-lg font-semibold mt-2">Commandes en cours : {{ orders|filter(order => order.status != 'Livré')|length }}</h2>
