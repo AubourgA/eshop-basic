@@ -11,7 +11,7 @@
     <div class="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200">
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-lg font-semibold text-gray-800">Coordonnées</h2>
-            <a href="#" class="text-sm text-pink-600 hover:underline">Gérer mes coordonnées</a>
+          
         </div>
         <p class="text-gray-600"><strong>Email :</strong> {{ app.user.email }}</p>
         {# <p class="text-gray-600"><strong>Adresse principale :</strong> {{ app.user.addresses }}</p> #}
@@ -24,7 +24,8 @@
         {% if shippingAddress %}
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-lg font-semibold text-gray-800">Adresse de Résidence</h2>
-            <a href="#" class="text-sm text-pink-600 hover:underline">Modifier</a>
+            <a href="#" class="text-sm px-6 py-2 rounded-lg  border border-pink-600 bg-white text-pink-600 
+                              hover:bg-pink-300 hover:text-pink-100">Modifier</a>
         </div>
         <p class="text-gray-600">{{ shippingAddress.street }}</p>
         <p class="text-gray-600">{{ shippingAddress.city }}, {{shippingAddress.postalCode}}</p>
@@ -34,20 +35,46 @@
     </div>
 
 
-    <!-- Modifier le numéro de téléphone -->
-    <div class="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200">
-        <div class="flex justify-between items-center mb-2">
-            <h2 class="text-lg font-semibold text-gray-800">Numéro de téléphone</h2>
-            <a href="#" class="text-sm text-pink-600 hover:underline">Modifier</a>
-        </div>
-        <p class="text-gray-600">{{ app.user.phone }}</p>
-    </div>
+    <!-- Update Stimulus Phone -->
+    <div data-controller="edit-phone" class="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200">
+
+       
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold text-gray-800">Numéro de téléphone</h2>
+                <div data-edit-phone-target="display" class="text-gray-600">
+                    <button type="button" data-action="click->edit-phone#showForm" class="text-sm px-6 py-2 rounded-lg  border border-pink-600 bg-white text-pink-600 
+                                    hover:bg-pink-300 hover:text-pink-100">Modifier
+                    </button>
+                </div>
+            </div>
+            <div data-edit-phone-target="phone" >
+                {{ app.user.phone }}
+            </div>    
+       
+
+        <form  data-edit-phone-target="form" 
+               data-action="submit->edit-phone#submit" 
+                action="{{ path('api_update_phone') }}" 
+                method="post" 
+                class="hidden" >
+            <input type="text" 
+                    name="phone" 
+                    data-edit-phone-target="input" 
+                    value="{{ app.user.phone }}" 
+                    class="border px-2 py-1 rounded"/>
+            <button type="submit" class="bg-pink-700 text-white px-3 py-1 rounded-lg">Enregistrer</button>
+        </form>
+
+        <div data-edit-phone-target="success" class="text-green-600 mt-2 hidden">Téléphone mis à jour ✅</div>
+        <div data-edit-phone-target="error" class="text-red-600 mt-2 hidden">Erreur lors de la mise à jour ❌</div>
+</div>
 
     <!-- Modifier le mot de passe -->
     <div class="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200">
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-lg font-semibold text-gray-800">Mot de passe</h2>
-            <a href="#" class="text-sm text-pink-600 hover:underline">Modifier mon mot de passe</a>
+            <a href="#" class="text-sm px-6 py-2 rounded-lg  border border-pink-600 bg-white text-pink-600 
+                              hover:bg-pink-300 hover:text-pink-100">Modifier mon mot de passe</a>
         </div>
         <p class="text-gray-400">••••••••</p>
     </div>
