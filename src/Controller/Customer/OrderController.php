@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\OrderBy;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -92,7 +94,7 @@ final class OrderController extends AbstractController
   
 
     #[Route('/info/{ref}', name: '_info', methods: ['GET'], priority:4)] 
-    public function orderInfo(string $ref, OrderRepository $orderRepository):Response
+    public function orderInfo(string $ref, OrderRepository $orderRepository, Security $security):Response
     {
         
         $order = $orderRepository->findOneBy(['reference' => $ref]);
@@ -101,9 +103,8 @@ final class OrderController extends AbstractController
             throw $this->createNotFoundException('Commande non trouvée.');
         }
 
-        if ($order->getCustomer() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
+
+        $this->denyAccessUnlessGranted(OrderVoter::VIEW, $order);
         
         return $this->render('customer/order/order_info.html.twig', [
             'order'=>$order

@@ -1,12 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/admin_layout.html.twig' %}
 
 {% block title %}Liste des produits{% endblock %}
 
-{% block body %}
-<div class="container mx-auto p-6">
+{% block main %}
+<div class="bg-white p-4 rounded-lg">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Liste des Produits</h1>
-        <a href="{{ path('app_product_create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        <a href="{{ path('app_product_admin_create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
             Nouveau Produit
         </a>
     </div>

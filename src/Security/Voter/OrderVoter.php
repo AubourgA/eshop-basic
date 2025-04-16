@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\User;
 use App\Entity\Order;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,11 +13,17 @@ final class OrderVoter extends Voter
 {
    
     public const VIEW = 'VIEW';
+    public const VIEW_ALL = 'VIEW_ALL';
 
+    public function __construct(private AccessDecisionManagerInterface $accessDecisionManager,
+        ) 
+        {
+        }
+        
     protected function supports(string $attribute, mixed $subject): bool
     {
         
-        return in_array($attribute, [self::VIEW])
+        return  in_array($attribute, [self::VIEW, self::VIEW_ALL])
             && $subject instanceof \App\Entity\Order;
     }
 
@@ -31,7 +38,8 @@ final class OrderVoter extends Voter
 
         
         return match ($attribute) {
-            self::VIEW => $this->canView($subject, $user),
+            self::VIEW_ALL => $this->accessDecisionManager->decide($token, ['ROLE_ADMIN']),
+            self::VIEW => $this->canView($subject, $user) || $this->accessDecisionManager->decide($token, ['ROLE_ADMIN']),
             default => false,
         };
     }
