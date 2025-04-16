@@ -38,8 +38,8 @@ final class OrderVoter extends Voter
 
         
         return match ($attribute) {
-            self::VIEW_ALL => $this->accessDecisionManager->decide($token, ['ROLE_ADMIN']),
-            self::VIEW => $this->canView($subject, $user) || $this->accessDecisionManager->decide($token, ['ROLE_ADMIN']),
+            self::VIEW_ALL => $this->accessDecisionManager->decide($token, ['ROLE_PRODUCT']),
+            self::VIEW => $this->canView($subject, $user) || $this->accessDecisionManager->decide($token, ['ROLE_PRODUCT']),
             default => false,
         };
     }

@@ -48,7 +48,7 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
 
         $redirectRoutes = [
-             'ROLE_ADMIN'    => 'app_admin_dashboard',
+             'ROLE_PRODUCT'    => 'app_admin_dashboard',
              'ROLE_CUSTOMER' => 'app_customer_dashboard',
             ];
 
