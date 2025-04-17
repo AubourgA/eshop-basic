@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\CustomerRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +34,15 @@ final class AccountAdminController extends AbstractController
        
         return $this->render('admin/orders/list_order.html.twig', [
             'orders' => $orderRepo->findAll(),
+        ]);
+    }
+
+    #[Route('/customers', name: '_customers', methods: ['GET'])]
+    public function customers(CustomerRepository $customerRepo): Response
+    {
+       
+        return $this->render('admin/customers/list_customers.html.twig', [
+            'customers' => $customerRepo->findAll(),
         ]);
     }
 }

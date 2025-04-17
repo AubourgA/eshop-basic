@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -21,7 +22,8 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator,
+                                private AuthorizationCheckerInterface $authorizationChecker,)
     {
     }
 
@@ -45,15 +47,14 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        $user = $token->getUser();
 
         $redirectRoutes = [
-             'ROLE_PRODUCT'    => 'app_admin_dashboard',
+             'ROLE_EMPLOYE'  => 'app_admin_dashboard',
              'ROLE_CUSTOMER' => 'app_customer_dashboard',
             ];
 
         foreach ($redirectRoutes as $role => $route) {
-            if (in_array($role, $user->getRoles(), true)) {
+            if ($this->authorizationChecker->isGranted($role)) {
                 return new RedirectResponse($this->urlGenerator->generate($route));
             }
         }

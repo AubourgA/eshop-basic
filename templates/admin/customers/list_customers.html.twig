@@ -1,0 +1,52 @@
+{% extends 'layout/admin_layout.html.twig' %}
+
+{% block title %}Fichier Clients{% endblock %}
+
+{% block main %}
+<div class="bg-white p-4 rounded-lg">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Liste des Clients</h1>
+      
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+       <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Prénom</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nom</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Téléphone</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Créé le</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Dernière visite</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Nombre Cdes</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
+        </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+        {% for customer in customers %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.firstname }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.lastname }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.phone }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.email }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.createdAt|date('d/m/Y') }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.lastVisitedAt|date('d/m/Y') }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ customer.orders|length }}</td>
+                <td class="px-6 py-4 text-sm">
+                    {# <a href="{{ path('app_admin_customer_details', {id: customer.id}) }}" class="text-blue-600 hover:underline inline-flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                        Voir
+                    </a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="px-6 py-4 text-center text-gray-500">Aucun client trouvé.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+</div>
+{% endblock %}
