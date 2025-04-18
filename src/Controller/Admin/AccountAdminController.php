@@ -47,7 +47,7 @@ final class AccountAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/employe', name: '_employe', methods: ['GET'])]
+    #[Route('/employe', name: '_employe', methods: ['GET','POST'])]
     public function employe(ManagerRepository $managerRepo): Response
     {
        

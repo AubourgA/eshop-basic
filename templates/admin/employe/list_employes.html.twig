@@ -2,17 +2,25 @@
 
 {% block title %}Fichier Managers{% endblock %}
 
+
+
 {% block main %}
-<div class="bg-white p-4 rounded-lg">
+<div class="bg-white p-4 rounded-lg" 
+     data-controller="modal" 
+     data-modal-url-value="{{ path('admin_modal_manager') }}">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Liste des Managers</h1>
+        <button data-action="click->modal#open" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">
+            Ajouter un employé
+        </button>
     </div>
+
+    <div data-modal-target="container"></div>
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
             <thead class="bg-gray-100">
                 <tr>
-                   
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Matricule</th>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Département</th>
@@ -20,22 +28,12 @@
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody id="manager-list" class="divide-y divide-gray-200">
                 {% for item in employes %}
-                    <tr class="hover:bg-gray-50">
-                       
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ item.email }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ item.matricule }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ item.departement }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ item.createdAt|date('d/m/Y') }}</td>
-                        <td class="px-6 py-4 text-sm">
-                            {# Placeholder pour les actions éventuelles #}
-                            {# <a href="{{ path('app_admin_manager_details', {id: manager.id}) }}" class="text-blue-600 hover:underline">Voir</a> #}
-                        </td>
-                    </tr>
+                    {% include 'admin/employe/_employe_row.html.twig' with { item: item } %}
                 {% else %}
                     <tr>
-                        <td colspan="8" class="px-6 py-4 text-center text-gray-500">Aucun manager trouvé.</td>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Aucun manager trouvé.</td>
                     </tr>
                 {% endfor %}
             </tbody>
