@@ -1,0 +1,27 @@
+<div {{ attributes }}>
+  
+
+    <div class="flex items-center space-x-2">
+        {% if isEditing %}
+            <form>
+                <input type="text" data-model="manager.departement">
+
+                <button
+                    type="button"
+                    data-action="live#action"
+                    data-live-action-param="save"
+                    class="ml-2 px-2 py-1 bg-pink-500 text-white rounded text-xs"
+                >Save
+                </button>
+            </form>
+        {% else %}
+            <span class="text-sm">{{ manager.departement }}</span>
+            <button  type="button"
+                     class="text-blue-500 text-xs ml-2"
+                     data-action="live#action"
+                    data-live-action-param="activateEditing"
+            > ✏️
+            </button>
+        {% endif %}
+    </div>
+</div>
