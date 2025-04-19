@@ -12,6 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -20,6 +21,9 @@ class CreateManagerForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use ComponentToolsTrait;
+
+ 
 
     #[LiveProp]
     public ?Manager $initialFormData = null;
@@ -34,6 +38,9 @@ class CreateManagerForm extends AbstractController
         ] );
     }
 
+
+
+
     #[LiveAction]
     public function save(EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher)
     {
@@ -46,6 +53,7 @@ class CreateManagerForm extends AbstractController
         $entityManager->persist($manager);
         $entityManager->flush();
 
+        $this->dispatchBrowserEvent('modal:close');
         $this->resetForm();
 
     }

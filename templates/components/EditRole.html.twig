@@ -1,0 +1,35 @@
+<div {{ attributes }}>
+  
+
+    <div class="flex items-center space-x-2">
+        {% if isEditing %}
+            <form>
+                <select
+                    data-model="manager.roles[0]"
+                    class="form-select text-sm border border-gray-300 rounded"
+                >
+                    <option value="ROLE_PRODUCT">ROLE_PRODUCT</option>
+                    <option value="ROLE_LOGISTICS">ROLE_LOGISTICS</option>
+                </select>
+
+                <button
+                    type="button"
+                    data-action="live#action"
+                    data-live-action-param="save"
+                    class="ml-2 px-2 py-1 bg-pink-500 text-white rounded text-xs"
+                >Save
+                </button>
+            </form>
+        {% else %}
+            <span class="text-sm">{{ manager.roles[0] }}</span>
+            <button  type="button"
+                     class="text-blue-500 text-xs ml-2"
+                     data-action="live#action"
+                    data-live-action-param="activateEditing"
+            > ✏️
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+

@@ -52,7 +52,7 @@ final class AccountAdminController extends AbstractController
     {
        
         return $this->render('admin/employe/list_employes.html.twig', [
-            'employes' => $managerRepo->findAll(),
+            'employes' => $managerRepo->findAllExceptAdmins(),
         ]);
     }
 }

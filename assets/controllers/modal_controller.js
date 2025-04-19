@@ -6,7 +6,9 @@ export default class extends Controller {
         url: String
     }
 
- 
+    connect() {
+        document.addEventListener('modal:close', ()=> this.hide());
+    }
 
     open() {
         fetch(this.urlValue)
@@ -19,5 +21,9 @@ export default class extends Controller {
     close(event) {
         event.preventDefault()
         this.containerTarget.innerHTML = ''
+    }
+
+    hide() {
+        this.containerTarget.innerHTML = '';
     }
 }
