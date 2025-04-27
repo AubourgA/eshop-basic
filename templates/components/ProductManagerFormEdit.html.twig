@@ -1,0 +1,67 @@
+
+
+<div {{ attributes }}>
+    {{ form_start(form, {
+        'attr':  {
+            'class': 'flex flex-col p-6', 
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'files(product[image])|save'
+            }
+         }) 
+    }}
+
+       
+
+  
+        <div class="mb-4">
+            {{ form_label(form.designation, 'Nom du produit', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.designation, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.designation) }}
+            </div>
+        </div>
+
+      
+        <div class="mb-4">
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.description) }}
+            </div>
+        </div>
+
+       
+        <div class="mb-4">
+            {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.price, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.price) }}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.stock, 'Quantité', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.stock, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.stock) }}
+            </div>
+        </div>
+
+ 
+
+        <div class="mb-4">
+            {{ form_label(form.image, 'Image', {'label_attr': {'class': 'block text-gray-700'} }) }}
+            {{ form_widget(form.image, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.image) }}
+            </div>
+        </div>
+   
+
+       
+        <button type="submit"  class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-xl mt-4">
+            save
+        </button>
+
+    {{ form_end(form, {'render_rest': false}) }}
+</div>

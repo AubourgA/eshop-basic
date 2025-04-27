@@ -10,8 +10,14 @@ export default class extends Controller {
         document.addEventListener('modal:close', ()=> this.hide());
     }
 
-    open() {
-        fetch(this.urlValue)
+    open(event) {
+
+        let url = this.urlValue; // par défaut
+        if (event?.currentTarget?.dataset?.modalUrlValue) {
+            url = event.currentTarget.dataset.modalUrlValue; // utilise l'url du bouton cliqué s'il existe
+        }
+
+        fetch(url)
             .then(response => response.text())
             .then(html => {
                 this.containerTarget.innerHTML = html

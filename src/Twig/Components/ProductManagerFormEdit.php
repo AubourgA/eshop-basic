@@ -18,19 +18,22 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[AsLiveComponent]
-final class ProductManagerForm extends AbstractController
+final class ProductManagerFormEdit extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
     use ComponentToolsTrait;
 
+    #[LiveProp]
+    public ?Product $initialFormData = null;
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(ProductType::class );
+        return $this->createForm(ProductType::class, $this->initialFormData );
     }
 
-  
+   
+ 
 
     #[LiveAction]
     public function save(Request $request,EntityManagerInterface $entityManager,FileUploaderService $fileUploader)
