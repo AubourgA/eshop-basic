@@ -41,6 +41,7 @@ final class ProductManagerFormEdit extends AbstractController
         $this->submitForm();
         /** @var Product $product */
         $product = $this->getForm()->getData();
+       
         
         $uploadedFile = $request->files->get('product')['image'] ?? null;
         
@@ -50,7 +51,7 @@ final class ProductManagerFormEdit extends AbstractController
             $product->setImageFileName($newFilename);
         }
      
-        $entityManager->persist($product);
+
         $entityManager->flush();
 
         $this->dispatchBrowserEvent('modal:close');

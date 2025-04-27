@@ -21,7 +21,7 @@ final class HomeController extends AbstractController
     public function catalog(ProductRepository $productRepo): Response
     {
         return $this->render('home/catalog.html.twig', [
-            'products' => $productRepo->findAll(),
+            'products' => $productRepo->findBy(['isActive'=> true]),
         ]);
     }
 

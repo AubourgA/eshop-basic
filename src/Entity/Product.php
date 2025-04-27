@@ -46,6 +46,9 @@ class Product
     #[ORM\OneToMany(targetEntity: ItemOrder::class, mappedBy: 'product')]
     private Collection $itemOrders;
 
+    #[ORM\Column]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -155,6 +158,18 @@ class Product
                 $itemOrder->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

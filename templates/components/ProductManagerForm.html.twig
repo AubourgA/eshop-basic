@@ -10,8 +10,6 @@
          }) 
     }}
 
-       
-
   
         <div class="mb-4">
             {{ form_label(form.designation, 'Nom du produit', {'label_attr': {'class': 'block text-gray-700'}}) }}
@@ -55,7 +53,25 @@
             </div>
         </div>
    
+        <div class="mb-4">
+                <label class="flex items-center space-x-4">
+                    {{ form_label(form.isActive, 'Public', {'label_attr': {'class': 'text-gray-700 font-medium'}}) }}
+                    
+                    <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+                        {{ form_widget(form.isActive, {
+                            'attr': {
+                                'class': 'absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer peer checked:bg-green-500 checked:translate-x-6 transition-transform',
+                                'style': 'top: 0; left: 0;'
+                            }
+                        }) }}
+                        <div class="block w-full h-full rounded-full bg-gray-300 peer-checked:bg-green-500 peer-checked:border-green-500 transition-colors"></div>
+                    </div>
+                </label>
 
+                <div class="text-red-600 text-sm mt-1">
+                    {{ form_errors(form.isActive) }}
+                </div>
+        </div>
        
         <button type="submit"  class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-xl mt-4">
             save
