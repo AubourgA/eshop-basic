@@ -21,7 +21,7 @@ final class AccountAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/products', name: '_product', methods: ['GET'])]
+    #[Route('/products', name: '_product', methods: ['GET','POST'])]
     public function products(ProductRepository $productRepo): Response
     {
         return $this->render('admin/products/list_product.html.twig', [

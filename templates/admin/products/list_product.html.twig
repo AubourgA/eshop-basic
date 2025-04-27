@@ -3,14 +3,20 @@
 {% block title %}Liste des produits{% endblock %}
 
 {% block main %}
-<div class="bg-white p-4 rounded-lg">
+<div   data-controller="modal" 
+     data-modal-url-value="{{ path('admin_modal_product') }}"
+     class="bg-white p-4 rounded-lg">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Liste des Produits</h1>
-        <a href="{{ path('app_product_admin_create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        {# <a href="{{ path('app_product_admin_create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
             Nouveau Produit
-        </a>
+        </a> #}
+     
+            <button data-action="click->modal#open" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">
+            Ajouter un Produit
+        </button>
     </div>
-
+    <div data-modal-target="container"></div>
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <table class="w-full border-collapse">
             <thead>

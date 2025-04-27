@@ -26,5 +26,11 @@ class ManagerModalController extends AbstractController
         ]);
     }
 
+    #[Route('/api/admin/product', name: 'admin_modal_product', methods:['GET'])]
+    public function new_product(): Response
+    {
+        return $this->render('admin/products/modal_product.html.twig');
+    }
+
 
 }
