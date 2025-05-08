@@ -10,23 +10,23 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
         <div class="bg-white rounded-2xl shadow p-4">
             <p class="text-sm text-gray-500">Total Users</p>
-            <h2 class="text-2xl font-bold">89,935</h2>
-            <p class="text-green-500 text-sm mt-1">+1.01% This week</p>
+            <h2 class="text-2xl font-bold">{{ customers|length}}</h2>
+            {# <p class="text-green-500 text-sm mt-1">+1.01% This week</p> #}
         </div>
         <div class="bg-white rounded-2xl shadow p-4">
             <p class="text-sm text-gray-500">Total Products</p>
-            <h2 class="text-2xl font-bold">23,283</h2>
-            <p class="text-green-500 text-sm mt-1">+1.01% This week</p>
+            <h2 class="text-2xl font-bold">{{ products|length}}</h2>
+            {# <p class="text-green-500 text-sm mt-1">+1.01% This week</p> #}
         </div>
         <div class="bg-white rounded-2xl shadow p-4">
             <p class="text-sm text-gray-500">Total Sales</p>
-            <h2 class="text-2xl font-bold">46,827</h2>
-            <p class="text-red-500 text-sm mt-1">-0.91% This week</p>
+            <h2 class="text-2xl font-bold">{{ ordersPayed|reduce((total, item) => total + item.totalAmount, 0) }}</h2>
+            {# <p class="text-red-500 text-sm mt-1">-0.91% This week</p> #}
         </div>
         <div class="bg-white rounded-2xl shadow p-4">
             <p class="text-sm text-gray-500">Total Refunded</p>
             <h2 class="text-2xl font-bold">$124,854</h2>
-            <p class="text-green-500 text-sm mt-1">+10.1% This week</p>
+            {# <p class="text-green-500 text-sm mt-1">+10.1% This week</p> #}
         </div>
     </div>
 
@@ -41,21 +41,11 @@
         <div class="bg-white rounded-2xl shadow p-4">
             <h3 class="text-lg font-bold mb-4">Top Products</h3>
             <ul class="space-y-2 text-sm">
+              {% for row in bestItemSold %}
                 <li class="flex justify-between">
-                    <span>Home Decor Range</span><span class="font-semibold text-blue-600">90%</span>
+                    <span>{{ row.productName }}</span><span class="font-semibold text-blue-600">{{ row.totalSold }}</span>
                 </li>
-                <li class="flex justify-between">
-                    <span>Disney Princess Dress</span><span class="font-semibold text-blue-600">81%</span>
-                </li>
-                <li class="flex justify-between">
-                    <span>Bathroom Essentials</span><span class="font-semibold text-blue-600">75%</span>
-                </li>
-                <li class="flex justify-between">
-                    <span>Jeans</span><span class="font-semibold text-blue-600">72%</span>
-                </li>
-                <li class="flex justify-between">
-                    <span>Kurta wear</span><span class="font-semibold text-blue-600">69%</span>
-                </li>
+               {% endfor %}
             </ul>
         </div>
     </div>
@@ -93,24 +83,19 @@
                 </tr>
             </thead>
             <tbody>
+            {% for item in ordersLast %}
                 <tr class="border-t">
-                    <td class="p-2">#12594</td>
-                    <td class="p-2">15 Oct 2024</td>
-                    <td class="p-2">Frank Murlo</td>
-                    <td class="p-2">312 S Winnetka Ave</td>
-                    <td class="p-2">$847.49</td>
-                    <td class="p-2 text-green-600 font-semibold">New Order</td>
+                    <td class="p-2">{{ item.id }}</td>
+                    <td class="p-2">{{ item.createdAt|date('d-m-Y à H:m:s') }}</td>
+                    <td class="p-2">{{ item.customer.lastname }} {{ item.customer.firstname }}</td>
+                    <td class="p-2">{{ item.billingAddress.city }} </td>
+                    <td class="p-2">{{ item.totalAmount }} €</td>
+                    <td class="p-2 font-semibold {{ item.paymentStatus.value == 'Payé' ? 'text-green-600' : 'text-red-600' }}">
+                         {{ item.paymentStatus.value }}
+                    </td>
                     <td class="p-2">...</td>
                 </tr>
-                <tr class="border-t">
-                    <td class="p-2">#12640</td>
-                    <td class="p-2">12 Oct 2024</td>
-                    <td class="p-2">Thomas Bleif</td>
-                    <td class="p-2">Lathrop Ave, Horney</td>
-                    <td class="p-2">$471.14</td>
-                    <td class="p-2 text-yellow-500 font-semibold">On Delivery</td>
-                    <td class="p-2">...</td>
-                </tr>
+               {% endfor %}
             </tbody>
         </table>
     </div>

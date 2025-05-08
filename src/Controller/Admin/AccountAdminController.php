@@ -6,6 +6,7 @@ use App\Repository\CustomerRepository;
 use App\Repository\ManagerRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Services\DashboardDataProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,10 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AccountAdminController extends AbstractController
 {
     #[Route('/dashboard', name: '_dashboard', methods: ['GET'])]
-    public function index(): Response
+    public function index(DashboardDataProvider $dashboardDataProvider): Response
     {
+        $datas = $dashboardDataProvider->getDashboardData();
+        
+  
         return $this->render('admin/dashboard.html.twig', [
-           
+           'customers' => $datas['customers'],
+           'products' => $datas['products'],
+           'ordersPayed' => $datas['ordersPayed'],
+           'ordersLast' => $datas['ordersLast'],
+           'bestItemSold' => $datas['bestItemSold']
         ]);
     }
 
