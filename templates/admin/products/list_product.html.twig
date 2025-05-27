@@ -22,7 +22,9 @@
                     <th class="p-4">Produit</th>
                     <th class="p-4">Créé le</th>
                     <th class="p-4">Stock</th>
-                    <th class="p-4">Prix</th>
+                    <th class="p-4">Prix de Vente</th>
+                    <th class="p-4">Prix de d'achat</th>
+                    <th class="p-4">Marge</th>
                     <th class="p-4">Public</th>
                     <th class="p-4">Actions</th>
                 </tr>
@@ -52,6 +54,14 @@
                             {% endif %}
                         </td>
                         <td class="p-4">{{ product.price|number_format(2, '.', ',') }} €</td>
+                        <td class="p-4">{{ product.purchasePrice|number_format(2, '.', ',') }} €</td>
+                        <td class="p-4">
+                            {% if product.margin is not null %}
+                                <span class="text-sm font-semibold text-blue-600">{{ product.margin }} %</span>
+                            {% else %}
+                                <span class="text-gray-400 italic">Indéfini</span>
+                            {% endif %}
+                        </td>
                         <td class="p-4"> 
                               {% if product.isActive %}
                                    <span>✔️</span> <!-- Checkmark en vert -->

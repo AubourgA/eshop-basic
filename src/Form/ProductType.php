@@ -32,6 +32,10 @@ class ProductType extends AbstractType
             ->add('stock', IntegerType::class, [
                 'label' => 'Quantité',
             ])
+             ->add('purchasePrice', NumberType::class, [
+                'label' => 'Coût d’achat (€)',
+                'required' => true,
+            ])
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'required' => false,

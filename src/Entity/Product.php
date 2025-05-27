@@ -25,13 +25,13 @@ class Product
     private ?string $description = null;
 
     #[ORM\Column]
-    // #[Assert\NotBlank(message: "Le prix est obligatoire.")]
-    // #[Assert\Positive(message: "Le prix doit être positif.")]
+    #[Assert\NotBlank(message: "Le prix est obligatoire.")]
+    #[Assert\Positive(message: "Le prix doit être positif.")]
     private ?float $price = null;
 
     #[ORM\Column]
-    // #[Assert\NotBlank(message: "La quantité est obligatoire.")]
-    // #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
+    #[Assert\NotBlank(message: "La quantité est obligatoire.")]
+    #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
     private ?int $stock = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -48,6 +48,10 @@ class Product
 
     #[ORM\Column]
     private ?bool $isActive = null;
+
+    #[ORM\Column]
+    #[Assert\PositiveOrZero(message: "Le coût d’achat ne peut pas être négatif.")]
+    private ?float $purchasePrice = null;
 
     public function __construct()
     {
@@ -172,5 +176,26 @@ class Product
         $this->isActive = $isActive;
 
         return $this;
+    }
+
+    public function getPurchasePrice(): ?float
+    {
+        return $this->purchasePrice;
+    }
+
+    public function setPurchasePrice(float $purchasePrice): static
+    {
+        $this->purchasePrice = $purchasePrice;
+
+        return $this;
+    }
+
+    public function getMargin(): ?float
+    {
+        if ($this->purchasePrice !== null && $this->price !== null && $this->purchasePrice > 0) {
+            return round((($this->price - $this->purchasePrice) / $this->purchasePrice) * 100, 2);
+        }
+
+        return null;
     }
 }
