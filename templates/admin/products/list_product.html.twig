@@ -25,6 +25,7 @@
                     <th class="p-4">Prix de Vente</th>
                     <th class="p-4">Prix de d'achat</th>
                     <th class="p-4">Marge</th>
+                    <th class="p-4">Marketing</th>
                     <th class="p-4">Public</th>
                     <th class="p-4">Actions</th>
                 </tr>
@@ -62,6 +63,7 @@
                                 <span class="text-gray-400 italic">Indéfini</span>
                             {% endif %}
                         </td>
+                        <td class="p-4">{{ product.marketingPosition ? product.marketingPosition.label() : '' }}</td>
                         <td class="p-4"> 
                               {% if product.isActive %}
                                    <span>✔️</span> <!-- Checkmark en vert -->

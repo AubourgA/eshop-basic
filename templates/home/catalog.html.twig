@@ -14,15 +14,26 @@
         <!-- Section Catalogue -->
         <main class="container mx-auto px-6 py-12">
             <h2 class="text-3xl font-semibold text-pink-700 text-center">Nos Produits</h2>
-            <div class="grid md:grid-cols-3 gap-8 mt-8">
+
+             <div class="grid md:grid-cols-3 gap-8 mt-8">
                 {% for product in products %}
-                    <div class="bg-white p-6 shadow-lg rounded-lg text-center">
-                        <img src="{{ asset('uploads/' ~ product.imageFileName) }}" alt="{{ product.imageFileName }}" class="w-full h-48 object-cover rounded-lg">
-                        <h3 class="text-xl font-semibold text-pink-800 mt-4">{{ product.designation }}</h3>
-                        <p class="text-gray-600 mt-2">{{ product.description }}</p>
-                        <span class="text-pink-700 font-bold text-lg my-4 block">{{ product.price }} €</span>
-                        <a href="{{ path('app_product_detail', {'id' : product.id })}}" class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</a>
+                   <div class="bg-white p-6 shadow-lg rounded-lg text-center relative">
+                    <div class="relative">
+                        <img src="{{ asset('uploads/' ~ product.imageFileName) }}" alt="{{ product.designation }}" class="w-full h-48 object-cover rounded-lg">
+
+                        {% if product.marketingPosition %}
+                            {% include 'partials/_badgeMarketing.html.twig' with {
+                                style: product.marketingPosition.value,
+                                label: product.marketingPosition.label()
+                            } %}
+                        {% endif %}
                     </div>
+
+                    <h3 class="text-xl font-semibold text-pink-800 mt-4">{{ product.designation }}</h3>
+                    <p class="text-gray-600 mt-2">{{ product.description }}</p>
+                    <span class="text-pink-700 font-bold text-lg my-4 block">{{ product.price }} €</span>
+                    <a href="{{ path('app_product_detail', {'id' : product.id })}}" class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</a>
+                </div>
                 {% endfor %}
             </div>
         </main>

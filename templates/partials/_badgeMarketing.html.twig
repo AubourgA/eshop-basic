@@ -1,0 +1,10 @@
+{% set styles = {
+    'Best Seller': 'bg-green-600 text-white',
+    'Nouveauté': 'bg-red-600 text-white',
+    'DE SAISON': 'bg-yellow-400 text-black',
+    'En Promotion': 'bg-blue-500 text-white'
+} %}
+
+<span class="absolute top-2 right-2 text-xs font-bold px-3 py-1 rounded-full shadow-lg {{ styles[style] ?? 'bg-gray-500 text-white' }}">
+    {{ label }}
+</span>

@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\MarketingPosition;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -52,6 +53,9 @@ class Product
     #[ORM\Column]
     #[Assert\PositiveOrZero(message: "Le coût d’achat ne peut pas être négatif.")]
     private ?float $purchasePrice = null;
+
+    #[ORM\Column(type:'string', enumType: MarketingPosition::class, nullable: true)]
+    private ?MarketingPosition $marketingPosition = null;
 
     public function __construct()
     {
@@ -197,5 +201,17 @@ class Product
         }
 
         return null;
+    }
+
+    public function getMarketingPosition(): ?MarketingPosition
+    {
+        return $this->marketingPosition;
+    }
+
+    public function setMarketingPosition(?MarketingPosition $marketingPosition): self
+    {
+        $this->marketingPosition = $marketingPosition;
+
+        return $this;
     }
 }

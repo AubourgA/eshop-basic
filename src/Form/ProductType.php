@@ -6,14 +6,14 @@ use App\Entity\Product;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
-
+use App\Enum\MarketingPosition;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Validator\Constraints\Required;
+
 
 class ProductType extends AbstractType
 {
@@ -36,6 +36,14 @@ class ProductType extends AbstractType
                 'label' => 'Coût d’achat (€)',
                 'required' => true,
             ])
+            ->add('marketingPosition', EnumType::class, [
+                    'class' => MarketingPosition::class,
+                    'label' => 'Positionnement marketing',
+                    'choices' => MarketingPosition::choices(),
+                    'placeholder' => 'Aucun',
+                    'required' => false,
+                     'choice_label' => fn (MarketingPosition $choice) => $choice->label(), // optionnel si tu veux afficher un label plus propre
+                ])
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'required' => false,

@@ -62,6 +62,19 @@
         </div>
    
         <div class="mb-4">
+            {{ form_label(form.marketingPosition, 'Positionnement marketing', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.marketingPosition, {
+                'attr': {
+                    'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'
+                }
+              }) 
+            }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.marketingPosition) }}
+            </div>
+        </div>
+
+        <div class="mb-4">
                 <label class="flex items-center space-x-4">
                     {{ form_label(form.isActive, 'Public', {'label_attr': {'class': 'text-gray-700 font-medium'}}) }}
                     
