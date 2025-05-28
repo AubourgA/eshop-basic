@@ -49,6 +49,7 @@ security:
          - { path: ^/admin/dashboard, roles: ROLE_EMPLOYE }
          - { path: ^/admin/product, roles: ROLE_PRODUCT }
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/product/admin/historic/, roles: ROLE_PRODUCT }
          - { path: ^/product/admin/create, roles: ROLE_PRODUCT }
          - { path: ^/product, roles: ROLE_CUSTOMER }
          - { path: ^/dashboard, roles: ROLE_CUSTOMER }

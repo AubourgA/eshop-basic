@@ -1,0 +1,60 @@
+{% extends 'layout/admin_layout.html.twig' %}
+
+{% block title %}Evolution du prix de vente{% endblock %}
+
+{% block main %}
+<div class="bg-white p-4 rounded-lg">
+    <div class="bg-white p-6 rounded-lg shadow-md  mx-auto my-6">
+        <h1 class="text-3xl font-bold text-gray-800">
+            Produit : <span class="text-indigo-600">{{ productHistoPrice[0].product.designation|default("Non disponible") }}</span>
+        </h1>
+    </div>
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Evolution du Tarif de Vente</h1>
+        
+    </div>
+    
+   
+      {# Bloc pour le graphique #}
+    <div class="mb-10 w-full" >
+        <canvas data-controller="tarif"
+        data-tarif-target="canvas"
+                data-tarif-labels-value='{{ productHistoPrice|map(p => p.changedAt|date("d/m/Y H:i"))|json_encode|raw }}'
+                data-tarif-data-value='{{ productHistoPrice|map(p => p.newPrice)|json_encode|raw }}'
+               >
+</canvas>
+    </div>
+
+
+    {# Bloc pour la table d'historique #}
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-700">Ancien prix</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-700">Nouveau prix</th>
+                    <th class="px-4 py-2 text-left font-semibold text-gray-700">Date de modification</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for histo in productHistoPrice %}
+                    <tr>
+                        <td class="px-4 py-2 text-gray-800">{{ histo.oldPrice }} €</td>
+                        <td class="px-4 py-2 text-gray-800">{{ histo.newPrice }} €</td>
+                        <td class="px-4 py-2 text-gray-600">{{ histo.changedAt|date('d/m/Y H:i') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="px-4 py-4 text-center text-gray-500">Aucun historique de prix disponible.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+ {{ parent() }}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}

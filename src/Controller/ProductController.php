@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\ProductPriceHistory;
 use App\Form\ProductType;
+use App\Repository\ProductPriceHistoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Services\FileUploaderService;
@@ -16,6 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductController extends AbstractController
 {
 
+    /**
+     * fiche produit accecible public
+     */
     #[Route('/{id}', name: '_detail', methods: ['GET'], priority:-1)]
     public function detail(Product $product, ProductRepository $productRepo): Response
     {
@@ -26,7 +31,7 @@ class ProductController extends AbstractController
     }
   
 
-    #[Route('/admin/create', name: '_admin_create', methods:['GET','POST'], priority:2)]
+    #[Route('/admin/create', name: '_admin_create', methods:['GET','POST'], priority:1)]
     public function create(Request $request,
                            FileUploaderService $fileUploader,
                            EntityManagerInterface $entityManager): Response
@@ -53,7 +58,18 @@ class ProductController extends AbstractController
         ]);
     }
 
+    /**
+     * Recuperere les enregistrement de l'évolution du prix de vente selon le produit
+     * dans la partie ADMIN
+     */
+    #[Route('/admin/historic/{id}', name: '_admin_historic', methods: ['GET'], priority:2)]
+    public function historic(Product $product, ProductPriceHistoryRepository $histoRepo):Response
+    {
 
+        return $this->render('admin/products/historic_product.html.twig', [
+            'productHistoPrice' => $histoRepo->findBy(['product' => $product])
+        ]);
+    }
  
   
 
