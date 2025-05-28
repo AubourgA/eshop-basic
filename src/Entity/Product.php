@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -57,10 +58,17 @@ class Product
     #[ORM\Column(type:'string', enumType: MarketingPosition::class, nullable: true)]
     private ?MarketingPosition $marketingPosition = null;
 
+    /**
+     * @var Collection<int, ProductPriceHistory>
+     */
+    #[ORM\OneToMany(targetEntity: ProductPriceHistory::class, mappedBy: 'product', orphanRemoval: true)]
+    private Collection $productPriceHistories;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->itemOrders = new ArrayCollection();
+        $this->productPriceHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +219,36 @@ class Product
     public function setMarketingPosition(?MarketingPosition $marketingPosition): self
     {
         $this->marketingPosition = $marketingPosition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductPriceHistory>
+     */
+    public function getProductPriceHistories(): Collection
+    {
+        return $this->productPriceHistories;
+    }
+
+    public function addProductPriceHistory(ProductPriceHistory $productPriceHistory): static
+    {
+        if (!$this->productPriceHistories->contains($productPriceHistory)) {
+            $this->productPriceHistories->add($productPriceHistory);
+            $productPriceHistory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPriceHistory(ProductPriceHistory $productPriceHistory): static
+    {
+        if ($this->productPriceHistories->removeElement($productPriceHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($productPriceHistory->getProduct() === $this) {
+                $productPriceHistory->setProduct(null);
+            }
+        }
 
         return $this;
     }
