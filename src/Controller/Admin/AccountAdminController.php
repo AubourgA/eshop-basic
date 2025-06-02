@@ -6,6 +6,7 @@ use App\Repository\CustomerRepository;
 use App\Repository\ManagerRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\StockRepository;
 use App\Services\DashboardDataProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,14 @@ final class AccountAdminController extends AbstractController
     {
         return $this->render('admin/products/list_product.html.twig', [
             'products' => $productRepo->findAll(),
+        ]);
+    }
+
+    #[Route('/stock', name: '_stock', methods: ['GET'])]
+    public function list(StockRepository $stockRepository): Response
+    {
+        return $this->render('admin/stocks/stock_list.html.twig', [
+                'stocks' => $stockRepository->findAll()
         ]);
     }
 

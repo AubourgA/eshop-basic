@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Stock;
 use App\Entity\ProductPriceHistory;
 use App\Form\ProductType;
 use App\Repository\ProductPriceHistoryRepository;
@@ -30,33 +31,6 @@ class ProductController extends AbstractController
         ]);
     }
   
-
-    #[Route('/admin/create', name: '_admin_create', methods:['GET','POST'], priority:1)]
-    public function create(Request $request,
-                           FileUploaderService $fileUploader,
-                           EntityManagerInterface $entityManager): Response
-    {
-
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
-
-            if($imageFile) {
-                $newFilename = $fileUploader->uploadFile($imageFile);
-                $product->setImageFileName($newFilename);
-                $entityManager->persist($product);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_product_list');
-            }
-        }
-
-        return $this->render('product/product_create.html.twig', [
-            'form' => $form,
-        ]);
-    }
 
     /**
      * Recuperere les enregistrement de l'évolution du prix de vente selon le produit

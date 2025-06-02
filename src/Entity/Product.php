@@ -31,11 +31,6 @@ class Product
     #[Assert\Positive(message: "Le prix doit être positif.")]
     private ?float $price = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank(message: "La quantité est obligatoire.")]
-    #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
-    private ?int $stock = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFileName = null;
 
@@ -63,6 +58,9 @@ class Product
      */
     #[ORM\OneToMany(targetEntity: ProductPriceHistory::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $productPriceHistories;
+
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?Stock $stock = null;
 
     public function __construct()
     {
@@ -108,18 +106,6 @@ class Product
     public function setPrice(float $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): static
-    {
-        $this->stock = $stock;
 
         return $this;
     }
@@ -249,6 +235,23 @@ class Product
                 $productPriceHistory->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStock(): ?Stock
+    {
+        return $this->stock;
+    }
+
+    public function setStock(Stock $stock): static
+    {
+        // set the owning side of the relation if necessary
+        if ($stock->getProduct() !== $this) {
+            $stock->setProduct($this);
+        }
+
+        $this->stock = $stock;
 
         return $this;
     }

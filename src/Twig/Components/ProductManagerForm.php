@@ -3,6 +3,7 @@
 namespace App\Twig\Components;
 
 use App\Entity\Product;
+use App\Entity\Stock;
 use App\Form\ProductType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Services\FileUploaderService;
@@ -47,7 +48,15 @@ final class ProductManagerForm extends AbstractController
             $product->setImageFileName($newFilename);
         }
      
+          //initialisation du stock
+                $stock = new Stock();
+                $stock->setProduct($product);
+                $stock->setQuantity(0); // stock initial vide
+                $stock->setThreshold(0);
+                $product->setStock($stock);
+        
         $entityManager->persist($product);
+        $entityManager->persist($stock);
         $entityManager->flush();
 
         $this->dispatchBrowserEvent('modal:close');

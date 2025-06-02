@@ -21,7 +21,6 @@
                     <th class="p-4">Image</th>
                     <th class="p-4">Produit</th>
                     <th class="p-4">Créé le</th>
-                    <th class="p-4">Stock</th>
                     <th class="p-4">Prix de Vente</th>
                     <th class="p-4">Prix de d'achat</th>
                     <th class="p-4">Marge</th>
@@ -45,15 +44,7 @@
                             <p class="text-gray-500 text-sm">{{ product.description }}</p>
                         </td>
                         <td class="p-4">{{ product.createdAt|date('d M Y') }}</td>
-                        <td class="p-4">
-                            {% if product.stock > 10 %}
-                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded">En stock</span>
-                            {% elseif product.stock > 0 %}
-                                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Stock faible</span>
-                            {% else %}
-                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded">Rupture</span>
-                            {% endif %}
-                        </td>
+                   
                         <td class="p-4">{{ product.price|number_format(2, '.', ',') }} €</td>
                         <td class="p-4">{{ product.purchasePrice|number_format(2, '.', ',') }} €</td>
                         <td class="p-4">
