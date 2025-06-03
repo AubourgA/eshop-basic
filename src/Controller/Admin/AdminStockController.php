@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\StockMouvement;
 use App\Form\StockMouvementType;
+use App\Repository\ItemOrderRepository;
 use App\Repository\StockMouvementRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,12 +21,22 @@ class AdminStockController extends AbstractController
                             Request $request,
                             StockRepository $stockRepository,
                             StockMouvementRepository $stockMouvementRepository,
+                            ItemOrderRepository $itemOrderRepository,
                             EntityManagerInterface $em): Response
     {
       
         $stockProduct = $stockRepository->findOneBy(['product'=> $id]);
+
+        // Vérifier si le stock existe
+         if (!$stockProduct) {
+        throw $this->createNotFoundException('Stock non trouvé');
+        }
+
         $stockProductID = $stockProduct->getId();
 
+        // recuperer les variable du stock
+         $reservedQty = $itemOrderRepository->getReservedQuantityForProduct($stockProduct->getProduct());
+         $availableQty = $stockProduct->getQuantity() - $reservedQty;
 
         //creer un mouvement
         $mouvement = new StockMouvement();
@@ -53,6 +64,8 @@ class AdminStockController extends AbstractController
         return $this->render('admin/stocks/stock_detail.html.twig', [
            'stockProduct' => $stockProduct,
            'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProductID]),
+           'reservedQty' => $reservedQty,
+           'availableQty' => $availableQty,
            'form'=>$form
         ]);
     }

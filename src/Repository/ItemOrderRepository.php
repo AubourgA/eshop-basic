@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\ItemOrder;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Enum\PaymentStatus;
+use App\Enum\OrderStatus;
 
 /**
  * @extends ServiceEntityRepository<ItemOrder>
@@ -41,4 +43,20 @@ class ItemOrderRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+
+    public function getReservedQuantityForProduct(Product $product): int
+    {
+        $qb = $this->createQueryBuilder('io')
+            ->select('SUM(io.quantity)')
+            ->join('io.orderNum', 'o')
+            ->where('io.product = :product')
+            ->andWhere('o.paymentStatus = :paid')
+            ->andWhere('o.status = :status')
+            ->setParameter('product', $product)
+            ->setParameter('paid', \App\Enum\PaymentStatus::PAYED)
+            ->setParameter('status', \App\Enum\OrderStatus::PROCESSING);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
 }
