@@ -44,6 +44,13 @@ class ItemOrderRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    /**
+     * Récupère la quantité totale de produits réservés pour un produit spécifique,
+     * uniquement pour les commandes dont le statut est PROCESSING et le paiement est PAYED.
+     *
+     * @param Product $product L'entité Product pour laquelle on veut connaître la quantité réservée
+     * @return int Retourne la quantité totale réservée pour le produit
+     */
     public function getReservedQuantityForProduct(Product $product): int
     {
         $qb = $this->createQueryBuilder('io')
@@ -53,8 +60,8 @@ class ItemOrderRepository extends ServiceEntityRepository
             ->andWhere('o.paymentStatus = :paid')
             ->andWhere('o.status = :status')
             ->setParameter('product', $product)
-            ->setParameter('paid', \App\Enum\PaymentStatus::PAYED)
-            ->setParameter('status', \App\Enum\OrderStatus::PROCESSING);
+            ->setParameter('paid', PaymentStatus::PAYED)
+            ->setParameter('status', OrderStatus::PROCESSING);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }

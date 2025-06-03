@@ -7,6 +7,7 @@ use App\Form\StockMouvementType;
 use App\Repository\ItemOrderRepository;
 use App\Repository\StockMouvementRepository;
 use App\Repository\StockRepository;
+use App\Services\StockManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,22 +22,15 @@ class AdminStockController extends AbstractController
                             Request $request,
                             StockRepository $stockRepository,
                             StockMouvementRepository $stockMouvementRepository,
-                            ItemOrderRepository $itemOrderRepository,
-                            EntityManagerInterface $em): Response
+                            StockManager $stockManager): Response
     {
       
         $stockProduct = $stockRepository->findOneBy(['product'=> $id]);
 
         // Vérifier si le stock existe
          if (!$stockProduct) {
-        throw $this->createNotFoundException('Stock non trouvé');
+            throw $this->createNotFoundException('Stock non trouvé');
         }
-
-        $stockProductID = $stockProduct->getId();
-
-        // recuperer les variable du stock
-         $reservedQty = $itemOrderRepository->getReservedQuantityForProduct($stockProduct->getProduct());
-         $availableQty = $stockProduct->getQuantity() - $reservedQty;
 
         //creer un mouvement
         $mouvement = new StockMouvement();
@@ -44,28 +38,16 @@ class AdminStockController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+             $stockManager->applyStockMovement($stockProduct, $mouvement, $this->getUser());
 
-            $mouvement = $form->getData();
-            $mouvement->setManager($this->getUser());
-            $mouvement->setStock($stockProduct);
-            
-             if ($mouvement->getType() === 'IN') {
-                $stockProduct->setQuantity($stockProduct->getQuantity() + $mouvement->getQuantity());
-            } elseif ($mouvement->getType() === 'OUT') {
-                $stockProduct->setQuantity($stockProduct->getQuantity() - $mouvement->getQuantity());
-    }
-         
-            $em->persist($mouvement);
-            $em->flush();
-            $this->addFlash('success', 'Mouvement de stock ajouté avec succès');
             return $this->redirectToRoute('app_admin_stock_detail', ['id' => $id]);
         }
 
         return $this->render('admin/stocks/stock_detail.html.twig', [
            'stockProduct' => $stockProduct,
-           'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProductID]),
-           'reservedQty' => $reservedQty,
-           'availableQty' => $availableQty,
+           'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProduct->getId()]),
+           'reservedQty' => $stockManager->getReservedQuantity($stockProduct),
+           'availableQty' => $stockManager->getAvailableQuantity($stockProduct),
            'form'=>$form
         ]);
     }
