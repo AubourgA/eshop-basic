@@ -7,6 +7,9 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Stock du produit : {{ stockProduct.product.designation }}</h2>
         {# a creer unform avec symfony #}
+
+
+        <!-- form select -->
         <form method="get" action="" class="flex gap-2 items-center">
             <label for="product" class="text-sm text-gray-600">Autre produit :</label>
             <select name="id" id="product" class="border-gray-300 rounded-md" onchange="this.form.submit()">
@@ -16,6 +19,33 @@
             </select>
         </form>
     </div>
+        <!-- Bandeau Alert Seuil-->
+        {% if availableQty <= stockProduct.threshold %}
+            <div class="flex items-center gap-4 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-6">
+              <div> 
+                    <p>⚠️</p>
+               </div>
+               <div>
+                    <p class="font-semibold">Attention : Stock critique</p>
+                    <p class="text-sm">
+                        La quantité disponible (<strong>{{ availableQty }}</strong>) est inférieure ou égale au seuil minimum défini (<strong>{{ stockProduct.threshold }}</strong>).
+                        Pensez à réapprovisionner ce produit.
+                    </p>
+                </div>
+            </div>
+            {% elseif availableQty <= stockProduct.threshold + 10 %}
+               
+                <div class="flex items-center gap-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 p-4 rounded-md mb-6">
+                    <div>🔔</div>
+                    <div>
+                        <p class="font-semibold"> Stock bas</p>
+                        <p class="text-sm">
+                            La quantité disponible (<strong>{{ availableQty }}</strong>) approche du seuil minimum (<strong>{{ stockProduct.threshold }}</strong>).
+                            Une commande pourrait être nécessaire bientôt.
+                        </p>
+                    </div>
+               </div>
+        {% endif %}
 
     <!-- Bloc état du stock -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
