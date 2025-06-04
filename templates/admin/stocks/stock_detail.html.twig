@@ -36,10 +36,13 @@
      <!-- Bloc seuils -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
        
-        <div class="bg-orange-50 p-4 rounded">
+        {# <div class="bg-orange-50 p-4 rounded">
             <p class="text-sm text-orange-700">Seuil minimum</p>
             <p class="text-lg font-semibold text-orange-900">{{ stockProduct.threshold}}</p>
-        </div>
+        </div> #}
+
+        {# {{ component('EditThresholdComponent', { stock: stockProduct }) }} #}
+        {{ component('EditThresholdComponent', { stock : stockProduct } ) }}
        
     </div>
 

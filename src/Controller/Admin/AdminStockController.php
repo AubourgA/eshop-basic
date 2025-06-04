@@ -4,11 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\StockMouvement;
 use App\Form\StockMouvementType;
-use App\Repository\ItemOrderRepository;
 use App\Repository\StockMouvementRepository;
 use App\Repository\StockRepository;
 use App\Services\StockManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +43,7 @@ class AdminStockController extends AbstractController
 
         return $this->render('admin/stocks/stock_detail.html.twig', [
            'stockProduct' => $stockProduct,
-           'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProduct->getId()]),
+           'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProduct->getId()],['createdAt'=>'DESC']),
            'reservedQty' => $stockManager->getReservedQuantity($stockProduct),
            'availableQty' => $stockManager->getAvailableQuantity($stockProduct),
            'form'=>$form

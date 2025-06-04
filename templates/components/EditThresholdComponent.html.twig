@@ -1,0 +1,36 @@
+<div {{ attributes }}>
+
+{% if isEditing %}
+    <div class="bg-orange-50 p-4 rounded space-y-2">
+        <p class="text-sm text-orange-700">Modifier le seuil minimum</p>
+        <form >
+            <input 
+                type="number" 
+                class="border border-orange-300 rounded px-2 py-1 w-full"
+                data-model="stock.threshold">
+            <div class="flex justify-end space-x-2">
+                <button data-action="live#action" 
+                        data-live-action-param="save"
+                        class="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600"
+                        >Sauvegarder</button>
+                
+            </div>
+        </form>
+    </div>
+{% else %}
+    <div class="bg-orange-50 p-4 rounded">
+        <p class="text-sm text-orange-700">Seuil minimum</p>
+        <p class="text-lg font-semibold text-orange-900">{{ stock.threshold }}</p>
+         <button data-action="live#action"
+                 data-live-action-param="activateEditing"
+                 class="text-sm text-orange-600 mt-2 hover:underline">
+                Modifier le seuil
+         </button>
+   </div>
+{% endif %}
+</div>
+
+
+        
+
+
