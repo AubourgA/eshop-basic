@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\StockMouvement;
+use App\Form\Handler\ProductSelectFormHandler;
+use App\Form\ProductSelectType;
 use App\Form\StockMouvementType;
 use App\Repository\StockMouvementRepository;
 use App\Repository\StockRepository;
@@ -20,7 +22,8 @@ class AdminStockController extends AbstractController
                             Request $request,
                             StockRepository $stockRepository,
                             StockMouvementRepository $stockMouvementRepository,
-                            StockManager $stockManager): Response
+                            StockManager $stockManager,
+                            ProductSelectFormHandler $productFormHandler): Response
     {
       
         $stockProduct = $stockRepository->findOneBy(['product'=> $id]);
@@ -30,6 +33,11 @@ class AdminStockController extends AbstractController
             throw $this->createNotFoundException('Stock non trouvé');
         }
 
+        
+        if ($redirectResponse = $productFormHandler->handle($request)) {
+            return $redirectResponse;
+       }
+       
         //creer un mouvement
         $mouvement = new StockMouvement();
         $form = $this->createForm(StockMouvementType::class, $mouvement);
@@ -41,12 +49,14 @@ class AdminStockController extends AbstractController
             return $this->redirectToRoute('app_admin_stock_detail', ['id' => $id]);
         }
 
+
         return $this->render('admin/stocks/stock_detail.html.twig', [
            'stockProduct' => $stockProduct,
            'stockMove' => $stockMouvementRepository->findBy(['stock'=> $stockProduct->getId()],['createdAt'=>'DESC']),
            'reservedQty' => $stockManager->getReservedQuantity($stockProduct),
            'availableQty' => $stockManager->getAvailableQuantity($stockProduct),
-           'form'=>$form
+           'form'=>$form,
+           'selectProductForm' => $productFormHandler->createForm(),
         ]);
     }
 }
