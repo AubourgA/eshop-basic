@@ -8,8 +8,10 @@ use App\Entity\ProductPriceHistory;
 use App\Form\ProductType;
 use App\Repository\ProductPriceHistoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Services\FileUploaderService;
+use App\Services\StockManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +25,23 @@ class ProductController extends AbstractController
      * fiche produit accecible public
      */
     #[Route('/{id}', name: '_detail', methods: ['GET'], priority:-1)]
-    public function detail(Product $product, ProductRepository $productRepo): Response
+    public function detail(Product $product, 
+                            ProductRepository $productRepo,
+                            StockRepository $stockRepository,
+                            StockManager $stockManager): Response
     {
+
+        $stock = $stockRepository->findOneBy(['product' => $product]);
+
+        $availableQty = null;
+
+        if ($stock) {
+            $availableQty = $stockManager->getAvailableQuantity($stock);
+        }
 
         return $this->render('product/detail.html.twig', [
             'product' => $productRepo->find($product->getId()),
+            'availableQty' => $availableQty,
         ]);
     }
   
