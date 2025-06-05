@@ -6,28 +6,47 @@
 <div class="bg-white p-6 rounded-xl shadow-md">
     <h1 class="text-2xl font-bold text-gray-800 mb-4">Vue globale du stock</h1>
 
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="flex justify-between items-center bg-gray-100 p-4 rounded">
+        
+            <p class="text-gray-500 text-sm">
+            Quantité total Stock</p>
+            <p class="text-xl font-bold text-gray-800">{{fullStockQuantity}}</p>
+        </div>
+        <div class="flex justify-between items-center bg-green-100 p-4 rounded">
+            <p class="text-gray-500 text-sm">Nombre Réf sous seuil</p>
+            <p class="text-xl font-bold text-green-800">{{productsUnderThreshold}}</p>
+        </div>
+        <div class="flex justify-between items-center bg-yellow-100 p-4 rounded">
+            <p class="text-gray-500 text-sm">Valeur Stock</p>
+            <p class="text-xl font-bold text-yellow-800"> {{fullStockValue}} €</p>
+        </div>
+    </div>
+
+
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left text-gray-700 font-semibold">Produit</th>
-                    <th class="px-4 py-2 text-left text-gray-700 font-semibold">Quantié Physique</th>
-                    <th class="px-4 py-2 text-left text-gray-700 font-semibold">Qtite Dispo</th>
-                    <th class="px-4 py-2 text-left text-gray-700 font-semibold">Qtite a Envoyé</th>
-                    <th class="px-4 py-2 text-left text-gray-700 font-semibold">Emplacement</th>
-                    <th class="px-4 py-2 text-left">Action</th>
+        <table class="min-w-full divide-y divide-gray-200 text-sm ">
+            <thead class=" bg-gray-50">
+                <tr class="text-center font-semibold">
+                    <th class="px-4 py-2  text-gray-700 ">Produit</th>
+                    <th class="px-4 py-2  text-gray-700 ">Quantié Physique</th>
+                    <th class="px-4 py-2  text-gray-700 ">Qtite Dispo</th>
+                    <th class="px-4 py-2  text-gray-700 ">Qtite a Envoyé</th>
+                    <th class="px-4 py-2  text-gray-700 ">Emplacement</th>
+                    <th class="px-4 py-2 ">Action</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                {% for stock in stocks %}
+            <tbody class="text-center bg-white divide-y divide-gray-100">
+              
+                {% for data in stocksWithData %}
                 <tr>
-                    <td class="px-4 py-2 text-gray-800">{{ stock.product.designation }}</td>
-                    <td class="px-4 py-2 text-gray-700 font-semibold">{{ stock.quantity }}</td>
+                    <td class="px-4 py-2 text-gray-700">{{ data.stock.product.designation }}</td>
+                    <td class="px-4 py-2 text-gray-700">{{ data.stock.quantity }}</td>
+                    <td class="px-4 py-2 text-gray-700">{{ data.available}}</td>
+                    <td class="px-4 py-2 text-gray-700">{{ data.reserved}}</td>
                     <td class="px-4 py-2 text-gray-700"></td>
-                    <td class="px-4 py-2 text-gray-700"></td>
-                    <td class="px-4 py-2 text-gray-600"></td>
-                    <td class="px-4 py-2 text-right">
-                        <a href="{{ path('app_admin_stock_detail', { id: stock.product.id }) }}" class="text-indigo-600 hover:underline text-sm font-medium">Voir</a>
+                    <td class="px-4 py-2 ">
+                        <a href="{{ path('app_admin_stock_detail', { id: data.stock.product.id }) }}" class="text-indigo-600 hover:underline text-sm font-medium">Voir</a>
                     </td>
                 </tr>
                 {% else %}

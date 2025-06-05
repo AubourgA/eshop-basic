@@ -8,6 +8,7 @@ use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
 use App\Services\DashboardDataProvider;
+use App\Services\StockManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,10 +40,18 @@ final class AccountAdminController extends AbstractController
     }
 
     #[Route('/stock', name: '_stock', methods: ['GET'])]
-    public function list(StockRepository $stockRepository): Response
+    public function list(StockRepository $stockRepository,
+                        StockManager $stockManager  ): Response
     {
+        $stocks = $stockRepository->findAll();
+
+       
+
         return $this->render('admin/stocks/stock_list.html.twig', [
-                'stocks' => $stockRepository->findAll()
+            'stocksWithData' => $stockManager->getStocksWithCalculatedData($stocks),
+            'fullStockValue' => $stockManager->getFullStockValue($stocks),
+            'fullStockQuantity' => $stockManager->getFullStockQuantity($stocks),
+            'productsUnderThreshold' => $stockManager->getStockUnderThreshold($stocks),
         ]);
     }
 
