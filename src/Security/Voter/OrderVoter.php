@@ -9,6 +9,15 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Contrôle d'accès pour les entités Order.
+ * 
+ * Ce voter gère les droits d'accès pour visualiser une commande individuelle (VIEW)
+ * ou toutes les commandes (VIEW_ALL).
+ * 
+ * - VIEW : accès autorisé au client propriétaire de la commande ou aux utilisateurs ayant le rôle ROLE_PRODUCT.
+ * - VIEW_ALL : accès réservé aux utilisateurs ayant le rôle ROLE_PRODUCT ou SUPERIEUR.
+ */
 final class OrderVoter extends Voter
 {
    
@@ -44,6 +53,16 @@ final class OrderVoter extends Voter
         };
     }
 
+    /**
+     * Vérifie si l'utilisateur peut voir la commande.
+     * 
+     * L'utilisateur peut voir la commande s'il est le client propriétaire.
+     * 
+     * @param Order $order La commande à vérifier
+     * @param UserInterface $user L'utilisateur courant
+     * 
+     * @return bool True si le client est propriétaire de la commande, false sinon
+     */
     private function canView(Order $order, User $user): bool
     {
         return $order->getCustomer() === $user;

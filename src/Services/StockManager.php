@@ -9,6 +9,14 @@ use App\Utils\StockCalculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
+/**
+ * Service de gestion du stock.
+ * 
+ * Fournit des méthodes pour calculer les quantités réservées,
+ * disponibles, appliquer des mouvements de stock et obtenir
+ * des données enrichies sur les stocks.
+ */
 class StockManager
 {
     public function __construct(

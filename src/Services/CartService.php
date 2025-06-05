@@ -7,6 +7,13 @@ use App\Repository\ProductRepository;
 use App\Repository\ShippingMethodRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Service de gestion du panier utilisateur.
+ * 
+ * Ce service permet d'ajouter, supprimer, récupérer le contenu
+ * du panier stocké en session, ainsi que calculer le total et
+ * récupérer la méthode de livraison par défaut.
+ */
 final class CartService
 {
     

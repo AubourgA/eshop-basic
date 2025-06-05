@@ -14,8 +14,38 @@ use Stripe\Checkout\Session;
 use App\Services\StripeService;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/payment', name: 'app_payment')]
+/**
+ * Contrôleur PaymentController
+ *
+ * Ce contrôleur gère tout le processus de paiement des commandes via Stripe Checkout.
+ * Il permet :
+ * 
+ * - La création d'une session Stripe Checkout à partir d'une commande existante
+ * - La redirection sécurisée de l'utilisateur vers l’interface de paiement Stripe
+ * - Le traitement du retour en cas de succès ou d’annulation du paiement
+ *
+ * ⚠️ Ce contrôleur est uniquement accessible aux utilisateurs authentifiés (`IS_AUTHENTICATED_FULLY`)
+ *
+ * 🔁 Cycle de paiement :
+ * 1. `checkout/{id}` : Crée une session de paiement Stripe pour la commande `Order` donnée.
+ * 2. `/success` : Affiche une page de succès si Stripe confirme le paiement.
+ * 3. `/cancel` : Affiche une page d'annulation, en cas d’abandon du paiement par l’utilisateur.
+ *
+ * 💳 Technologies :
+ * - Stripe API (via `StripeService`)
+ * - Doctrine (pour accéder aux entités `Order` et `ShippingMethod`)
+ * - `CartService` pour gérer le panier utilisateur
+ *
+ * 📁 Templates utilisés :
+ * - `payment/redirect.html.twig`
+ * - `payment/success.html.twig`
+ * - `payment/cancel.html.twig`
+ *
+ * @see \App\Services\StripeService pour la logique de création de session Stripe
+ * @see \App\Entity\Order pour les commandes client
+ */
 
+#[Route('/payment', name: 'app_payment')]
 final class PaymentController extends AbstractController
 {
     private $stripeService;

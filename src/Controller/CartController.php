@@ -9,6 +9,19 @@ use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use App\Services\CartService;
 use Symfony\Component\HttpFoundation\Request;
 
+
+/**
+ * Contrôleur responsable de la gestion du panier client.
+ *
+ * Ce contrôleur permet :
+ * - L'affichage du panier
+ * - L'ajout de produits au panier
+ * - La suppression d'un produit du panier
+ * - La réinitialisation complète du panier
+ *
+ * Toutes les actions de modification sont sécurisées via un token CSRF.
+ * Le panier est manipulé via le service `CartService`.
+ */
 final class CartController extends AbstractController
 {
     public function __construct(private CartService $cartService)

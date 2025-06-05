@@ -6,6 +6,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+/**
+ * Service pour gérer l'upload de fichiers.
+ * 
+ * Ce service permet de sécuriser et déplacer un fichier uploadé
+ * vers un répertoire donné, en renommant le fichier pour éviter
+ * les collisions et les caractères problématiques.
+ */
 class FileUploaderService
 {
     public function __construct(private string $uploadDir, 

@@ -12,7 +12,15 @@ use App\Repository\AddressRepository;
 use App\Repository\ShippingMethodRepository;
 use App\Services\CartService;
 
-
+/**
+ * Factory pour créer des objets Order à partir des données utilisateur et du panier.
+ * 
+ * Cette classe construit une commande complète à partir d'un utilisateur donné,
+ * récupère les adresses de livraison et facturation, la méthode de livraison par défaut,
+ * et les articles présents dans le panier via le service CartService.
+ * 
+ * @package App\Factory
+ */
 class OrderFactory
 {
     public function __construct(

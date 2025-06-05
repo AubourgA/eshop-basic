@@ -13,7 +13,15 @@ use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-
+/**
+ * Contrôleur pour gérer les webhooks Stripe.
+ *
+ * Cette classe reçoit les notifications envoyées par Stripe via webhook,
+ * vérifie leur authenticité, et traite les événements Stripe notamment 
+ * la complétion d'une session de paiement.
+ * 
+ * @package App\Controller
+ */
 class StripeWebhookController extends AbstractController
 {
 

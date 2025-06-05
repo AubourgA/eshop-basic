@@ -8,6 +8,16 @@ use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 
+/**
+ * Écouteur Doctrine pour enregistrer l'historique des changements de prix d'un produit.
+ * 
+ * Cet écouteur est déclenché après la mise à jour d'une entité Product.
+ * Il détecte si le prix a changé et, le cas échéant, crée un enregistrement dans
+ * ProductPriceHistory pour conserver l'historique des anciennes et nouvelles valeurs.
+ * 
+ * @see Product
+ * @see ProductPriceHistory
+ */
 #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: Product::class)]
 class ProductPriceListener
 {

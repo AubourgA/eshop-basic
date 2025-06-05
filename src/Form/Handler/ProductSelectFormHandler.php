@@ -8,6 +8,13 @@ use Symfony\Component\Routing\RouterInterface;
 use App\Form\ProductSelectType;
 use Symfony\Component\Form\FormFactoryInterface;
 
+/**
+ * Gestionnaire de formulaire pour la sélection d'un produit.
+ * 
+ * Ce service crée et traite le formulaire de sélection de produit,
+ * et redirige vers la page de détail du stock du produit sélectionné
+ * si le formulaire est soumis et valide.
+ */
 class ProductSelectFormHandler
 {
     public function __construct(

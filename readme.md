@@ -20,6 +20,17 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 - **Gestion du panier**
 - **Création et suivi des commandes**
 - **Paiement en ligne avec Stripe Checkout**
+- **Choix du transporteur** lors du passage de commande (ex: Colissimo, point relais)
+- **Dashboard client** avec résumé et historique des commandes
+- **Interface d'administration des produits** (accessible avec un rôle spécifique)
+  - Ajout d'informations commerciales : **coût d’achat**, **marge**
+  - Visualisation de l'historique changement de prix
+  - Ajout badge marketing sur la création/modification fiche produit
+  - Visibilité des produits (client ou non)
+- **Gestion du stock des produits**
+  - Visualisation des quantités disponibles et réservées
+  - Ajout de **mouvements de stock** (entrée / sortie) via un formulaire
+  - Alerte sur le niveau de stock par rapport à l'indicateur
   
 
 ## 🚀 Installation
@@ -68,10 +79,3 @@ php bin/console tailwind:build --watch
 
 Votre projet Symfony est maintenant accessible sur http://127.0.0.1:8000.
 
-## Utilisation
-
-- **Accédez au catalogue de produits**
-- **Inscrivez-vous et connectez-vous**
-- **Ajoutez des produits à votre panier**
-- **Validez votre commande**
-- **Procédez au paiement sécurisé via Stripe Checkout**

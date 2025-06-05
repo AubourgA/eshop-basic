@@ -13,6 +13,33 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Commande Symfony permettant de créer un utilisateur `Manager` via le terminal.
+ *
+ * Cette commande est destinée aux environnements de développement uniquement.
+ * Elle permet d’enregistrer un nouveau manager avec :
+ * - Un email
+ * - Un mot de passe (hashé automatiquement)
+ * - Un département
+ * - Un matricule généré automatiquement (6 chiffres)
+ * - Le rôle `ROLE_ADMIN`
+ *
+ * La commande est utile pour initialiser un compte administrateur dans un contexte local ou pour les tests.
+ *
+ * Dépendances injectées :
+ * - EntityManagerInterface : pour la persistance du manager
+ * - UserPasswordHasherInterface : pour hasher le mot de passe
+ * - KernelInterface : pour vérifier que l’environnement est bien `dev`
+ *
+ * En cas d'exécution dans un autre environnement que `dev`, la commande est bloquée pour éviter toute création non contrôlée.
+ *
+ * Utilisation :
+ * ```bash
+ * php bin/console app:create-manager
+ * ```
+ *
+ * Alias disponible : `app:add-manager`
+ */
 #[AsCommand(
     name: 'app:create-manager',
     description: 'Creates a new manager.',

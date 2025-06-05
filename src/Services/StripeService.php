@@ -5,6 +5,9 @@ namespace App\Services;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
+/**
+ * Service Stripe pour la gestion des paiements via Stripe Checkout.
+ */
 class StripeService
 {
 

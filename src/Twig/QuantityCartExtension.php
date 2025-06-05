@@ -8,6 +8,9 @@ use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 use App\Services\CartService;
 
+/**
+ * Extension Twig personnalisée pour afficher la quantité totale d'articles dans le panier.
+ */
 class QuantityCartExtension extends AbstractExtension
 {
     
