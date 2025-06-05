@@ -9,6 +9,8 @@ use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
 use App\Services\DashboardDataProvider;
 use App\Services\StockManager;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -56,11 +58,21 @@ final class AccountAdminController extends AbstractController
     }
 
     #[Route('/order', name: '_order', methods: ['GET'])]
-    public function orders(OrderRepository $orderRepo): Response
+    public function orders(OrderRepository $orderRepo, 
+                            Request $request,
+                            PaginatorInterface $paginator): Response
     {
        
+        //pagination
+        $pagination = $paginator->paginate(
+            $orderRepo->findAll(),
+            $request->query->getInt('page', 1), // page number
+            10 // limit per page
+        );
+
         return $this->render('admin/orders/list_order.html.twig', [
-            'orders' => $orderRepo->findAll(),
+            // 'orders' => $orderRepo->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

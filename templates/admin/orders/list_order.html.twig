@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    {% for order in orders %}
+                    {% for order in pagination %}
                         <tr class="hover:bg-gray-50">
                          
                             <td class="px-6 py-4 text-sm text-gray-600">{{ order.createdAt|date('d/m/Y') }}</td>
@@ -55,6 +55,9 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="flex justify-center items-center mt-4">
+                {{ knp_pagination_render(pagination) }}
+            </div>
     </div>
 </div>
 {% endblock %}
