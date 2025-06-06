@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+
 use App\Entity\Stock;
 use App\Entity\StockMouvement;
 use App\Repository\ItemOrderRepository;
+use App\Repository\OrderRepository;
 use App\Utils\StockCalculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Stripe\Forwarding\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,10 +24,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class StockManager
 {
     public function __construct(
-        private RequestStack $request,
-        private PaginatorInterface $paginator,
         private EntityManagerInterface $em,
-        private ItemOrderRepository $itemOrderRepository
+        private ItemOrderRepository $itemOrderRepository,
+        private OrderRepository $orderRepository
     ) {}
 
     /**
@@ -141,4 +141,5 @@ class StockManager
         return $count;
     }
     
+   
 }

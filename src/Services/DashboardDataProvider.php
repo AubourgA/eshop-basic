@@ -38,4 +38,6 @@ final class DashboardDataProvider
             'bestItemSold' => $this->itemOrderRepository->findMostSoldProducts(5)
         ];
     }
+
+    
 }

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Enum\OrderStatus;
+use App\Enum\PaymentStatus;
 use App\Repository\CustomerRepository;
 use App\Repository\ManagerRepository;
 use App\Repository\OrderRepository;
@@ -77,17 +79,36 @@ final class AccountAdminController extends AbstractController
                             PaginatorInterface $paginator): Response
     {
        
-       
         $pagination = $paginator->paginate(
             $orderRepo->findAll(),
             $request->query->getInt('page', 1),
             10 );
 
         return $this->render('admin/orders/list_order.html.twig', [
-            // 'orders' => $orderRepo->findAll(),
             'pagination' => $pagination,
         ]);
     }
+
+    #[Route('/export', name: '_export', methods: ['GET'])]
+    public function exportOrders(Request $request,
+                                PaginatorInterface $paginator,
+                                OrderRepository $orderRepo,
+                                StockManager $stockManager): Response
+    {
+       //paginaton commande a taiter
+        $pagination = $paginator->paginate(
+            $orderRepo->findOrdersByStatus(OrderStatus::PROCESSING, PaymentStatus::PAYED),
+            $request->query->getInt('page', 1),
+            10 );
+
+        
+       
+        return $this->render('admin/orders/export_orders.html.twig', [
+            'pagination' => $pagination,
+            'OrdersShipped' => $orderRepo->findOrdersByStatus(OrderStatus::SHIPPED, PaymentStatus::PAYED),
+        ]);
+    }
+
 
     #[Route('/customers', name: '_customers', methods: ['GET'])]
     public function customers(Request $request,
