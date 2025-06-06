@@ -38,7 +38,7 @@
             </thead>
             <tbody class="text-center bg-white divide-y divide-gray-100">
               
-                {% for data in stocksWithData %}
+                {% for data in pagination %}
                 <tr>
                     <td class="px-4 py-2 text-gray-700">{{ data.stock.product.designation }}</td>
                     <td class="px-4 py-2 text-gray-700">{{ data.stock.quantity }}</td>
@@ -56,6 +56,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="flex justify-center mt-4">
+                {{ knp_pagination_render(pagination) }}
+            </div>
     </div>
 </div>
 {% endblock %}

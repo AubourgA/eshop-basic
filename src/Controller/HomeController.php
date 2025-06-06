@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -18,10 +20,19 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/catalog', name: 'app_catalog')]
-    public function catalog(ProductRepository $productRepo): Response
+    public function catalog(Request $request,
+                            ProductRepository $productRepo,
+                            PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $productRepo->findBy(['isActive'=> true]),
+            $request->query->getInt('page', 1),
+            12
+        );
+        
+
         return $this->render('home/catalog.html.twig', [
-            'products' => $productRepo->findBy(['isActive'=> true]),
+            'pagination' => $pagination,
         ]);
     }
 

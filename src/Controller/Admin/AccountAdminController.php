@@ -9,6 +9,7 @@ use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
 use App\Services\DashboardDataProvider;
 use App\Services\StockManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,23 +35,36 @@ final class AccountAdminController extends AbstractController
     }
 
     #[Route('/products', name: '_product', methods: ['GET','POST'])]
-    public function products(ProductRepository $productRepo): Response
+    public function products(Request $request,
+                        PaginatorInterface $paginator,
+                            ProductRepository $productRepo): Response
     {
+        //pagination
+        $pagination = $paginator->paginate(
+            $productRepo->findAll(),
+            $request->query->getInt('page', 1), // page number
+            8 // limit per page
+        );
         return $this->render('admin/products/list_product.html.twig', [
-            'products' => $productRepo->findAll(),
+            'pagination' => $pagination
         ]);
     }
 
     #[Route('/stock', name: '_stock', methods: ['GET'])]
-    public function list(StockRepository $stockRepository,
+    public function list(Request $request,
+                        PaginatorInterface $paginator,
+                        StockRepository $stockRepository,
                         StockManager $stockManager  ): Response
     {
         $stocks = $stockRepository->findAll();
 
-       
-
+        $pagination = $paginator->paginate(
+            $stockManager->getStocksWithCalculatedData($stocks),
+            $request->query->getInt('page', 1), 
+            10 );
+        
         return $this->render('admin/stocks/stock_list.html.twig', [
-            'stocksWithData' => $stockManager->getStocksWithCalculatedData($stocks),
+            'pagination' => $pagination,
             'fullStockValue' => $stockManager->getFullStockValue($stocks),
             'fullStockQuantity' => $stockManager->getFullStockQuantity($stocks),
             'productsUnderThreshold' => $stockManager->getStockUnderThreshold($stocks),
@@ -63,12 +77,11 @@ final class AccountAdminController extends AbstractController
                             PaginatorInterface $paginator): Response
     {
        
-        //pagination
+       
         $pagination = $paginator->paginate(
             $orderRepo->findAll(),
-            $request->query->getInt('page', 1), // page number
-            10 // limit per page
-        );
+            $request->query->getInt('page', 1),
+            10 );
 
         return $this->render('admin/orders/list_order.html.twig', [
             // 'orders' => $orderRepo->findAll(),
@@ -77,20 +90,34 @@ final class AccountAdminController extends AbstractController
     }
 
     #[Route('/customers', name: '_customers', methods: ['GET'])]
-    public function customers(CustomerRepository $customerRepo): Response
+    public function customers(Request $request,
+                            PaginatorInterface $paginator,
+                             CustomerRepository $customerRepo): Response
     {
-       
+        
+        $pagination = $paginator->paginate(
+            $customerRepo->findAll(),
+            $request->query->getInt('page', 1), 
+            10 );   
+
         return $this->render('admin/customers/list_customers.html.twig', [
-            'customers' => $customerRepo->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
     #[Route('/employe', name: '_employe', methods: ['GET','POST'])]
-    public function employe(ManagerRepository $managerRepo): Response
+    public function employe(Request $request,
+                            PaginatorInterface $paginator,
+                            ManagerRepository $managerRepo): Response
     {
        
+        $pagination = $paginator->paginate(
+            $managerRepo->findAllExceptAdmins(),
+            $request->query->getInt('page', 1), 
+            10 
+        );
         return $this->render('admin/employe/list_employes.html.twig', [
-            'employes' => $managerRepo->findAllExceptAdmins(),
+            'pagination' => $pagination,
         ]);
     }
 }

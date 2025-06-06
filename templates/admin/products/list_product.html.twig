@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for product in products %}
+                {% for product in pagination %}
                     <tr class="border-b">
                         <td class="p-4">
                             {% if product.imageFileName %}
@@ -87,6 +87,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="flex justify-center mt-4">
+                {{ knp_pagination_render(pagination) }}
+            </div>
     </div>
 </div>
 {% endblock %}

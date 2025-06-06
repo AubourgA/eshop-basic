@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody id="manager-list" class="divide-y divide-gray-200">
-                {% for item in employes %}
+                {% for item in pagination %}
                     {% include 'admin/employe/_employe_row.html.twig' with { item: item } %}
                 {% else %}
                     <tr>
@@ -39,6 +39,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="flex justify-center mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 </div>
 {% endblock %}

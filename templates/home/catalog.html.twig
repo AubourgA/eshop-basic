@@ -16,7 +16,7 @@
             <h2 class="text-3xl font-semibold text-pink-700 text-center">Nos Produits</h2>
 
              <div class="grid md:grid-cols-3 gap-8 mt-8">
-                {% for product in products %}
+                {% for product in pagination %}
                    <div class="bg-white p-6 shadow-lg rounded-lg text-center relative">
                     <div class="relative">
                         <img src="{{ asset('uploads/' ~ product.imageFileName) }}" alt="{{ product.designation }}" class="w-full h-48 object-cover rounded-lg">
@@ -35,6 +35,9 @@
                     <a href="{{ path('app_product_detail', {'id' : product.id })}}" class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Acheter</a>
                 </div>
                 {% endfor %}
+            </div>
+             <div class="flex justify-center">
+                {{ knp_pagination_render(pagination) }}
             </div>
         </main>
 
