@@ -37,12 +37,13 @@ final class ProductManagerForm extends AbstractController
     public function save(Request $request,EntityManagerInterface $entityManager,FileUploaderService $fileUploader)
     {
         $this->submitForm();
+       
         /** @var Product $product */
         $product = $this->getForm()->getData();
         
         $uploadedFile = $request->files->get('product')['image'] ?? null;
         
-       
+     
         if ($uploadedFile instanceof UploadedFile) {
             $newFilename = $fileUploader->uploadFile($uploadedFile);
             $product->setImageFileName($newFilename);
