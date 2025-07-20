@@ -8,11 +8,11 @@ use App\Repository\ShippingMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Services\CartService;
 use Stripe\Checkout\Session;
 use App\Services\StripeService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Contrôleur PaymentController
@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
  * - La redirection sécurisée de l'utilisateur vers l’interface de paiement Stripe
  * - Le traitement du retour en cas de succès ou d’annulation du paiement
  *
- * ⚠️ Ce contrôleur est uniquement accessible aux utilisateurs authentifiés (`IS_AUTHENTICATED_FULLY`)
  *
  * 🔁 Cycle de paiement :
  * 1. `checkout/{id}` : Crée une session de paiement Stripe pour la commande `Order` donnée.
@@ -58,14 +57,12 @@ final class PaymentController extends AbstractController
 
 
     #[Route('/checkout/{id}', name: '_checkout')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted("ROLE_CUSTOMER")]
     public function index(Order $order, 
-                         OrderRepository $orderRepo, 
                          ShippingMethodRepository $shippingMethod): Response
     {
        
         $cart = $this->cartService->getCart();
-        // $order = $orderRepo->findOneBy([], ['id' => 'desc']);
        
         $shipping = $shippingMethod->findOneBy(['id'=> $order->getShippingMethod()]);
 
@@ -80,7 +77,6 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/success', name: '_success', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function success(Request $request): Response
     {
      
@@ -108,6 +104,7 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/cancel', name: '_cancel', methods: ['GET'])]
+    #[IsGranted("ROLE_CUSTOMER")]
     public function cancel(): Response
     {
         $this->cartService->deleteCart();

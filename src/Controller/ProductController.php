@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/product', name: 'app_product')]
 class ProductController extends AbstractController
@@ -51,6 +52,7 @@ class ProductController extends AbstractController
      * dans la partie ADMIN
      */
     #[Route('/admin/historic/{id}', name: '_admin_historic', methods: ['GET'], priority:2)]
+    #[IsGranted('ROLE_PRODUCT')]
     public function historic(Product $product, ProductPriceHistoryRepository $histoRepo):Response
     {
 

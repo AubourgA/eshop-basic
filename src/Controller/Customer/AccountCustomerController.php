@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/account', name: 'app_customer')]
 final class AccountCustomerController extends AbstractController
 {
-    #[Route('/dashboard', name: '_dashboard')]
+    #[Route('/dashboard', name: '_dashboard', methods: ['GET'])]
     public function index(ManagerRegistry $manger): Response
     {
         $em = $manger->getManager();
@@ -29,7 +29,7 @@ final class AccountCustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/address', name: '_address')]
+    #[Route('/address', name: '_address', methods: ['GET'])]
     public function address(AddressRepository $addressRepo): Response
     {
 
@@ -39,7 +39,7 @@ final class AccountCustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/profil', name: '_profil')]
+    #[Route('/profil', name: '_profil', methods: ['GET'])]
     public function profil(): Response
     {
 

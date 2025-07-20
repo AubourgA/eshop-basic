@@ -18,8 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Expr\OrderBy;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -41,6 +39,7 @@ final class OrderController extends AbstractController
 
 
     #[Route('/{id}/shipping', name: '_shipping', methods: ['POST'], priority:2)]
+    #[IsGranted("ROLE_CUSTOMER")]
     public function updateShipping(Order $order, 
                                     Request $request, 
                                     EntityManagerInterface $entityManager): JsonResponse
@@ -49,6 +48,7 @@ final class OrderController extends AbstractController
      
         // Trouver la méthode de livraison sélectionnée
         $shippingMethod = $entityManager->getRepository(ShippingMethod::class)->find($shippingMethodId);
+       
         if (!$shippingMethod) {
             return new JsonResponse(['success' => false, 'error' => 'Méthode de livraison non trouvée'], 400);
         }
@@ -94,7 +94,7 @@ final class OrderController extends AbstractController
   
 
     #[Route('/info/{ref}', name: '_info', methods: ['GET'], priority:4)] 
-    public function orderInfo(string $ref, OrderRepository $orderRepository, Security $security):Response
+    public function orderInfo(string $ref, OrderRepository $orderRepository):Response
     {
         
         $order = $orderRepository->findOneBy(['reference' => $ref]);

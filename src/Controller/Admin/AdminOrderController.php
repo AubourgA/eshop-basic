@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('admin/order/', name: 'app_admin_order', methods:['GET'])]
+#[Route('admin/order', name: 'app_admin_order', methods:['GET'])]
 final class AdminOrderController extends AbstractController
 {
    #[Route('/{ref}', name: '_details', methods:['GET'])]

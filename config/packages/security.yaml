@@ -47,12 +47,18 @@ security:
 
     access_control:
          - { path: ^/admin/dashboard, roles: ROLE_EMPLOYE }
+         - { path: ^/admin/order, roles: ROLE_LOGISTICS }
+         - { path: ^/admin/delivery, roles: ROLE_LOGISTICS }
+         - { path: ^/admin/stock, roles: ROLE_LOGISTICS }
+         - { path: ^/admin/export, roles: ROLE_LOGISTICS }
          - { path: ^/admin/product, roles: ROLE_PRODUCT }
-         - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/product/admin/historic/, roles: ROLE_PRODUCT }
          - { path: ^/product/admin/create, roles: ROLE_PRODUCT }
-         - { path: ^/product, roles: ROLE_CUSTOMER }
-         - { path: ^/dashboard, roles: ROLE_CUSTOMER }
+         - { path: ^/order, roles: ROLE_CUSTOMER }
+         - { path: ^/payment, roles: ROLE_CUSTOMER }
+         - { path: ^/customer, roles: ROLE_CUSTOMER }
+         - { path: ^/account, roles: ROLE_CUSTOMER }
+         - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
