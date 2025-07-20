@@ -3,11 +3,18 @@
 {% block title %}Expedition des commandes{% endblock %}
 
 {% block main %}
-<div class="bg-white p-4 rounded-lg">
+
+
+
+<div data-controller="modal" 
+     class="bg-white p-4 rounded-lg">
+
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Expedition des Commandes</h1>
       
     </div>
+
+    <div data-modal-target="container"></div>
 
      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="flex justify-between items-center bg-gray-100 p-4 rounded">
@@ -65,7 +72,18 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
                                     </svg>
                                 </a>
-                               
+                                {# <a href="{{ path('app_admin_delivery_details', {ref: order.reference}) }}" class="text-blue-600 hover:underline">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+                                    </svg>
+                                </a>     #}
+                                <button  data-modal-url-value="{{ path('app_admin_delivery_modal', { ref: order.reference}) }}"
+                                        data-action="click->modal#open" 
+                                         class="text-blue-600 hover:underline">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+                                    </svg>
+                                </button>    
                             </td>
                         </tr>
                     {% endfor %}

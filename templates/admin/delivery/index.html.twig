@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminDeliveryController!{% endblock %}
+
+{% block body %}
+ {# 1-  FAIRE UNE MODAL POUR AFFICHER LE CONTENU DE LA COMMANDE #}
+ 
+ {# 2- CRER UN BOUTON POUR VALIDER L ENVOI COMMANDE #}
+ 
+ {# 3- DEFALCER LES ITEM DANS LE STOCK #}
+
+{# 4- PASSER STATUS CDE A EXPEDIER #}
+
+{# 5- ENVOER FACTURE CLIENT #}
+
+
+
+<div >
+ 
+   {% for item in items %}
+    
+            <h2>{{ item.product}}</h2>
+            <p>{{ item.quantity }}</p>
+            <p>{{ item.price }}</p>
+      
+    {% endfor %}
+  
+</div>
+{% endblock %}

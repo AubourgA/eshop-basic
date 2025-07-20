@@ -6,6 +6,7 @@
 <div   data-controller="modal" 
       data-modal-url-value="{{ path('admin_modal_product') }}"
      class="bg-white p-4 rounded-lg">
+
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Liste des Produits</h1>
         <button data-action="click->modal#open" 
@@ -14,6 +15,7 @@
         </button>
     </div>
     <div data-modal-target="container"></div>
+    
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <table class="w-full border-collapse">
             <thead>

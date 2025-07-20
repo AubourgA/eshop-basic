@@ -1,0 +1,36 @@
+<div {{ attributes }} class="p-4 bg-white rounded-lg shadow space-y-4">
+    <form data-action="live#action:prevent"
+          data-live-action-param="submit"
+         class="space-y-4">
+
+        <h3 class="text-lg font-semibold text-gray-800">
+            Produits de la commande {{ order.reference }}
+        </h3>
+
+        {% for item in order.itemOrders %}
+            <div class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition">
+                <input type="checkbox"
+                       id="product_{{ item.product.id }}"
+                       value="{{ item.product.id }}"
+                       data-model="selectedProducts"
+                       class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                       {% if item.product.id in selectedProducts %}checked{% endif %}>
+
+                <label for="product_{{ item.product.id }}" class="text-sm text-gray-700 cursor-pointer">
+                    {{ item.product.designation }}
+                    <span class="text-xs text-gray-400 ml-2">(x{{ item.quantity }})</span>
+                </label>
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm">Aucun produit dans cette commande.</p>
+        {% endfor %}
+
+        <div class="pt-4 border-t">
+            <button type="submit"
+                    class="inline-flex items-center px-5 py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-medium text-sm rounded-lg focus:ring-4 focus:ring-pink-300 transition">
+                 Expedier 
+            </button>
+        </div>
+
+    </form>
+</div>

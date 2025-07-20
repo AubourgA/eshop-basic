@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-
+use App\Entity\Product;
 use App\Entity\Stock;
 use App\Entity\StockMouvement;
 use App\Repository\ItemOrderRepository;
@@ -139,6 +139,26 @@ class StockManager
                 }
             }
         return $count;
+    }
+    
+    public function decreaseStock(Product $product,
+                                  int $quantity,
+                                  string $reason = null): void
+    {
+      
+        $stock = $product->getStock();
+        
+        if (!$stock) {
+            throw new \Exception('Le produit n\'a pas de stock associé.');
+        }
+
+        if ($stock->getQuantityAvailable() < $quantity) {
+            throw new \LogicException('Stock insuffisant');
+        }
+
+
+        
+        dd($quantity);
     }
     
    

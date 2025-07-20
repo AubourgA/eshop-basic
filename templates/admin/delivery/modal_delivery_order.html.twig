@@ -1,0 +1,12 @@
+{% extends 'layout/modal_layout.html.twig' %}
+
+{% block modal_title %}
+    Expédition de la commande
+{% endblock %}
+
+
+{% block modal_body %}
+    <div class="p-4">
+        {{ component('DeliveryProductSelectorComponent', { order: order }) }}
+    </div>
+{% endblock %}
