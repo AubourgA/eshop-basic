@@ -18,6 +18,7 @@ final class DeliveryProductSelectorComponent
     use DefaultActionTrait;
     use ComponentToolsTrait;
    
+    public ?string $errorMessage = null;
 
     #[LiveProp]
     public Order $order;
@@ -32,21 +33,25 @@ final class DeliveryProductSelectorComponent
                             UserInterface $user,
                             OrderShipmentService $orderService): void
     {
-
-       
         if (empty($this->selectedProducts)) {
+             $this->errorMessage = 'Veuillez sélectionner au moins un produit pour la livraison.';
             return;
         }
 
-        $orderService->shipOrder(
-                                $this->order,
-                                array_map('intval', $this->selectedProducts),
-                                $user);
+        try {
+            $orderService->shipOrder(   $this->order,
+                                        array_map('intval', $this->selectedProducts),
+                                        $user
+            );
 
+                $em->flush();
 
-        $em->flush();
-
-        $this->dispatchBrowserEvent('modal:close');
+            $this->dispatchBrowserEvent('modal:close');
+            
+        } catch (\LogicException $e) {
+            // 🔥 Capture l’erreur métier ici et envoie un message à l’utilisateur
+             $this->errorMessage = $e->getMessage();
+        }
 
     }
 }

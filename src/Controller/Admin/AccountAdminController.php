@@ -10,7 +10,7 @@ use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
 use App\Services\DashboardDataProvider;
-use App\Services\StockManager;
+use App\Services\Stock\StockManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,7 +93,7 @@ final class AccountAdminController extends AbstractController
     public function exportOrders(Request $request,
                                 PaginatorInterface $paginator,
                                 OrderRepository $orderRepo,
-                                StockManager $stockManager): Response
+                                ): Response
     {
        //paginaton commande a taiter
         $pagination = $paginator->paginate(

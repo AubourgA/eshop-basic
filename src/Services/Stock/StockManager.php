@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Stock;
 
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Stock;
 use App\Entity\StockMouvement;
@@ -141,5 +142,16 @@ class StockManager
         return $count;
     }
      
+    public function getAvailableQuantityForShipping(Stock $stock, Order $currentOrder): int
+    {
+        $reserved = $this->itemOrderRepository->getReservedQuantityForProductExcludingOrder(
+            $stock->getProduct(),
+            $currentOrder
+        );
+
+       
+
+        return StockCalculator::calculateAvailableQuantity($stock->getQuantity(), $reserved);
+    }
    
 }

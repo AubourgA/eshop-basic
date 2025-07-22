@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ItemOrder;
+use App\Entity\Order;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -62,6 +63,37 @@ class ItemOrderRepository extends ServiceEntityRepository
             ->setParameter('product', $product)
             ->setParameter('paid', PaymentStatus::PAYED)
             ->setParameter('status', OrderStatus::PROCESSING);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+
+/**
+ * Calcule la quantité totale réservée d’un produit dans les commandes en cours (PROCESSING),
+ * en excluant une commande donnée.
+ *
+ * Utile pour vérifier la quantité réellement réservée sans prendre en compte la commande en cours de modification.
+ *
+ * @param Product $product Le produit pour lequel on souhaite connaître la quantité réservée.
+ * @param Order   $excludedOrder La commande à exclure du calcul (souvent la commande en cours).
+ *
+ * @return int La quantité totale réservée du produit (hors commande courante). Retourne 0 si aucune réservation.
+ */
+  public function getReservedQuantityForProductExcludingOrder(Product $product, Order $excludedOrder): int
+    {
+        $qb = $this->createQueryBuilder('io')
+            ->select('SUM(io.quantity)')
+            ->join('io.orderNum', 'o')
+            ->where('io.product = :product')
+            ->andWhere('o.status = :processing')
+            ->setParameter('product', $product)
+            ->setParameter('processing', OrderStatus::PROCESSING);
+
+            if ($excludedOrder->getId() !== null) {
+                $qb->andWhere('o.id != :excludedOrderId')
+                ->setParameter('excludedOrderId', $excludedOrder->getId());
+
+            }
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }

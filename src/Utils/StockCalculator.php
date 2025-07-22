@@ -61,4 +61,6 @@ final class StockCalculator
 
         return $totalValue;
     }
+
+    
 }
