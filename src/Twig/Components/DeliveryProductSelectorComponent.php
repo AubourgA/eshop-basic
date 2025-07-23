@@ -33,8 +33,8 @@ final class DeliveryProductSelectorComponent
                             UserInterface $user,
                             OrderShipmentService $orderService): void
     {
-        if (empty($this->selectedProducts)) {
-             $this->errorMessage = 'Veuillez sélectionner au moins un produit pour la livraison.';
+        if (empty($this->selectedProducts) || count($this->selectedProducts) != count($this->order->getItemOrders())) {
+             $this->errorMessage = 'Il manque des articles pour compléter la commande.';
             return;
         }
 

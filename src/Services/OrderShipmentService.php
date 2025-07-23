@@ -37,7 +37,7 @@ final class OrderShipmentService
      */
     public function shipOrder(Order $order, array $selectedProductIds, UserInterface $user): void
     {
-       
+      
         foreach ($order->getItemOrders() as $item) {
             $this->shipItemIfSelected($item, $selectedProductIds, $order, $user);
         }
@@ -63,7 +63,7 @@ final class OrderShipmentService
         $product = $item->getProduct();
         $productId = $product->getId();
 
-    
+        
 
         if (!in_array($productId, $selectedProductIds, true)) {
             throw new \LogicException(sprintf(
@@ -81,7 +81,9 @@ final class OrderShipmentService
             ));
         }
 
-        // Validation du stock disponible
+        // Validation du stock disponible avant expedition
+        // Vérifie que la quantité de la commande est disponible 
+        //avec la formule : si quantité commande a envoyé est > qtite physique - (quantite des commandes à envoyé excepté quantite cde en actuelle)
         $this->stockValidator->validateStockForShipping($stock, $order, $item->getQuantity());
 
         // Création du mouvement de stock
@@ -90,6 +92,7 @@ final class OrderShipmentService
         $movement->setQuantity($item->getQuantity());
         $movement->setComments('Expédition de la commande ' . $order->getReference());
 
+        //Aplique le mouvement de stock
         $this->stockManager->applyStockMovement($stock, $movement, $user);
     }
 }
