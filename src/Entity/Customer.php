@@ -17,10 +17,18 @@ class Customer extends User
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: "Le prenom est obligatoire.")]
+    #[Assert\Regex(
+    pattern: "/^[\p{L}\s\-]+$/u",
+    message: "Le nom ne peut contenir que des lettres, des espaces ou des tirets."
+)]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\Regex(
+    pattern: "/^[\p{L}\s\-]+$/u",
+    message: "Le nom ne peut contenir que des lettres, des espaces ou des tirets."
+)]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 10)]

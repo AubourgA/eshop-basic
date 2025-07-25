@@ -6,6 +6,7 @@ use App\Repository\ShippingMethodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ShippingMethodRepository::class)]
 class ShippingMethod
@@ -16,12 +17,24 @@ class ShippingMethod
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\Length(
+    max: 100,
+    maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères."
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "Le prix est requis.")]
+    #[Assert\GreaterThanOrEqual(0, message: "Le prix ne peut pas être négatif.")]
     private ?float $price = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: "Le délai de livraison est requis.")]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: "Le délai de livraison ne peut pas dépasser {{ limit }} caractères."
+    )]
     private ?string $deliveryTime = null;
 
     /**

@@ -4,11 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\StockMouvement;
 use App\Form\Handler\ProductSelectFormHandler;
-use App\Form\ProductSelectType;
 use App\Form\StockMouvementType;
 use App\Repository\StockMouvementRepository;
 use App\Repository\StockRepository;
-use App\Services\StockManager;
+use App\Services\Stock\StockManager ;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,8 @@ class AdminStockController extends AbstractController
                             StockManager $stockManager,
                             ProductSelectFormHandler $productFormHandler): Response
     {
-      
+
+    
         $stockProduct = $stockRepository->findOneBy(['product'=> $id]);
 
         // Vérifier si le stock existe

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\StockMouvementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StockMouvementRepository::class)]
 class StockMouvement
@@ -14,9 +15,15 @@ class StockMouvement
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le type de mouvement est requis.')]
+    #[Assert\Choice(
+        choices: ['Entrée', 'Sortie'],
+        message: 'Le type doit être soit "Entrée" soit "Sortie".'
+    )]
     private ?string $type = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'La quantité est requise.')]
     private ?int $quantity = null;
 
     #[ORM\Column]

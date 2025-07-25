@@ -19,11 +19,11 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    // #[Assert\NotBlank(message: "La designation du produit est obligatoire.")]
+    #[Assert\NotBlank(message: "La designation du produit est obligatoire.")]
     private ?string $designation = null;
 
     #[ORM\Column(length: 255)]
-    // #[Assert\NotBlank(message: "La description du produit est obligatoire.")]
+    #[Assert\NotBlank(message: "La description du produit est obligatoire.")]
     private ?string $description = null;
 
     #[ORM\Column]

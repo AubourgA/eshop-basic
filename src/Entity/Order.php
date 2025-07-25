@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Enum\OrderStatus;
 use App\Enum\PaymentStatus;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\HasLifecycleCallbacks]
@@ -23,15 +22,21 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Le client est obligatoire.")]
     private ?Customer $customer = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La date de création est obligatoire.")]
+    #[Assert\LessThanOrEqual('now', message: "La date de création ne peut pas être dans le futur.")]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La date de création est obligatoire.")]
+    #[Assert\LessThanOrEqual('now', message: "La date de création ne peut pas être dans le futur.")]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: 'string', enumType: OrderStatus::class)]
+    #[Assert\NotNull(message: "Le statut de la commande est obligatoire.")]
     private ?OrderStatus $status;
 
 

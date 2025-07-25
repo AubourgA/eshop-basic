@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\StockRepository;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: StockRepository::class)]
@@ -18,9 +21,13 @@ class Stock
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "La quantité est requise.")]
+    #[Assert\GreaterThanOrEqual(0, message: "La quantité ne peut pas être négative.")]
     private ?int $quantity = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "Le seuil est requis.")]
+    #[Assert\GreaterThanOrEqual(0, message: "Le seuil de stock ne peut pas être négatif.")]
     private ?int $threshold = null;
 
     #[ORM\Column]
@@ -28,6 +35,7 @@ class Stock
 
     #[ORM\OneToOne(inversedBy: 'stock', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Un produit doit être associé à ce stock.")]
     private ?Product $product = null;
 
     /**

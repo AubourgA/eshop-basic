@@ -3,16 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Stock;
-use App\Entity\ProductPriceHistory;
-use App\Form\ProductType;
 use App\Repository\ProductPriceHistoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Services\FileUploaderService;
-use App\Services\StockManager;
-use Symfony\Component\HttpFoundation\Request;
+use App\Services\Stock\StockManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +15,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/product', name: 'app_product')]
 class ProductController extends AbstractController
 {
-
     /**
      * fiche produit accecible public
      */
@@ -60,7 +53,4 @@ class ProductController extends AbstractController
             'productHistoPrice' => $histoRepo->findBy(['product' => $product])
         ]);
     }
- 
-  
-
 }
