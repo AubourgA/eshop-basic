@@ -27,7 +27,7 @@ class UniquePrimaryAddressValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, Address::class);
         }
         
-        // Si l'adresse n'est pas définie comme "principale", aucune vérification nécessaire
+       
         if (!$value->isPrimary()) {
             return;
         }
@@ -39,11 +39,9 @@ class UniquePrimaryAddressValidator extends ConstraintValidator
         ]);
         
        
-
-        // Si une autre adresse principale existe déjà (et que ce n’est pas celle qu’on est en train de modifier)
         if ($existing && $existing->getId() !== $value->getId()) {
             $this->context->buildViolation($constraint->message)
-                ->atPath('isPrimary') // cible le champ dans le formulaire
+                ->atPath('isPrimary') 
                 ->addViolation();
         }
     }
