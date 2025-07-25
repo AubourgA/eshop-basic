@@ -21,13 +21,15 @@ final class AddressController extends AbstractController
     {
 
         $address = new Address();
+        $address->setCustomer($this->getUser());
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $address->setCustomer($this->getUser());
             $em->persist($address);
 
+           
             // Si l'utilisateur veut la même adresse pour la facturation
             if ($form->get('useAsBilling')->getData() && $address->getType() === 'livraison') {
                 $billingAddress = new Address();

@@ -8,10 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\UniquePrimaryAddress;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-#[UniqueEntity(fields: ['customer', 'isPrimary','type'], 
-                message: 'Un utilisateur ne peut avoir qu\'une seule adresse principale.')]
+// #[UniqueEntity(fields: ['customer', 'isPrimary','type'], 
+//                 message: 'Un utilisateur ne peut avoir qu\'une seule adresse principale.')]
+#[UniquePrimaryAddress]
 class Address
 {
     #[ORM\Id]
@@ -110,7 +112,7 @@ class Address
 
     public function setCity(string $city): static
     {
-        $this->city = $city;
+        $this->city = ucfirst(strtolower($city));
 
         return $this;
     }
@@ -134,7 +136,7 @@ class Address
 
     public function setCountry(string $country): static
     {
-        $this->country = $country;
+        $this->country = strtoupper($country);
 
         return $this;
     }
