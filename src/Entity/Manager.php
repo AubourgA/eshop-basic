@@ -5,14 +5,13 @@ namespace App\Entity;
 use App\Repository\ManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
-use DateTimeZone;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ManagerRepository::class)]
 class Manager extends User
 {
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Le matricule est obligatoire.')]
     #[Assert\Length(
     min: 6,

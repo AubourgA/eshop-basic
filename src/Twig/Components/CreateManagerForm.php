@@ -42,7 +42,8 @@ class CreateManagerForm extends AbstractController
 
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher)
+    public function save(EntityManagerInterface $entityManager, 
+                        UserPasswordHasherInterface $hasher)
     {
         $this->submitForm();
 

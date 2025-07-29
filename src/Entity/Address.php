@@ -11,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\UniquePrimaryAddress;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-// #[UniqueEntity(fields: ['customer', 'isPrimary','type'], 
-//                 message: 'Un utilisateur ne peut avoir qu\'une seule adresse principale.')]
 #[UniquePrimaryAddress]
 class Address
 {
