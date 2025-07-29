@@ -6,13 +6,15 @@ use App\Repository\ManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ManagerRepository::class)]
+#[UniqueEntity('matricule', message: 'Ce matricule est déjà utilisé.')]
 class Manager extends User
 {
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank(message: 'Le matricule est obligatoire.')]
+    // #[Assert\NotBlank(message: 'Le matricule est obligatoire.')]
     #[Assert\Length(
     min: 6,
     max: 10,
@@ -25,7 +27,7 @@ class Manager extends User
     #[Assert\NotBlank(message: 'Le département est obligatoire.')]
     #[Assert\Choice(
             choices: ['Direction', 'Marketing', 'Product', 'Logistic'],
-            message: 'Le département "{{ value }}" n’est pas valide.'
+            message: 'Le département "{{ value }}" n’est pas valide. Veuillez choisir parmi {{ choices }}.'
     )]
     private ?string $departement = null;
 
@@ -48,6 +50,10 @@ class Manager extends User
 
     public function setMatricule(string $matricule): static
     {
+        if ($this->matricule !== null) {
+           throw new \LogicException('Le matricule ne peut pas être modifié une fois défini.');
+       }
+       
         $this->matricule = $matricule;
 
         return $this;
