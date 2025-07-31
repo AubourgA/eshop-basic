@@ -26,13 +26,15 @@ final class AccountAdminController extends AbstractController
     {
         $datas = $dashboardDataProvider->getDashboardData();
         
-  
+
+
         return $this->render('admin/dashboard.html.twig', [
            'customers' => $datas['customers'],
            'products' => $datas['products'],
            'ordersPayed' => $datas['ordersPayed'],
            'ordersLast' => $datas['ordersLast'],
-           'bestItemSold' => $datas['bestItemSold']
+           'bestItemSold' => $datas['bestItemSold'],
+           'countOrdersByMonth' => $datas['countOrdersByMonth'],
         ]);
     }
 

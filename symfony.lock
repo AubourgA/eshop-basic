@@ -274,6 +274,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.28.2"
+    },
     "symfony/ux-live-component": {
         "version": "2.22",
         "recipe": {

@@ -42,4 +42,35 @@ class OrderRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Récupère les commandes passées par mois.
+     *
+     * @return Order[] Retourne un tableau d'entités Order correspondant aux commandes selon les mois.
+     */
+    // public function countOrdersByMonth(): array
+    // {
+    //     $qb = $this->createQueryBuilder('o')
+    //         ->select('MONTH(o.createdAt) as month, COUNT(o.id) as orderCount')
+    //         ->groupBy('month')
+    //         ->orderBy('month', 'ASC');
+
+    //     return $qb->getQuery()->getResult();
+    // }
+
+     public function countOrdersByMonth(): array
+    {
+        $startDate = (new \DateTimeImmutable('first day of -11 months'))->setTime(0, 0);
+
+        $qb = $this->createQueryBuilder('o')
+            ->select("DATE_FORMAT(o.createdAt, '%Y-%m') as yearMonth, COUNT(o.id) as orderCount")
+            ->where('o.createdAt >= :startDate')
+            ->andWhere('o.paymentStatus = :paymentStatus')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('paymentStatus', PaymentStatus::PAYED)
+            ->groupBy('yearMonth')
+            ->orderBy('yearMonth', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

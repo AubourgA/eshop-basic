@@ -28,6 +28,9 @@ final class DashboardDataProvider
                                 private ItemOrderRepository $itemOrderRepository)
     { }
 
+
+
+    
     public function getDashboardData(): array
     {
         return [
@@ -35,7 +38,8 @@ final class DashboardDataProvider
             'products' => $this->productRepository->findAll(),
             'ordersLast' => $this->orderRepository->findBy([], ['createdAt' => 'DESC'], 5),
             'ordersPayed' => $this->orderRepository->findBy(['paymentStatus' => PaymentStatus::PAYED]),
-            'bestItemSold' => $this->itemOrderRepository->findMostSoldProducts(5)
+            'bestItemSold' => $this->itemOrderRepository->findMostSoldProducts(5),
+            'countOrdersByMonth' => $this->orderRepository->countOrdersByMonth(),
         ];
     }
 
