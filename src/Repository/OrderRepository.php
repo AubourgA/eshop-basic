@@ -73,4 +73,25 @@ class OrderRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
+    /**
+     * Récupère le chiffre d'affaires mensuel des 12 derniers mois.
+     *
+     * @return array Retourne un tableau associatif avec les mois et le chiffre d'affaires correspondant.
+     */
+    public function getMonthlyRevenueLast12Months(): array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select("DATE_FORMAT(o.createdAt, '%Y-%m') AS yearMonth, SUM(o.totalAmount) AS revenue")
+            ->where('o.paymentStatus = :paymentStatus') 
+            ->setParameter('paymentStatus', PaymentStatus::PAYED)
+            ->groupBy('yearMonth')
+            ->orderBy('yearMonth', 'ASC')
+            ->setMaxResults(12);
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 }

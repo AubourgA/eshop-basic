@@ -40,6 +40,7 @@ final class DashboardDataProvider
             'ordersPayed' => $this->orderRepository->findBy(['paymentStatus' => PaymentStatus::PAYED]),
             'bestItemSold' => $this->itemOrderRepository->findMostSoldProducts(5),
             'countOrdersByMonth' => $this->orderRepository->countOrdersByMonth(),
+            'monthlyRevenue' => $this->orderRepository->getMonthlyRevenueLast12Months(),
         ];
     }
 
