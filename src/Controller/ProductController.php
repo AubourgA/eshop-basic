@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Repository\ProductPriceHistoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
+use App\Services\Product\ChartDataFormater;
 use App\Services\Stock\StockManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +47,18 @@ class ProductController extends AbstractController
      */
     #[Route('/admin/historic/{id}', name: '_admin_historic', methods: ['GET'], priority:2)]
     #[IsGranted('ROLE_PRODUCT')]
-    public function historic(Product $product, ProductPriceHistoryRepository $histoRepo):Response
+    public function historic(Product $product, 
+                            ProductPriceHistoryRepository $histoRepo,
+                            ChartDataFormater $chartDataFormater):Response
     {
 
+         $productHistoPrice = $histoRepo->findBy(['product' => $product]);
+
+         $dataGraph = $chartDataFormater->formatProductPrice($productHistoPrice);
+
         return $this->render('admin/products/historic_product.html.twig', [
-            'productHistoPrice' => $histoRepo->findBy(['product' => $product])
+            'productHistoPrice' =>$productHistoPrice,
+            'dataGraph' => $dataGraph,
         ]);
     }
 }
