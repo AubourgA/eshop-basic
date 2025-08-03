@@ -22,6 +22,7 @@
                 <tr class="bg-gray-100 text-left">
                     <th class="p-4">Image</th>
                     <th class="p-4">Produit</th>
+                    <th class="p-4">Categorie</th>
                     <th class="p-4">Créé le</th>
                     <th class="p-4">Prix de Vente</th>
                     <th class="p-4">Prix de d'achat</th>
@@ -45,6 +46,7 @@
                             <span class="font-semibold">{{ product.designation }}</span>
                             <p class="text-gray-500 text-sm">{{ product.description }}</p>
                         </td>
+                        <td class="p-4">{{ product.category.name }}</td>
                         <td class="p-4">{{ product.createdAt|date('d M Y') }}</td>
                    
                         <td class="p-4">{{ product.price|number_format(2, '.', ',') }} €</td>
