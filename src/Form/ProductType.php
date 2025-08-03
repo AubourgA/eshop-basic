@@ -2,11 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Enum\MarketingPosition;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,12 +28,17 @@ class ProductType extends AbstractType
             ->add('description', TextType::class, [
                 'label' => 'Description',
             ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'label' => 'Catégorie',
+                'placeholder' => 'Choisissez une catégorie',
+                'required' => false, 
+            ])
             ->add('price', NumberType::class, [
                 'label' => 'Prix',
             ])
-            // ->add('stock', IntegerType::class, [
-            //     'label' => 'Quantité',
-            // ])
+          
              ->add('purchasePrice', NumberType::class, [
                 'label' => 'Coût d’achat (€)',
                 'required' => true,

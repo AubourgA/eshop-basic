@@ -11,7 +11,7 @@
     }}
 
   
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.designation, 'Nom du produit', {'label_attr': {'class': 'block text-gray-700'}}) }}
             {{ form_widget(form.designation, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
             <div class="text-red-600 text-sm mt-1">
@@ -20,7 +20,7 @@
         </div>
 
       
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700'}}) }}
             {{ form_widget(form.description, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
             <div class="text-red-600 text-sm mt-1">
@@ -28,8 +28,16 @@
             </div>
         </div>
 
+        <div class="mb-3">
+            {{ form_label(form.category, 'Categorie', {'label_attr': {'class': 'block text-gray-700'}}) }}
+            {{ form_widget(form.category, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(form.category) }}
+            </div>
+        </div>
+
        
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'block text-gray-700'}}) }}
             {{ form_widget(form.price, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
             <div class="text-red-600 text-sm mt-1">
@@ -37,7 +45,7 @@
             </div>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.purchasePrice, 'Prix d \'achat', {'label_attr': {'class': 'block text-gray-700'}}) }}
             {{ form_widget(form.purchasePrice, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
             <div class="text-red-600 text-sm mt-1">
@@ -47,7 +55,7 @@
 
     
 
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.image, 'Image', {'label_attr': {'class': 'block text-gray-700'} }) }}
             {{ form_widget(form.image, {'attr': {'class': 'w-full border rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-400'}}) }}
             <div class="text-red-600 text-sm mt-1">
@@ -55,7 +63,7 @@
             </div>
         </div>
    
-        <div class="mb-4">
+        <div class="mb-3">
             {{ form_label(form.marketingPosition, 'Positionnement marketing', {'label_attr': {'class': 'block text-gray-700'}}) }}
             {{ form_widget(form.marketingPosition, {
                 'attr': {
@@ -68,7 +76,7 @@
             </div>
         </div>
 
-        <div class="mb-4">
+        <div class="mb-3">
                 <label class="flex items-center space-x-4">
                     {{ form_label(form.isActive, 'Public', {'label_attr': {'class': 'text-gray-700 font-medium'}}) }}
                     

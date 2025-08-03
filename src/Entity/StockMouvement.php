@@ -17,7 +17,7 @@ class StockMouvement
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le type de mouvement est requis.')]
     #[Assert\Choice(
-        choices: ['Entrée', 'Sortie'],
+        choices: ['IN', 'OUT'],
         message: 'Le type doit être soit "Entrée" soit "Sortie".'
     )]
     private ?string $type = null;
