@@ -41,6 +41,7 @@ final class DashboardDataProvider
             'bestItemSold' => $this->itemOrderRepository->findMostSoldProducts(5),
             'countOrdersByMonth' => $this->orderRepository->countOrdersByMonth(),
             'monthlyRevenue' => $this->orderRepository->getMonthlyRevenueLast12Months(),
+            'categorySales' => $this->itemOrderRepository->getSalesByCategory()
         ];
     }
 

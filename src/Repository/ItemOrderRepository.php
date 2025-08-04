@@ -98,4 +98,24 @@ class ItemOrderRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
+    /**
+     * Récupère les ventes par catégorie de produit.
+     *
+     * @return array Retourne un tableau associatif avec les catégories et leurs ventes totales.
+     */
+    public function getSalesByCategory(): array
+    {
+        $qb = $this->createQueryBuilder('io')
+            ->select('c.name AS category', 'SUM(io.quantity * io.unitPrice) AS totalSales')
+            ->join('io.product', 'p')
+            ->join('p.category', 'c')
+            ->join('io.orderNum', 'o')
+            ->where('o.paymentStatus = :paid')
+            ->setParameter('paid', PaymentStatus::PAYED)
+            ->groupBy('c.name')
+            ->orderBy('totalSales', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

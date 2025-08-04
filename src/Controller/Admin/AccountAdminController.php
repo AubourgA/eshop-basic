@@ -36,6 +36,7 @@ final class AccountAdminController extends AbstractController
            'bestItemSold' => $datas['bestItemSold'],
            'countOrdersByMonth' => $datas['countOrdersByMonth'],
            'monthlyRevenue' => $datas['monthlyRevenue'],
+           'categorySales' => $datas['categorySales'],
         ]);
     }
 

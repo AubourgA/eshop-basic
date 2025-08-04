@@ -67,9 +67,9 @@
          
         </div>
         <div class="bg-white rounded-2xl shadow p-4">
-            <h3 class="text-lg font-bold mb-4">Market Growth</h3>
+            <h3 class="text-lg font-bold mb-4">Ventes par Catégorie</h3>
             <div class="flex items-center justify-center text-gray-400 w-full">
-                [Graphique en barres ici]
+                {{ component('CategorySalesChartComponent', { data: categorySales }) }}
             </div>
         </div>
     </div>

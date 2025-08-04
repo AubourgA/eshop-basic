@@ -23,4 +23,7 @@ class ChartDataFormater
             'value' => $item->getNewPrice(),
         ], $data);
     }
+
+
+    
 }
