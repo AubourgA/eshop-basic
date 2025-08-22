@@ -77,19 +77,30 @@ final class AccountAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/order', name: '_order', methods: ['GET'])]
-    public function orders(OrderRepository $orderRepo, 
-                            Request $request,
-                            PaginatorInterface $paginator): Response
+    // #[Route('/order', name: '_order', methods: ['GET'])]
+    // public function orders(OrderRepository $orderRepo, 
+    //                         Request $request,
+    //                         PaginatorInterface $paginator): Response
+    // {
+       
+    //     $pagination = $paginator->paginate(
+    //         $orderRepo->findAll(),
+    //         $request->query->getInt('page', 1),
+    //         10 );
+
+    //     return $this->render('admin/orders/list_order.html.twig', [
+    //         'pagination' => $pagination,
+    //     ]);
+    // }
+
+        #[Route('/order', name: '_order', methods: ['GET'])]
+    public function orders(): Response
     {
        
-        $pagination = $paginator->paginate(
-            $orderRepo->findAll(),
-            $request->query->getInt('page', 1),
-            10 );
+       
 
         return $this->render('admin/orders/list_order.html.twig', [
-            'pagination' => $pagination,
+          
         ]);
     }
 

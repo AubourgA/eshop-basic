@@ -94,4 +94,23 @@ class OrderRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Recherche des commandes par référence.
+     *
+     * @param string|null $reference La référence de la commande à rechercher.
+     *
+     * @return \Doctrine\ORM\QueryBuilder Retourne un QueryBuilder pour les commandes correspondantes.
+     */
+    public function searchByReference(?string $reference): array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->orderBy('o.createdAt', 'DESC');
+
+        if (!empty($reference)) {
+            $qb->where('o.reference LIKE :ref')
+            ->setParameter('ref', '%' . $reference . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

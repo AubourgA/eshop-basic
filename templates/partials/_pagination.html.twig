@@ -1,0 +1,50 @@
+
+
+
+{% if pagination.getPageCount() > 1 %}
+    <nav class="flex items-center justify-center my-6 ">
+        <ul class="inline-flex items-center -space-x-px gap-2">
+            {# Lien précédent #}
+            {% if pagination.getCurrentPageNumber() > 1 %}
+                <li>
+                    <a href="{{ path(route, { 'page': pagination.getCurrentPageNumber() - 1, 'query': query }) }}"
+                       data-action="live#action"
+                       aria-label="Précédent"
+                       class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                        &laquo;
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Liens des pages #}
+            {% for page in pagination.getPaginationData().pagesInRange %}
+                <li>
+                    {% if pagination.getCurrentPageNumber() != page %}
+                        <a href="{{ path(route, { 'page': page, 'query': query }) }}"
+                           data-action="live#action"
+                           data-action-live-param="page"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            {{ page }}
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-2 leading-tight text-white bg-blue-600 border border-gray-300">
+                            {{ page }}
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+
+            {# Lien suivant #}
+            {% if pagination.getCurrentPageNumber() < pagination.getPageCount() %}
+                <li>
+                    <a href="{{ path(route, { 'page': pagination.getCurrentPageNumber() + 1, 'query': query }) }}"
+                       data-action="live#action"
+                       aria-label="Suivant"
+                       class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                        &raquo;
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

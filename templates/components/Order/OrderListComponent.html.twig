@@ -1,0 +1,105 @@
+<div{{ attributes }}>
+    <!-- component html -->
+    
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Liste des Commandes</h1>
+        <div class="relative w-full max-w-xs">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <!-- Icône loupe Heroicons -->
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+                </svg>
+            </span>
+
+            <input 
+                type="text" 
+                placeholder="Rechercher par référence.." 
+                data-model="debounce(300)|query"
+                value="{{ this.query }}"
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                    text-sm text-gray-700 placeholder-gray-400"/>
+        </div>
+    </div>
+
+  <!-- Résumé des résultats -->
+  <div class="mb-4 text-sm text-gray-600">
+      {% if this.query is not empty %}
+          Nombre de commandes trouvées avec la référence 
+          <span class="font-semibold text-blue-600">"{{ this.query }}"</span> : 
+          <span class="font-semibold">{{ this.orders.getTotalItemCount }}</span>
+      {% else %}
+          Nombre total de commandes : 
+          <span class="font-semibold">{{ this.orders.getTotalItemCount }}</span>
+      {% endif %}
+  </div>
+
+   {% if this.orders is not empty and this.orders.getTotalItemCount > 0 %}
+    <div class="  rounded-lg overflow-hidden">
+        <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Référence</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Montant</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Statut</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Payment</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Mise a Jour</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in this.orders %}
+                        <tr class="hover:bg-gray-50">
+                         
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.createdAt|date('d/m/Y') }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.reference }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">{{ order.totalAmount|number_format(2, ',', ' ') }} €</td>
+                      
+                            <td class="px-6 py-4 text-sm">
+                                <span class="px-3 py-1 text-xs font-semibold {{ order.status.getBadgeClass() }} rounded-full">
+                                    {{ order.status.getLabel() }}
+                                </span>
+                            </td>
+                           
+                            <td class="px-6 py-4 text-sm">
+                                <span class="px-3 py-1 text-xs font-semibold {{ order.paymentStatus.getBadgeClass() }} rounded-full">
+                                    {{ order.paymentStatus.getLabel() }}
+                                </span>
+                            </td>
+                             <td class="px-6 py-4 text-sm text-gray-600">{{ order.updatedAt|date('d/m/Y') }}</td>
+                            <td class="flex gap-2 x-6 py-4 text-sm">
+                              
+                                <a href="{{ path('app_admin_order_details', {ref: order.reference}) }}" class="text-blue-600 hover:underline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
+                               
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+            {# pagination #}
+            <div class="flex justify-center mt-4">
+                    {{ include('partials/_pagination.html.twig', {
+                        pagination: this.orders,
+                        route: 'app_admin_order',
+                        query: this.query,
+                        }
+                      )
+                     }}
+                   
+             </div>
+        {% else %}
+            <div class="no-results">
+                <p>Aucun produit trouvé.</p>
+            </div>
+    </div>
+   {% endif %}
+             
+ </div>
+
+
