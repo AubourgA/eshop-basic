@@ -11,6 +11,7 @@ use App\Factory\OrderFactory;
 use App\Repository\OrderRepository;
 use App\Repository\ShippingMethodRepository;
 use App\Services\CartService;
+use App\Services\PdfGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -144,5 +145,27 @@ final class OrderController extends AbstractController
             'shippingMethods' => $shippingMethodRepository->findAll()  
              ]);  
     }
+
+
+    #[Route('/{id}/invoice', name: '_invoice' , methods:['GET'])]
+    public function downloadInvoice(Order $order, PdfGenerator $pdfGenerator): Response
+    {
+        // sécurité : vérifier que la commande appartient bien à l’utilisateur connecté
+        if ($order->getCustomer() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $html = $this->renderView('invoice/invoicePDF.html.twig', [
+            'order' => $order,
+        ]);
+
+        $pdfContent = $pdfGenerator->generatePdf($html);
+
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="facture-'.$order->getReference().'.pdf"',
+        ]);
+    }
+
 
 }

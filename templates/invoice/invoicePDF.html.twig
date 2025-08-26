@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture {{ order.reference }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; margin: 20px; }
+        h1, h2, h3 { margin: 5px 0; }
+        .header, .footer { text-align: center; font-size: 11px; color: #555; }
+        .info { margin-bottom: 20px; }
+        .info div { margin: 4px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 6px; font-size: 12px; }
+        th { background: #f5f5f5; }
+        .totals { margin-top: 20px; width: 50%; float: right; }
+        .totals td { border: none; padding: 4px; }
+        .totals tr.total td { font-weight: bold; border-top: 2px solid #000; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>FACTURE</h1>
+        <p>Nos prix incluent l'éco-participation conformément à la réglementation.</p>
+    </div>
+
+    <div class="info">
+        <div><strong>Numéro de facture :</strong> FAC-{{ order.reference }}</div>
+        <div><strong>Date d'achat :</strong> {{ order.createdAt|date('d/m/Y') }}</div>
+       
+        <div><strong>Client :</strong> {{ order.customer.lastname }} {{ order.customer.firstname }} ({{ order.customer.email }})</div>
+    </div>
+
+    <div class="addresses">
+        <table style="width:100%; margin-top: 20px;">
+            <tr>
+                <td width="50%">
+                    <h3>Adresse de facturation</h3>
+                    {{ order.customer.lastname }} {{ order.customer.firstname }}<br>
+                    {{ order.billingAddress.street }}<br>
+                    {{ order.billingAddress.postalCode }} {{ order.billingAddress.city }}<br>
+                    {{ order.billingAddress.country }}
+                </td>
+                <td width="50%">
+                    <h3>Adresse de livraison</h3>
+                    {{ order.customer.lastname }} {{ order.customer.firstname }}<br>
+                    {{ order.shippingAddress.street }}<br>
+                    {{ order.shippingAddress.postalCode}} {{ order.shippingAddress.city }}<br>
+                    {{ order.shippingAddress.country }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3 style="margin-top: 30px;">Détails de la commande</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Qté</th>
+                <th>Prix HT</th>
+                <th>TVA</th>
+                <th>Prix TTC</th>
+                <th>Total TTC</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.itemOrders %}
+                <tr>
+                    <td>{{ item.product.designation }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ (item.unitPrice / 1.2)|number_format(2, ',', ' ') }} €</td>
+                    <td>20%</td>
+                    <td>{{ item.unitPrice|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ (item.unitPrice * item.quantity)|number_format(2, ',', ' ') }} €</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="5" align="right"><strong>Livraison</strong></td>
+                <td>{{ order.shippingMethod.price|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="totals">
+        <tr>
+            <td>Total HT :</td>
+            <td>{{ (order.totalAmount / 1.2)|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        <tr>
+            <td>TVA (20%) :</td>
+            <td>{{ (order.totalAmount - (order.totalAmount / 1.2))|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        <tr class="total">
+            <td>Total TTC :</td>
+            <td>{{ order.totalAmount|number_format(2, ',', ' ') }} €</td>
+        </tr>
+    </table>
+
+    <div style="clear:both;"></div>
+
+    <div class="footer">
+        <p>Merci pour votre achat.<br>
+        Veuillez contacter notre service client pour toute question.</p>
+    </div>
+
+</body>
+</html>
