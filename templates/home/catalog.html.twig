@@ -1,33 +1,146 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="bg-pink-100 min-h-screen">
-        <!-- Navbar -->
-     {% include 'partials/_navbar.html.twig' %}
+<div class=" min-h-screen">
+    <!-- Navbar -->
+    {% include 'partials/_navbar.html.twig' %}
 
-        <!-- Header -->
-        <header class="bg-pink-300 text-white text-center py-16">
-            <h1 class="text-4xl font-bold">Découvrez Notre Catalogue</h1>
-            <p class="mt-4 text-lg">Des ustensiles de cuisine de qualité pour tous vos besoins</p>
-        </header>
+    <!-- Header -->
+  
+    <header class="relative bg-gradient-to-r from-pink-100 via-pink-500 to-pink-100 text-white text-center py-20 overflow-hidden">
+        <!-- Motif décoratif -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,white,transparent_70%)]"></div>
 
-        <!-- Section Catalogue -->
-        <main class="container mx-auto px-6 py-12">
-            <h2 class="text-3xl font-semibold text-pink-700 text-center">Nos Produits</h2>
+        <!-- Contenu -->
+        <div class="relative z-10">
+            <h1 class="text-5xl md:text-4xl font-extrabold tracking-wide drop-shadow-lg ">
+                Découvrez Notre Catalogue
+            </h1>
+            <p class="mt-6 text-xl md:text-2xl font-light max-w-2xl mx-auto ">
+                Des ustensiles de cuisine de qualité pour tous vos besoins
+            </p>
+        </div>
+    </header>
 
-          
-            <div class="my-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-                {% for product in pagination %}
-                    {{ component('ProductCard', { product: product }) }}
-                {% endfor %}
-            </div>
+    <!-- Section Catalogue -->
+    <main class="container mx-auto px-6 py-12 relative"
+          data-controller="product-filter">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-semibold text-pink-700">Nos Produits</h2>
             
-             <div class="flex justify-center">
-                {{ knp_pagination_render(pagination) }}
-            </div>
-        </main>
+        </div>
 
-        <!-- Footer -->
-       {% include 'partials/_footer.html.twig' %}
-    </div>
+        <!-- filtre baniere -->
+        <div class="flex flex-wrap items-center gap-2 mb-6">
+            <button 
+                id="filterToggle"
+                class=" text-pink-500 border border-pink-500 px-4 py-2 rounded-lg shadow hover:bg-pink-500 hover:text-white transition"
+                 data-action="click->product-filter#open">Filtres
+            </button>
+
+            {% if activeFilters.categories is defined and activeFilters.categories|length > 0 %}
+                {% for cat in activeFilters.categories %}
+                    <span class="px-3 py-1 bg-pink-100 text-pink-700 text-sm rounded-full">
+                        {{ cat.name }}
+                    </span>
+                {% endfor %}
+            {% endif %}
+
+            {% if activeFilters.price is defined and activeFilters.price %}
+                <span class="px-3 py-1 bg-pink-100 text-pink-700 text-sm rounded-full">
+                    Prix ≤ {{ activeFilters.price }} €
+                </span>
+            {% endif %}
+
+            {% if activeFilters|length > 0 %}
+                <a href="{{ path('app_catalog') }}" class="px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full hover:bg-red-200 transition">
+                    Effacer les filtres
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Catalogue Grid -->
+        <div class="my-4 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for product in pagination %}
+                {{ component('ProductCard', { product: product }) }}
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+     
+        <div class="flex justify-center mt-8">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <!-- Panneau Filtres (off-canvas) -->
+        <div 
+            id="filterPanel" 
+              data-product-filter-target="panel"
+            class="fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-50"
+        >
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="text-xl font-semibold text-pink-700">Filtres</h3>
+                <button id="closeFilter" 
+                       data-action="click->product-filter#close"   
+                        class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+          
+            <div class="p-6 ">
+                {{ form_start(filterForm, { attr: { class: 'space-y-4' } }) }}
+                   
+                  
+                   
+                        {{ form_label(filterForm.categories, 'Catégories', { 
+                                label_attr: { class: 'font-semibold text-gray-700 pb-4' }
+                                 }) }} 
+                    
+                       
+                        {% for child in filterForm.categories %}
+                            <label class="flex items-center space-x-2 text-gray-600">
+                                {{ form_widget(child, {
+                                    'attr': {
+                                        'class': 'h-4 w-4 text-pink-600 border-gray-300 rounded focus:ring-pink-500'
+                                    }
+                                }) }}
+                                <span>{{ child.vars.label }}</span>
+                            </label>
+                        {% endfor %} 
+                  
+                    
+                    <div class="mt-4">
+                        {{ form_label(filterForm.price, 'Prix', { 
+                                label_attr: { class: 'font-semibold text-gray-700 py-4' } }) }}
+                        <div class="flex justify-between mt-2">
+                            <span class="text-sm text-gray-500">0€</span>
+                            <span class="text-sm text-gray-500" id="priceValue">{{ filterForm.price.vars.attr.max }}</span>
+                        </div>
+                        {{ form_widget(filterForm.price, {
+                            attr: { 
+                                class: 'w-full',
+                                oninput: "document.getElementById('priceValue').innerText = this.value + ' €'" } }) }}
+                    </div>
+
+                   
+
+                    <button type="submit" class="mt-6 w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition">
+                        Appliquer les filtres
+                    </button>
+                {{ form_end(filterForm) }}
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div 
+            id="overlay" 
+            class="hidden fixed inset-0 bg-black bg-opacity-40 z-40"
+             data-product-filter-target="overlay"
+           data-action="click->product-filter#close"
+        ></div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'partials/_footer.html.twig' %}
+</div>
+
+
 {% endblock %}

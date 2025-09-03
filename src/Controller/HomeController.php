@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ProductFilterType;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,15 +25,33 @@ final class HomeController extends AbstractController
                             ProductRepository $productRepo,
                             PaginatorInterface $paginator): Response
     {
+
+         // 1. Création du formulaire
+        $form = $this->createForm(ProductFilterType::class);
+        $form->handleRequest($request);
+
+         // 2. Récupération des critères du formulaire
+        $filters = $form->isSubmitted() && $form->isValid()
+            ? $form->getData()
+            : [];
+
+           
+        // Utiliser la méthode custom
+        $query = $productRepo->findByFilters($filters);
+
+        
         $pagination = $paginator->paginate(
-            $productRepo->findBy(['isActive'=> true]),
+            $query,
             $request->query->getInt('page', 1),
             12
         );
         
+     
 
         return $this->render('home/catalog.html.twig', [
             'pagination' => $pagination,
+            'filterForm' => $form,
+            'activeFilters' => $filters,
         ]);
     }
 
