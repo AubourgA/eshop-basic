@@ -62,6 +62,7 @@
         <!-- Catalogue Grid -->
         <div class="my-4 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {% for product in pagination %}
+              
                 {{ component('ProductCard', { product: product }) }}
             {% endfor %}
         </div>
@@ -116,9 +117,13 @@
                         </div>
                         {{ form_widget(filterForm.price, {
                             attr: { 
+                                'data-action': 'input->product-filter#updatePrice',
                                 class: 'w-full',
-                                oninput: "document.getElementById('priceValue').innerText = this.value + ' €'" } }) }}
+                                 }
+                             })
+                         }}
                     </div>
+                                {# oninput: "document.getElementById('priceValue').innerText = this.value + ' €'", #}
 
                    
 

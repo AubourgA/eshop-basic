@@ -18,4 +18,9 @@ export default class extends Controller {
         this.panelTarget.classList.add('translate-x-full');
         this.overlayTarget.classList.add('hidden');
     }
+
+    updatePrice(event) {
+    const value = event.target.value;
+    document.getElementById('priceValue').innerText = value + ' €';
+    }
 }

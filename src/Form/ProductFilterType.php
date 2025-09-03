@@ -28,6 +28,7 @@ class ProductFilterType extends AbstractType
                     'max' => 500,
                 ],
                 'required' => false,
+               
             ]);
            
     }
