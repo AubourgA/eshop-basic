@@ -53,6 +53,11 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('maxPrice', (float) $filters['price']);
         }
 
+        // Recherche textuelle (sur la désignation)
+        if (!empty($filters['search'])) {
+            $qb->andWhere('p.designation LIKE :search')
+            ->setParameter('search', '%' . $filters['search'] . '%');
+        }
 
             return $qb;
     }

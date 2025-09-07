@@ -35,7 +35,10 @@ final class HomeController extends AbstractController
             ? $form->getData()
             : [];
 
-   
+        if ($request->query->get('search')) {
+         $filters['search'] = $request->query->get('search');
+        }
+
         // Utiliser la méthode custom
         $query = $productRepo->findByFilters($filters);
 
