@@ -4,6 +4,7 @@ Ce projet est une application e-commerce développée avec **Symfony 7.1**, **Tw
 Il permet aux utilisateurs de parcourir un catalogue de produits, de créer un compte, d’ajouter des produits à un panier, de passer une commande et de payer via **Stripe Checkout**.  
 Une interface d’administration permet de gérer les produits, le stock et les informations commerciales.  
 
+![Présentation de la page d'accueil](doc/images/homePage.png)
 ---
 
 ## 📌 Prérequis  
@@ -102,3 +103,19 @@ php bin/console tailwind:build --watch
 
 Votre projet est maintenant accessible sur :  
 👉 http://127.0.0.1:8000  
+
+
+## 📚 Documentation Technique
+
+Pour comprendre la structure du code et les fonctionnalités implémentées, consultez la documentation complète :  
+
+### Sommaire
+1. [Préparation de la stack technique](doc/documentation.md#préparation-de-la-stack-technique)
+2. [Architecture du projet](doc/documentation.md#architecture-du-projet)
+3. [Entités et Base de données](doc/documentation.md#entités-et-base-de-données)
+4. [Services principaux](doc/documentation.md#services-principaux)
+5. [Fonctionnalités et flux](doc/documentation.md#fonctionnalités-et-flux)
+6. [Live Components et modales AJAX](doc/documentation.md#live-components-et-modales-ajax)
+7. [Gestion du stock](doc/documentation.md#gestion-du-stock)
+8. [Paiement et intégration Stripe](doc/documentation.md#paiement-et-intégration-stripe)
+9. [Bonnes pratiques et conventions](doc/documentation.md#bonnes-pratiques-et-conventions)
