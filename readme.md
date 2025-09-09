@@ -110,8 +110,8 @@ Votre projet est maintenant accessible sur :
 Pour comprendre la structure du code et les fonctionnalités implémentées, consultez la documentation complète :  
 
 ### Sommaire
-1. [Préparation de la stack technique](#1️⃣-préparation-de-la-stack-technique)
-2. [Architecture du projet](#2️⃣-architecture-du-projet)
-3. [Schéma de la base de données](#3️⃣-schéma-de-la-base-de-données)
-4. [Dashboard Admin](#4️⃣-dashboard-admin)
+1. [Préparation de la stack technique](doc/documentation.md#1️⃣-préparation-de-la-stack-technique)
+2. [Architecture du projet](doc/documentation.md#2️⃣-architecture-du-projet)
+3. [Schéma de la base de données](doc/documentation.md#3️⃣-schéma-de-la-base-de-données)
+4. [Dashboard Admin](doc/documentation.md#4️⃣-dashboard-admin)
 
