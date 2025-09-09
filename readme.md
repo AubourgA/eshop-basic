@@ -112,10 +112,9 @@ Pour comprendre la structure du code et les fonctionnalités implémentées, con
 ### Sommaire
 1. [Préparation de la stack technique](doc/documentation.md#préparation-de-la-stack-technique)
 2. [Architecture du projet](doc/documentation.md#architecture-du-projet)
-3. [Entités et Base de données](doc/documentation.md#entités-et-base-de-données)
-4. [Services principaux](doc/documentation.md#services-principaux)
+3. [Schéma de la base de données](doc/documentation.md#schéma-de-la-base-de-données)
+4. 
 5. [Fonctionnalités et flux](doc/documentation.md#fonctionnalités-et-flux)
 6. [Live Components et modales AJAX](doc/documentation.md#live-components-et-modales-ajax)
 7. [Gestion du stock](doc/documentation.md#gestion-du-stock)
 8. [Paiement et intégration Stripe](doc/documentation.md#paiement-et-intégration-stripe)
-9. [Bonnes pratiques et conventions](doc/documentation.md#bonnes-pratiques-et-conventions)

@@ -1,5 +1,7 @@
 # Documentation Technique eShop
 
+Description de la code base pour une meilleur navigation et compréhension
+
 ## 1️⃣ Préparation de la stack technique
 - Symfony 7.2, PHP ≥ 8.2
 - Twig pour les templates
@@ -26,3 +28,18 @@
 - `/src/Validator` → validateurs personnalisés pour Symfony Form et Entity  
 - `/templates` → Twig templates (front, admin, emails)  
 - `/assets` → JS, Stimulus controllers, TailwindCSS, images et fichiers statiques  
+
+
+## 3️⃣ Schéma de la base de données
+- Diagramme des entités principales : User, Product, Order, Stock, Movement
+  
+### 🔹 Relations principales 
+
+- **User** → Customer / Manager : héritage (Doctrine Inheritance)
+  - `Customer` → `Order` : 1-n
+    - `Order` → `Product` : n-n via `OrderItem`
+- `Product` → `Stock` : 1-1 ou 1-n (si plusieurs stocks par produit)
+  - `Stock` → `Movement` : 1-n
+
+
+![Schéma DB](images/MPD.png)
