@@ -50,7 +50,7 @@ Le **Dashboard Admin** permet aux managers et administrateurs de suivre rapideme
 
 
 ---
-
+````yaml
 Dashboard Controller (AccountAdminController)
 │
 │ injecte DashboardDataProvider
@@ -70,4 +70,5 @@ Twig Template: admin/dashboard.html.twig
 ├─ Cartes statistiques (ItemDataCard)
 ├─ Graphiques (OrdersMonthChart, MonthlyRevenueChart, CategorySalesChart)
 └─ Table dernières commandes
+````
 
