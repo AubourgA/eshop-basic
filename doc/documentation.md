@@ -43,3 +43,31 @@ Description de la code base pour une meilleur navigation et compréhension
 
 
 ![Schéma DB](images/MPD.jpg)
+
+## 4️⃣ Dashboard Admin
+
+Le **Dashboard Admin** permet aux managers et administrateurs de suivre rapidement les indicateurs clés de l’eShop : clients, produits, ventes, stock et performances commerciales.
+
+
+---
+
+Dashboard Controller (AccountAdminController)
+│
+│ injecte DashboardDataProvider
+▼
+DashboardDataProvider (service)
+│
+├─ récupère clients
+├─ récupère produits
+├─ récupère commandes payées et dernières commandes
+├─ calcule top produits vendus
+├─ calcule nombre de commandes par mois
+├─ calcule chiffre d’affaires mensuel
+└─ calcule ventes par catégorie
+▼
+Twig Template: admin/dashboard.html.twig
+│
+├─ Cartes statistiques (ItemDataCard)
+├─ Graphiques (OrdersMonthChart, MonthlyRevenueChart, CategorySalesChart)
+└─ Table dernières commandes
+
