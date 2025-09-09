@@ -72,4 +72,4 @@ Twig Template: admin/dashboard.html.twig
 └─ Table dernières commandes
 ````
 
-![Dashboard Admin](images/admin_dashboard.jpg)
+![Dashboard Admin](images/admin_dashboard.png)
