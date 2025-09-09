@@ -42,4 +42,4 @@ Description de la code base pour une meilleur navigation et compréhension
   - `Stock` → `Movement` : 1-n
 
 
-![Schéma DB](images/MPD.png)
+![Schéma DB](images/MPD.jpg)
