@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
@@ -11,7 +12,7 @@ use Stripe\Checkout\Session;
 class StripeService
 {
 
-    public function __construct(string $stripeSecretKey)
+    public function __construct(string $stripeSecretKey, private ParameterBagInterface $parameterBag)
     {
     
         Stripe::setApiKey($stripeSecretKey);
@@ -48,6 +49,7 @@ class StripeService
             'quantity' => 1,  
         ];
 
+        $domain = $this->parameterBag->get('app.domain');
         // Créer la session Stripe Checkout
         $session = Session::create([
             'mode' => 'payment',
@@ -55,8 +57,8 @@ class StripeService
             'customer_email' => $customerEmail,
             'line_items' => $lineItems,
             'automatic_tax' => ['enabled' => true],
-            'success_url' => 'https://localhost:8000/payment/success?session_id={CHECKOUT_SESSION_ID}',  // URL de succès
-            'cancel_url' => 'https://localhost:8000/payment/cancel',  
+            'success_url' => $domain.'/payment/success?session_id={CHECKOUT_SESSION_ID}',  // URL de succès
+            'cancel_url' => $domain.'/payment/cancel',  
             'metadata' => ['order_id' => $id]
         ]);
         
