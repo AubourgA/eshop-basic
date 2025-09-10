@@ -91,7 +91,14 @@ STRIPE_SECRET_KEY="sk_test_votrecle"
 STRIPE_PUBLIC_KEY="pk_test_votrecle"
 ```
 
-### 6️⃣ Lancer le serveur Symfony  
+### 6️⃣ Définit la variable DOMAIN dans `.env.local`
+
+```sh
+DOMAIN=https://nom_domain.fr
+``` 
+en local : https://127.0.0.1:8000
+
+### 7️⃣ Lancer le serveur Symfony  
 ```sh
 symfony server:start
 ```
