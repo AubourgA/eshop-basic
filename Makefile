@@ -1,4 +1,4 @@
-include .env.local
+include .make.env
 
 SSH = ssh -i $(SSH_KEY_PATH) $(USER)@$(HOST)
 
